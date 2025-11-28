@@ -92,7 +92,7 @@ enum DesignMenuItem //The items of the design menu --> THE ORDER MATTERS
 	ITM_REDO,        //N:redo last action
 
 	ITM_SIM_MODE,		//n:Switch to Simulation mode
-	ITM_EXIT1,			//Exit
+	ITM_EXIT1,			//Exit design mode
 
 	//TODO: Add more items names here
 
@@ -110,7 +110,7 @@ enum SimMenuItem //The items of the simulation menu
 	ITM_GEN_CODE,   //n:Generate code statement
 	//TODO:Add more items names here
 	ITM_DSN_MODE,
-	ITM_EXIT2,	//Switch to Design mode
+	ITM_EXIT2,	//exit simulation mode
 	SIM_ITM_CNT		//no. of simulation menu items ==> This should be the last line in this enum
 
 };

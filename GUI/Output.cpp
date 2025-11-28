@@ -167,7 +167,7 @@ void Output::ClearOutputBar()
 {
 	//Create output bar by drawing a filled rectangle
 	pWind->SetPen(BLACK, 2);
-	pWind->SetBrush(LIGHTBLUE);
+	pWind->SetBrush(GRAY);
 	pWind->DrawRectangle(UI.DrawingAreaWidth, UI.ToolBarHeight, UI.width, UI.height - UI.StatusBarHeight);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
