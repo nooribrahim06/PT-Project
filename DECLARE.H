@@ -1,5 +1,5 @@
 #pragma once
-#include "Statements/Statement.h"
+#include "Statements\Statement.h"
 class Declare: public Statement
 {
 private:

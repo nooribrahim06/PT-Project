@@ -19,8 +19,6 @@ public:
     void setLHS(const string& L);
     void setRHS(const string& R);
 
-    virtual void Draw(Output* pOut) const;
-
     // this is for now 
     // TODO 
     void Draw(Output* pOut) const override;
