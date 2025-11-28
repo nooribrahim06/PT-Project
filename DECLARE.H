@@ -11,7 +11,7 @@ private:
 
     virtual void UpdateStatementText();
 public:
-    Declare(string& var);
+    Declare(Point Lcorner,string& var);
     virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
