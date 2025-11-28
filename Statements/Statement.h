@@ -25,8 +25,10 @@ public:
 	bool IsSelected() const;
 
 	virtual void Draw(Output* pOut) const  = 0 ;	//Draw the statement
-	
-	
+	virtual void Save(ofstream& OutFile) = 0;
+	virtual void Load(ifstream& Infile) = 0;
+	virtual void Edit() = 0;
+	virtual void Simulate();
 
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement

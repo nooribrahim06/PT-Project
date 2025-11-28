@@ -36,7 +36,9 @@ public:
 	void setRHS(double R);
 
 	virtual void Draw(Output* pOut) const;
-
+	void Save(ofstream& OutFile) override; //n
+	void Load(ifstream& InFile) override; //n
+	void Simulate() override; //n
 };
 
 #endif

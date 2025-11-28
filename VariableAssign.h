@@ -1,0 +1,34 @@
+#pragma once
+#include "Statements/Statement.h"
+class VariableAssign :
+    public Statement
+{
+private:
+    string LHS; // keep it string right now but it must be variable
+    string RHS; // must be a varaible (declared)
+    Connector* pOutConn; // must be one connector going to next statement
+    Point Inlet; //A point where connections enters this statement 
+    Point Outlet;	//A point a connection leaves this statement
+    Point LeftCorner;	//left corenr of the statement block.
+
+    virtual void UpdateStatementText();
+
+public:
+    VariableAssign(Point Lcorner, string left = "", string right = "");
+
+    void setLHS(const string& L);
+    void setRHS(const string& R);
+
+    virtual void Draw(Output* pOut) const;
+
+    // this is for now 
+    // TODO 
+    void Draw(Output* pOut) const override;
+    void Save(ofstream& OutFile) override;
+    void Load(ifstream& InFile) override;
+    void Simulate() override; //n
+    //Statement* Clone() const override;
+    //void SetInlet / SetOutlet(depends on type)
+    //    bool IsPointInside(int x, int y);   // for selection
+
+};

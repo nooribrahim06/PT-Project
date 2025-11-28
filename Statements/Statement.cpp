@@ -13,3 +13,7 @@ void Statement::SetSelected(bool s)
 bool Statement::IsSelected() const
 {	return Selected; }
 
+void Statement::Simulate()
+{
+	// to be implemented 
+}

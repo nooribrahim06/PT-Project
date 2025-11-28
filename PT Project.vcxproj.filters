@@ -155,6 +155,27 @@
     <ClCompile Include="GUI\Output.cpp">
       <Filter>GUI Classes</Filter>
     </ClCompile>
+    <ClCompile Include="VariableAssign.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="OpAssign.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="Start.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="End.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="Declare.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="Read.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
+    <ClCompile Include="Write.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -235,7 +256,6 @@
     <ClInclude Include="Actions\AddValueAssign.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
-    <ClInclude Include="DEFS.h" />
     <ClInclude Include="HelperFn.h" />
     <ClInclude Include="GUI\Input.h">
       <Filter>GUI Classes</Filter>
@@ -245,6 +265,28 @@
     </ClInclude>
     <ClInclude Include="GUI\UI_Info.h">
       <Filter>GUI Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFS.h" />
+    <ClInclude Include="VariableAssign.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="OpAssign.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Start.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="End.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Declare.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Read.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Write.h">
+      <Filter>Statements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -43,6 +43,18 @@ void ValueAssign::Draw(Output* pOut) const
 	
 }
 
+void ValueAssign::Save(ofstream& OutFile)
+{
+}
+
+void ValueAssign::Load(ifstream& InFile)
+{
+}
+
+void ValueAssign::Simulate()
+{
+}
+
 
 //This function should be called when LHS or RHS changes
 void ValueAssign::UpdateStatementText()
