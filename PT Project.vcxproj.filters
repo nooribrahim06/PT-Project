@@ -176,6 +176,9 @@
     <ClCompile Include="Write.cpp">
       <Filter>Statements</Filter>
     </ClCompile>
+    <ClCompile Include="Condition.cpp">
+      <Filter>Statements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -286,6 +289,9 @@
       <Filter>Statements</Filter>
     </ClInclude>
     <ClInclude Include="Write.h">
+      <Filter>Statements</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
       <Filter>Statements</Filter>
     </ClInclude>
   </ItemGroup>
