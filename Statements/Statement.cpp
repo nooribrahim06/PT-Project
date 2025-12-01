@@ -17,3 +17,24 @@ void Statement::Simulate()
 {
 	// to be implemented 
 }
+
+bool Statement::IsStart() const
+{
+	return false;
+}
+
+bool Statement::IsEnd() const
+{
+	return false;
+}
+
+bool Statement::Isconditional() const
+{
+	return false;
+}
+
+bool Statement::checkvar(varinfo vars[], int& varcount, string& msg)
+{
+	return true;
+}
+

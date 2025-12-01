@@ -20,3 +20,13 @@ void Start::Load(ifstream& InFile)
 void Start::Simulate()
 {
 }
+
+void Start::GenerateCode(ofstream& OutFile)
+{
+	// to be implemented
+}
+
+bool Start::IsStart() const
+{
+	return true;
+}

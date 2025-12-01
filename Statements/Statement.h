@@ -6,6 +6,21 @@
 //class Output;
 #include "..\GUI\Output.h"
 
+
+
+struct varinfo {
+	string name;
+	bool declared;
+	bool initialized;
+};
+ inline int Findvarindex(const string&name ,varinfo vars[],int varcount) {
+	 for (int i = 0; i < varcount; i++) {
+		 if (vars[i].name == name) {
+			 return i;
+		 }
+	 }
+	 return -1;
+ }
 //Base class for all Statements
 class Statement
 {
@@ -28,7 +43,16 @@ public:
 	virtual void Save(ofstream& OutFile) = 0;
 	virtual void Load(ifstream& Infile) = 0;
 	virtual void Edit() = 0;
-	virtual void Simulate();
+	virtual void Simulate() ;
+	virtual void GenerateCode(ofstream& OutFile) = 0;
+	/*virtual Statement* Clone() const = 0;*/
+	virtual bool IsStart() const;
+	virtual bool IsEnd() const;
+	virtual bool Isconditional() const;
+	virtual bool checkvar(varinfo vars[], int &varcount,string &msg);
+	
+	
+	
 
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement

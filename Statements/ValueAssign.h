@@ -39,6 +39,9 @@ public:
 	void Save(ofstream& OutFile) override; //n
 	void Load(ifstream& InFile) override; //n
 	void Simulate() override; //n
+	void  GenerateCode(ofstream& OutFile) override; //n
+	//Statement* Clone() const override;
+	bool checkvar(varinfo vars[], int& varcount, string& msg) override;
 };
 
 #endif

@@ -25,6 +25,9 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
     void Simulate() override; //n
+	void  GenerateCode(ofstream& OutFile) override; //n
+	bool checkvar(varinfo vars[], int& varcount, string& msg) override;
+     // Statement* Clone() const override;
     //Statement* Clone() const override;
     //void SetInlet / SetOutlet(depends on type)
     //    bool IsPointInside(int x, int y);   // for selection

@@ -55,6 +55,41 @@ void ValueAssign::Simulate()
 {
 }
 
+void ValueAssign::GenerateCode(ofstream& OutFile)
+{
+	// to be implemented
+}
+
+bool ValueAssign::checkvar(varinfo vars[], int& varcount, string& msg)
+{
+	if (LHS.empty()) {
+		msg = "Left hand side of assignment is empty.";
+		return false;
+	}
+	if (!IsVariable(LHS)) {
+		msg = "Left hand side ' " + LHS + " ' not a valid Variable";
+		return false;
+	}
+	int LHSIdx = Findvarindex(LHS, vars, varcount);
+	if(LHSIdx==-1||!vars[LHSIdx].declared) {
+		msg = "Variable ' " + LHS + " ' used without declaration.";
+		return false;
+	}
+	if (RHS.empty()) {
+		msg = "Right hand side of assignment is empty.";
+		return false;
+	}
+	if (!IsValue(RHS)) {
+		msg = "Right hand side of assignment '" +RHS + "' is not a valid value.";
+		return false;
+	}
+
+	vars[LHSIdx].initialized = true;
+	return true;
+
+}
+
+
 
 //This function should be called when LHS or RHS changes
 void ValueAssign::UpdateStatementText()

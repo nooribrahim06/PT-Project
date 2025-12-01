@@ -16,4 +16,7 @@ class Write :
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Simulate() override;
+	void  GenerateCode(ofstream& OutFile) override;
+	bool checkvar(varinfo vars[], int& varcount, string& msg) override;
+     
 };

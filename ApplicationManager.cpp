@@ -141,6 +141,119 @@ void ApplicationManager::UpdateInterface() const
 		ConnList[i]->Draw(pOut);
 
 }
+bool ApplicationManager::Validate(string& msg)
+{
+	Statement* startStat = nullptr;
+	Statement* endStat = nullptr;
+	// Find Start and End statements
+	int stcount = 0, endcount = 0;
+	
+	for (int i = 0; i < StatCount; i++)
+	{
+		Statement * stat = StatList[i];
+		if (!stat)
+		{
+			continue;
+		}
+		if (stat->IsStart()) {
+			startStat = StatList[i];
+			stcount++;
+		}
+		if (stat->IsEnd()) {
+			endStat = StatList[i];
+			endcount++;
+		}
+
+	}
+	if (stcount != 1)
+	{
+		msg = "Flowchart must have one Start statement.";
+		return false;
+	}
+	if (endcount != 1)
+	{
+		msg = "Flowchart must have one End statement.";
+		return false;
+	}
+	
+	// Now for the connectors//
+	for (int i = 0; i < ConnCount; i++)
+	{
+		Connector* CO = ConnList[i];
+		if (!CO)
+		{
+			continue;
+		}
+		if (CO->getDstStat() == nullptr || CO->getSrcStat() == nullptr)
+		{
+			msg = " Error: Free Connector (Missing Source Or Destination)";
+			return false;
+		}
+			
+	}
+// legal connectors //
+	for(int j=0;j<StatCount;j++) {
+		int inc = 0, Otc = 0;
+		Statement* stat = StatList[j];
+		if (!stat)
+		{
+			continue;
+		}
+		// count incoming and outcoming connectors //
+		for (int i = 0; i < ConnCount; i++)
+		{
+			Connector* CO = ConnList[i];
+			if(!CO)
+			{
+				continue;
+			}
+			if (CO->getSrcStat()==stat) Otc++;
+			if (CO->getDstStat() == stat) inc++;
+		}
+		if (stat->IsStart()) {
+			if (inc != 0 || Otc != 1) {
+			   msg = " Start statement can't have incoming connectors or more than one outgoing connector.";
+			return false;
+			}
+		}
+		else if (stat->IsEnd()) {
+				if (inc != 1 || Otc != 0) {
+					msg = " End statement can't have outgoing connectors or more than one incoming connector.";
+					return false;
+				}
+			}
+
+		else {
+			if (inc < 1 || Otc != 1) {
+				msg = " Each statement must have at least one incoming and one outgoing connector.";
+				return false;
+		    }
+		}
+	}
+	//Check for the Variable Validation//
+	varinfo vars[MaxCount];
+	int varcount = 0;
+	for (int i = 0; i < MaxCount; i++) {
+		vars[i].declared = false;
+		vars[i].name = "";
+		vars[i].initialized = false;
+	}
+	for (int j = 0; j < StatCount; j++) {
+		Statement* stat = StatList[j];
+		if (!stat)
+		{
+			continue;
+		}
+		if (!stat->checkvar(vars, varcount, msg)) {
+			return false;
+		}
+	}
+
+	msg = " Valid Flowchart";
+	return true;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the input
 Input *ApplicationManager::GetInput() const

@@ -12,4 +12,7 @@ class Start :
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
 	void Simulate() override;
+	void  GenerateCode(ofstream& OutFile) override;
+	bool IsStart() const override;
+	
 };
