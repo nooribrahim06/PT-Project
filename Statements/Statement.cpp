@@ -1,10 +1,18 @@
 #include "Statement.h"
 
+int Statement::ID = 1; //Initialize static ID variable
+
 Statement::Statement()	
 { 
 	//TODO: set the ID with a unique value
 	Text = "";
+	statementID = ID++;
 	Selected = false;		
+}
+
+int Statement::GetstatementID()
+{
+	return statementID;
 }
 
 void Statement::SetSelected(bool s)
@@ -16,4 +24,8 @@ bool Statement::IsSelected() const
 void Statement::Simulate()
 {
 	// to be implemented 
+}
+
+Statement::~Statement()
+{	
 }

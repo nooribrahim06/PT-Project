@@ -10,7 +10,8 @@
 class Statement
 {
 protected:
-	int ID;			//Each Statement has an ID --> must be unique
+	static int ID;			//Each Statement has an ID --> must be unique
+	int statementID;   //the ID of this statement
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
 
@@ -21,6 +22,9 @@ protected:
 
 public:
 	Statement();
+
+	int GetstatementID(); // get the current statement ID
+
 	void SetSelected(bool s);
 	bool IsSelected() const;
 
@@ -29,6 +33,7 @@ public:
 	virtual void Load(ifstream& Infile) = 0;
 	virtual void Edit() = 0;
 	virtual void Simulate();
+	virtual ~Statement();
 
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement
