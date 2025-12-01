@@ -10,7 +10,7 @@ Statement::Statement()
 	Selected = false;		
 }
 
-int Statement::GetstatementID()
+int Statement::GetstatementID() const
 {
 	return statementID;
 }

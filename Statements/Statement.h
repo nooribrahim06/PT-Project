@@ -23,7 +23,7 @@ protected:
 public:
 	Statement();
 
-	int GetstatementID(); // get the current statement ID
+	int GetstatementID() const; // get the current statement ID
 
 	void SetSelected(bool s);
 	bool IsSelected() const;
