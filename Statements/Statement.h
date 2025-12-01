@@ -25,7 +25,8 @@ struct varinfo {
 class Statement
 {
 protected:
-	int ID;			//Each Statement has an ID --> must be unique
+	static int ID;			//Each Statement has an ID --> must be unique
+	int statementID;   //the ID of this statement
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
 
@@ -36,6 +37,9 @@ protected:
 
 public:
 	Statement();
+
+	int GetstatementID() const; // get the current statement ID
+
 	void SetSelected(bool s);
 	bool IsSelected() const;
 
@@ -43,6 +47,7 @@ public:
 	virtual void Save(ofstream& OutFile) = 0;
 	virtual void Load(ifstream& Infile) = 0;
 	virtual void Edit() = 0;
+<<<<<<< HEAD
 	virtual void Simulate() ;
 	virtual void GenerateCode(ofstream& OutFile) = 0;
 	/*virtual Statement* Clone() const = 0;*/
@@ -53,6 +58,10 @@ public:
 	
 	
 	
+=======
+	virtual void Simulate();
+	virtual ~Statement();
+>>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
 
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement

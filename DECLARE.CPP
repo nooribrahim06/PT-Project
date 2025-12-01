@@ -1,11 +1,23 @@
 #include "Declare.h"
+#include <sstream>
 
-Declare::Declare(string& var)
+
+
+Declare::Declare(Point Lcorner, string& V)
 {
-	// implement later
+	// initially set the declare width and height to be the same as assignment statement
+	LeftCorner = Lcorner;
+	var = V;
+	UpdateStatementText();
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	pOutConn = NULL;	//No connectors yet
 }
 void Declare::Draw(Output* pOut) const {
-
+	// void Output::DrawDeclareStatement(Point left, int width, int height, string Text, bool Selected)
+	pOut->DrawDeclareStatement(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
 void Declare::Save(ofstream& OutFile)
 {
@@ -17,6 +29,7 @@ void Declare::Load(ifstream& InFile)
 }
 void Declare::Simulate()
 {
+<<<<<<< HEAD
 	// add var to the context's variable table with default value
 
 }
@@ -49,4 +62,13 @@ bool Declare::checkvar(varinfo vars[], int& varcount, string& msg)
 	vars[index].declared = true;
 }
 	return true;
+=======
+	// 
+}
+void Declare::UpdateStatementText()
+{
+	ostringstream T;
+	T << "Declare " << var;
+	Text = T.str();
+>>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
 }

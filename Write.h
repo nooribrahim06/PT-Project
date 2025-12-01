@@ -11,7 +11,7 @@ class Write :
     Point LeftCorner;	//left corenr of the statement block.
 	virtual void UpdateStatementText();
     public:
-    Write(string& variable);
+    Write(Point Lcorner,string& variable);
     virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;

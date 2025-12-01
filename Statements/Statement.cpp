@@ -1,10 +1,18 @@
 #include "Statement.h"
 
+int Statement::ID = 1; //Initialize static ID variable
+
 Statement::Statement()	
 { 
 	//TODO: set the ID with a unique value
 	Text = "";
+	statementID = ID++;
 	Selected = false;		
+}
+
+int Statement::GetstatementID() const
+{
+	return statementID;
 }
 
 void Statement::SetSelected(bool s)
@@ -18,6 +26,7 @@ void Statement::Simulate()
 	// to be implemented 
 }
 
+<<<<<<< HEAD
 bool Statement::IsStart() const
 {
 	return false;
@@ -38,3 +47,8 @@ bool Statement::checkvar(varinfo vars[], int& varcount, string& msg)
 	return true;
 }
 
+=======
+Statement::~Statement()
+{	
+}
+>>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
