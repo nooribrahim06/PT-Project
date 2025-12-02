@@ -29,7 +29,6 @@ void Declare::Load(ifstream& InFile)
 }
 void Declare::Simulate()
 {
-<<<<<<< HEAD
 	// add var to the context's variable table with default value
 
 }
@@ -62,7 +61,6 @@ bool Declare::checkvar(varinfo vars[], int& varcount, string& msg)
 	vars[index].declared = true;
 }
 	return true;
-=======
 	// 
 }
 void Declare::UpdateStatementText()
@@ -70,5 +68,4 @@ void Declare::UpdateStatementText()
 	ostringstream T;
 	T << "Declare " << var;
 	Text = T.str();
->>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
 }

@@ -43,11 +43,10 @@ public:
 	void SetSelected(bool s);
 	bool IsSelected() const;
 
-	virtual void Draw(Output* pOut) const  = 0 ;	//Draw the statement
+	virtual void Draw(Output* pOut) const  = 0;	//Draw the statement
 	virtual void Save(ofstream& OutFile) = 0;
 	virtual void Load(ifstream& Infile) = 0;
 	virtual void Edit() = 0;
-<<<<<<< HEAD
 	virtual void Simulate() ;
 	virtual void GenerateCode(ofstream& OutFile) = 0;
 	/*virtual Statement* Clone() const = 0;*/
@@ -56,13 +55,7 @@ public:
 	virtual bool Isconditional() const;
 	virtual bool checkvar(varinfo vars[], int &varcount,string &msg);
 	
-	
-	
-=======
-	virtual void Simulate();
 	virtual ~Statement();
->>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
-
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement
 	///		Decide the parameters that you should pass to each function and its return type

@@ -26,7 +26,6 @@ void Statement::Simulate()
 	// to be implemented 
 }
 
-<<<<<<< HEAD
 bool Statement::IsStart() const
 {
 	return false;
@@ -47,8 +46,7 @@ bool Statement::checkvar(varinfo vars[], int& varcount, string& msg)
 	return true;
 }
 
-=======
 Statement::~Statement()
 {	
 }
->>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
+
