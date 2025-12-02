@@ -43,7 +43,7 @@ void OpAssign::Load(ifstream& InFile)
 void OpAssign::Simulate()
 {
 }
-<<<<<<< HEAD
+
 
 void OpAssign::GenerateCode(ofstream& OutFile)
 {
@@ -116,12 +116,6 @@ bool OpAssign::checkvar(varinfo vars[], int& varcount, string& msg)
 }
 
 
-
-
-
-	
-
-=======
 void OpAssign::UpdateStatementText()
 {
 	//Build the statement text: Left handside then equals then right handside
@@ -129,4 +123,3 @@ void OpAssign::UpdateStatementText()
 	T << LHS << " = " << RHS1 << op << RHS2;
 	Text = T.str();
 }
->>>>>>> aa1bcc83bf039597880dff70c744b66cdb56cecc
