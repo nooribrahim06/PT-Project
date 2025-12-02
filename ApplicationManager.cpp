@@ -57,7 +57,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 			break;
 
-		case EXIT:
+		case EXIT1:
 			///create Exit Action here
 			
 			break;

@@ -2,7 +2,7 @@
 
 Read::Read(Point Lcorner, const string& var)
 {
-	this->var = var;
+	this->varName = var;
 	LeftCorner = Lcorner;
 	pOutConn = NULL;	//No connectors yet
 	UpdateStatementText();

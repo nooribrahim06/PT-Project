@@ -3,7 +3,7 @@
 class Read :
     public Statement
 {
-	string var;
+	string varName;
 	Connector* pOutConn; // must be one connector going to next statement
 	Point Inlet; //A point where connections enters this statement
 	Point Outlet;	//A point a connection leaves this statement
