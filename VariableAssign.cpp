@@ -5,31 +5,61 @@ using namespace std;
 
 VariableAssign::VariableAssign(Point Lcorner, string left, string right) { 
     // Constructor implementation here
+	LHS = left;
+    RHS = right;
+
+    // Update the statement text
+    UpdateStatementText();
+    LeftCorner = Lcorner;
+    pOutConn = NULL;	//No connectors yet
+    Inlet.x = LeftCorner.x + UI.ASSGN_WDTH /2;
+    Inlet.y = LeftCorner.y;
+    Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }
 void VariableAssign::setLHS(const string& L) {
-
+	LHS = L;
+	UpdateStatementText();
 }
-void VariableAssign::setRHS(const string& L) {
-
+void VariableAssign::setRHS(const string& R) {
+	RHS = R;
+	UpdateStatementText();
 }
 
 // Remove 'virtual' from the implementation, and add 'const' to match the header declaration
-void VariableAssign::Draw(Output* pout) const {
+void VariableAssign::Draw(Output* pOut) const {
     // Implementation here
+	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
 
 void VariableAssign::Save(ofstream& OutFile)
 {
+    return;
+}
+
+void VariableAssign::Edit()
+{
+    return;
 }
 
 void VariableAssign::Load(ifstream& InFile)
 {
+    return;
+}
+void VariableAssign::GenerateCode(ofstream& OutFile)
+{
+    return;
 }
 
 void VariableAssign::Simulate()
 {
     // Implementation for simulating variable assignment
     // For now, this can be left empty or add a comment for TODO
+	return;
+}
+void VariableAssign::UpdateStatementText()
+{
+    Text = LHS + " = " + RHS;
 }
 
 bool VariableAssign::checkvar(varinfo vars[], int& varcount, string& msg)

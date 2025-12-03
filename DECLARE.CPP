@@ -22,21 +22,28 @@ void Declare::Draw(Output* pOut) const {
 void Declare::Save(ofstream& OutFile)
 {
 	// to be implemented 
+	return;
 }
 void Declare::Load(ifstream& InFile)
 {
 	// to be implemented
+	return;
+}
+void Declare::Edit()
+{
+	// to be implemented
+	return;
 }
 void Declare::Simulate()
 {
 	// add var to the context's variable table with default value
-
+	return;
 }
 
 void Declare::GenerateCode(ofstream& OutFile)
 {
 	// TO be implemented
-
+	return;
 }
 
 bool Declare::checkvar(varinfo vars[], int& varcount, string& msg)

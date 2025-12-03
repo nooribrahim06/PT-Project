@@ -24,6 +24,7 @@ public:
     void Draw(Output* pOut) const override;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
+	void Edit() override;
     void Simulate() override; //n
 	void  GenerateCode(ofstream& OutFile) override; //n
 	bool checkvar(varinfo vars[], int& varcount, string& msg) override;

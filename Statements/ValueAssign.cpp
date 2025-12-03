@@ -45,26 +45,34 @@ void ValueAssign::Draw(Output* pOut) const
 
 void ValueAssign::Save(ofstream& OutFile)
 {
+	return;
 }
 
 void ValueAssign::Edit()
 {
 	// to be implemented
+	return;
 }
 
 void ValueAssign::Load(ifstream& InFile)
 {
+	return;
 }
 
 void ValueAssign::Simulate()
 {
+	return;
 }
 
 void ValueAssign::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	
+
+	return;
 }
 
+//commented to avoid error string to double 
 //bool ValueAssign::checkvar(varinfo vars[], int& varcount, string& msg)
 //{
 //	if (LHS.empty()) {

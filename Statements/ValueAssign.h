@@ -42,7 +42,7 @@ public:
 	void Simulate(); //n
 	void  GenerateCode(ofstream& OutFile) override; //n
 	//Statement* Clone() const override;
-	bool checkvar(varinfo vars[], int& varcount, string& msg) override;
+	/*bool checkvar(varinfo vars[], int& varcount, string& msg) override;*/
 };
 
 #endif

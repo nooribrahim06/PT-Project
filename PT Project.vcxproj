@@ -124,6 +124,14 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddCondition.cpp" />
+    <ClCompile Include="AddDeclare.cpp" />
+    <ClCompile Include="AddEnd.cpp" />
+    <ClCompile Include="AddOperAssign.cpp" />
+    <ClCompile Include="AddRead.cpp" />
+    <ClCompile Include="AddStart.cpp" />
+    <ClCompile Include="AddVarAssign.cpp" />
+    <ClCompile Include="AddWrite.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -290,6 +298,14 @@
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddCondition.h" />
+    <ClInclude Include="AddDeclare.h" />
+    <ClInclude Include="AddEnd.h" />
+    <ClInclude Include="AddOperAssign.h" />
+    <ClInclude Include="AddRead.h" />
+    <ClInclude Include="AddStart.h" />
+    <ClInclude Include="AddVarAssign.h" />
+    <ClInclude Include="AddWrite.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
     <ClInclude Include="CMUgraphicsLib\CMUgraphics.h" />
     <ClInclude Include="CMUgraphicsLib\colors.h" />

@@ -1,5 +1,13 @@
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
+#include "AddStart.h"
+#include "AddEnd.h"
+#include "AddCondition.h"
+#include "AddDeclare.h"
+#include "AddOperAssign.h"
+#include "AddVarAssign.h"
+#include "AddRead.h"
+#include "AddWrite.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -43,15 +51,34 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
+		case ADD_START:
+			pAct = new AddStart(this);
+			break;
+		case ADD_END:
+			pAct = new AddEnd(this);
+			break;
+		case ADD_DECLARE_VARIABLE:
+			pAct = new AddDeclare(this);
+			break;
 		case ADD_VALUE_ASSIGN:
 			pAct = new AddValueAssign(this);
 			break;
-
+		case ADD_VAR_ASSIGN:
+			pAct = new AddVarAssign(this);
+			break;
+		case ADD_OPER_ASSIGN:
+			pAct = new AddOperAssign(this);
+			break;
 		case ADD_CONDITION:
 			///create AddCondition Action here
-
+			pAct = new AddCondition(this);
 			break;
-
+		case ADD_READ:
+			pAct = new AddRead(this);
+			break;
+		case ADD_WRITE:
+			pAct = new AddWrite(this);
+			break;
 		case SELECT:
 			///create Select Action here
 
@@ -269,7 +296,7 @@ ApplicationManager::~ApplicationManager()
 {
 	for(int i=0; i<StatCount; i++)
 		delete StatList[i];
-	for(int i=0; i<StatCount; i++)
+	for(int i=0; i<ConnCount; i++)
 		delete ConnList[i];
 	delete pIn;
 	delete pOut;
