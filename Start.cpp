@@ -49,3 +49,8 @@ bool Start::IsStart() const
 {
 	return true;
 }
+
+bool Start::Validate(varinfo vars[], int& varcount, string& msg)
+{
+	return true;
+}

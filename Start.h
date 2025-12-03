@@ -16,5 +16,5 @@ class Start :
 	void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
 	bool IsStart() const override;
-	
+	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };

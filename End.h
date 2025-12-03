@@ -15,4 +15,5 @@ public:
     void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
 	bool IsEnd() const override;
+    bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };

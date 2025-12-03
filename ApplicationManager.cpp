@@ -168,7 +168,7 @@ void ApplicationManager::UpdateInterface() const
 		ConnList[i]->Draw(pOut);
 
 }
-bool ApplicationManager::Validate(string& msg)
+bool ApplicationManager::ValidateAll(string& msg)
 {
 	Statement* startStat = nullptr;
 	Statement* endStat = nullptr;
@@ -250,6 +250,14 @@ bool ApplicationManager::Validate(string& msg)
 				}
 			}
 
+		else if (stat->Isconditional()) {
+			if(inc!=1|| Otc != 2) {
+				msg = " Conditional statement must have one incoming and two outgoing connectors.";
+				return false;
+			}
+
+
+		}
 		else {
 			if (inc < 1 || Otc != 1) {
 				msg = " Each statement must have at least one incoming and one outgoing connector.";
@@ -271,7 +279,7 @@ bool ApplicationManager::Validate(string& msg)
 		{
 			continue;
 		}
-		if (!stat->checkvar(vars, varcount, msg)) {
+		if (!stat->Validate(vars, varcount, msg)) {
 			return false;
 		}
 	}
