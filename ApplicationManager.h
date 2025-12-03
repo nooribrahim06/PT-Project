@@ -58,7 +58,7 @@ public:
 	Output *GetOutput() const;      //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window
 	// Simulation / Validation //
-	bool Validate(string &msg ); // Validates the flowchart
+	bool ValidateAll(string &msg ); // Validates the flowchart
 
 	
 

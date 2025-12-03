@@ -62,7 +62,7 @@ void VariableAssign::UpdateStatementText()
     Text = LHS + " = " + RHS;
 }
 
-bool VariableAssign::checkvar(varinfo vars[], int& varcount, string& msg)
+bool VariableAssign::Validate(varinfo vars[], int& varcount, string& msg)
 {
     if (LHS.empty()) {
         msg = "Left hand side of assignment is empty.";

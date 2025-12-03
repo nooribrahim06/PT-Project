@@ -42,7 +42,7 @@ bool Statement::Isconditional() const
 	return false;
 }
 
-bool Statement::checkvar(varinfo vars[], int& varcount, string& msg)
+bool Statement::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	return true;
 }

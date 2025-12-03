@@ -37,7 +37,7 @@ void Write::GenerateCode(ofstream& OutFile)
 	return;
 }
 
-bool Write::checkvar(varinfo vars[], int& varcount, string& msg)
+bool Write::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (var.empty()) {
 		msg = "Write statment doesn't have an expresson";
