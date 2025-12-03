@@ -39,7 +39,7 @@ void Declare::GenerateCode(ofstream& OutFile)
 
 }
 
-bool Declare::checkvar(varinfo vars[], int& varcount, string& msg)
+bool Declare::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (var.empty()) {
 		msg = "Empty variable name in declaration";

@@ -39,7 +39,7 @@ void Read::GenerateCode(ofstream& OutFile)
 	// to be implemented
 }
 
-bool Read::checkvar(varinfo vars[], int& varcount, string& msg)
+bool Read::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (varName.empty()) {
 		msg = "The variable name in Read statement is empty";

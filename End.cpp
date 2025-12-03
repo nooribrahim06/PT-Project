@@ -27,6 +27,10 @@ bool End::IsEnd() const
 {
 	return true;
 }
+bool End::Validate(varinfo vars[], int& varcount, string& msg)
+{
+	return true;
+}
 void End::Draw(Output* pOut) const
 {
 	pOut->DrawEnd(Leftcorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);

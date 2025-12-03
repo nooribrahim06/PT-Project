@@ -32,7 +32,7 @@ void VariableAssign::Simulate()
     // For now, this can be left empty or add a comment for TODO
 }
 
-bool VariableAssign::checkvar(varinfo vars[], int& varcount, string& msg)
+bool VariableAssign::Validate(varinfo vars[], int& varcount, string& msg)
 {
     if (LHS.empty()) {
         msg = "Left hand side of assignment is empty.";

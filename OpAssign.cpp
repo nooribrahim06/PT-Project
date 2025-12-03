@@ -50,7 +50,7 @@ void OpAssign::GenerateCode(ofstream& OutFile)
 	// to be implemented
 }
 
-bool OpAssign::checkvar(varinfo vars[], int& varcount, string& msg)
+bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (LHS.empty()) {
 		msg = "Left hand side of assignment is empty.";
@@ -59,6 +59,14 @@ bool OpAssign::checkvar(varinfo vars[], int& varcount, string& msg)
 	if (!IsVariable(LHS)) {
 		msg = "Left-hand side '" + LHS + " '  is not a valid Variable name";
 			return false;
+	}
+	if (op.empty()) {
+		msg = "Operator in assignment is empty.";
+		return false;
+	}
+	if (op != "+" && op != "-" && op != "/" && op != "*") {
+		msg = "Operator in assignment is INVALID.";
+		return false;
 	}
 	int LHSIdx = Findvarindex(LHS, vars, varcount);
 	if (LHSIdx == -1 || !vars[LHSIdx].declared) {
