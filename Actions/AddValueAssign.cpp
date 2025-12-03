@@ -28,9 +28,11 @@ void AddValueAssign::ReadActionParameters()
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member
 	pOut->PrintMessage("Value Assignment Statement: Add the variable to be assigned");
 	LHS = pIn->GetVariable(pOut);
+	pOut->ClearStatusBar();
 	//TODO: Ask the user in the status bar to enter the RHS and set the data member
 	pOut->PrintMessage("Value Assignment Statement: Add the double value");
 	RHS = pIn->GetValue(pOut);
+	pOut->ClearStatusBar();
 	//Note: You should validate the LHS to be variable name and RHS to be a value
 	//      Call the appropriate functions for this.
 }

@@ -17,9 +17,12 @@ void AddVarAssign::ReadActionParameters()
 	pOut->PrintMessage("Variable Assignment Statement: Click to add the statement");
 	pIn->GetPointClicked(Position);
 
+	pOut->ClearStatusBar();
+
 	// get LHS
 	pOut->PrintMessage("Variable Assignment Statement: Add the variable to be assigned");
 	LHS = pIn->GetVariable(pOut);
+	pOut->ClearStatusBar();
 	// get RHS
 	pOut->PrintMessage("Variable Assignment Statement: Add the variable to assign from");
 	RHS = pIn->GetVariable(pOut);
