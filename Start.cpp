@@ -1,5 +1,10 @@
 #include "Start.h"
 
+void Start::UpdateStatementText()
+{
+	Text = "Start";
+}
+
 Start::Start(Point Lcorner)
 {
 	// Constructor implementation here
@@ -16,19 +21,28 @@ void Start::Draw(Output* pOut) const
 
 void Start::Save(ofstream& OutFile)
 {
+	return;
 }
 
 void Start::Load(ifstream& InFile)
 {
+	return;
+}
+
+void Start::Edit()
+{
+	return;
 }
 
 void Start::Simulate()
 {
+	return;
 }
 
 void Start::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	return;
 }
 
 bool Start::IsStart() const

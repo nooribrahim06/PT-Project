@@ -23,5 +23,8 @@ class Condition :
 	void Load(ifstream& InFile) override;
 	bool Isconditional() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
+	void Edit() override;
+	void Simulate() override;
+	void  GenerateCode(ofstream& OutFile) override;
 };
 
