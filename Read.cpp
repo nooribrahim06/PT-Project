@@ -20,23 +20,31 @@ void Read::Draw(Output* pOut) const
 void Read::Save(ofstream& OutFile)
 {
 	// to be implemented 
+	return;
 }
 void Read::Load(ifstream& InFile)
 {
 	// to be implemented
+	return;
 }
 void Read::Edit()
 {
 	// to be implemented
+	return;
 }
 void Read::Simulate()
 {
-	// 
+	return;
 }
 
 void Read::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	return;
+}
+void Read::UpdateStatementText()
+{
+	Text = "Read " + varName;
 }
 
 bool Read::checkvar(varinfo vars[], int& varcount, string& msg)
