@@ -1,5 +1,10 @@
 #include "Start.h"
 
+void Start::UpdateStatementText()
+{
+	Text = "Start";
+}
+
 Start::Start(Point Lcorner)
 {
 	// Constructor implementation here
@@ -19,6 +24,10 @@ void Start::Save(ofstream& OutFile)
 }
 
 void Start::Load(ifstream& InFile)
+{
+}
+
+void Start::Edit()
 {
 }
 

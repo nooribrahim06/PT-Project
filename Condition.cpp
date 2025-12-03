@@ -44,6 +44,15 @@ void Condition::Load(ifstream& InFile)
 {
 	// to be implemented 
 }
+void Condition::Edit()
+{
+}
+void Condition::Simulate()
+{
+}
+void Condition::GenerateCode(ofstream& OutFile)
+{
+}
 void Condition::UpdateStatementText()
 {
 	// to be implemented 

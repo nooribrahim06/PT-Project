@@ -27,6 +27,10 @@ void Declare::Load(ifstream& InFile)
 {
 	// to be implemented
 }
+void Declare::Edit()
+{
+	// to be implemented
+}
 void Declare::Simulate()
 {
 	// add var to the context's variable table with default value

@@ -1,5 +1,10 @@
 #include "End.h"
 
+void End::UpdateStatementText()
+{
+	Text = "End";
+}
+
 End::End(Point Lcorner)
 {
 	Leftcorner = Lcorner;
@@ -13,6 +18,10 @@ void End::Save(ofstream& OutFile)
 }
 
 void End::Load(ifstream& InFile)
+{
+}
+
+void End::Edit()
 {
 }
 

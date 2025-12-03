@@ -19,6 +19,10 @@ void Write::Save(ofstream& OutFile)
 void Write::Load(ifstream& InFile)
 {
 }
+void Write::Edit()
+{
+	// to be implemented
+}
 void Write::Simulate()
 {
 }

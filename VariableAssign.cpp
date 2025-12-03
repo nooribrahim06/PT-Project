@@ -22,6 +22,10 @@ void VariableAssign::Save(ofstream& OutFile)
 {
 }
 
+void VariableAssign::Edit()
+{
+}
+
 void VariableAssign::Load(ifstream& InFile)
 {
 }

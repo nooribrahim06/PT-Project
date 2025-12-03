@@ -26,9 +26,11 @@ void AddValueAssign::ReadActionParameters()
 	pOut->ClearStatusBar();		
 
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member
-
+	pOut->PrintMessage("Value Assignment Statement: Add the variable to be assigned");
+	LHS = pIn->GetVariable(pOut);
 	//TODO: Ask the user in the status bar to enter the RHS and set the data member
-
+	pOut->PrintMessage("Value Assignment Statement: Add the double value");
+	RHS = pIn->GetValue(pOut);
 	//Note: You should validate the LHS to be variable name and RHS to be a value
 	//      Call the appropriate functions for this.
 }
@@ -46,7 +48,9 @@ void AddValueAssign::Execute()
 	ValueAssign *pAssign = new ValueAssign(Corner, "", 0);
 	//TODO: should set the LHS and RHS of pAssign statement
 	//      with the data members set and validated before in ReadActionParameters()
-
+	pAssign->setLHS(LHS);
+	pAssign->setRHS(RHS);
+	//Add the created assignment statement to the list of statements in the application manager
 	pManager->AddStatement(pAssign); // Adds the created statement to application manger's statement list
 }
 

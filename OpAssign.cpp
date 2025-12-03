@@ -40,6 +40,10 @@ void OpAssign::Load(ifstream& InFile)
 {
 }
 
+void OpAssign::Edit()
+{
+}
+
 void OpAssign::Simulate()
 {
 }
