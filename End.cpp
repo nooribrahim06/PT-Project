@@ -15,22 +15,27 @@ End::End(Point Lcorner)
 
 void End::Save(ofstream& OutFile)
 {
+	return;
 }
 
 void End::Load(ifstream& InFile)
 {
+	return;
 }
 
 void End::Edit()
 {
+	return;
 }
 
 void End::Simulate()
 {
+	return;
 }
 void End::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	return;
 }
 bool End::IsEnd() const
 {

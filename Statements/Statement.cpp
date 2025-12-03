@@ -23,6 +23,7 @@ bool Statement::IsSelected() const
 
 void Statement::Simulate()
 {
+	return;
 	// to be implemented 
 }
 

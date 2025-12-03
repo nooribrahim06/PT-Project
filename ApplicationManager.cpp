@@ -269,7 +269,7 @@ ApplicationManager::~ApplicationManager()
 {
 	for(int i=0; i<StatCount; i++)
 		delete StatList[i];
-	for(int i=0; i<StatCount; i++)
+	for(int i=0; i<ConnCount; i++)
 		delete ConnList[i];
 	delete pIn;
 	delete pOut;

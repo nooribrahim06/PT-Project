@@ -15,21 +15,26 @@ void Write::Draw(Output* pOut) const {
 }
 void Write::Save(ofstream& OutFile)
 {
+	return;
 }
 void Write::Load(ifstream& InFile)
 {
+	return;
 }
 void Write::Edit()
 {
 	// to be implemented
+	return;
 }
 void Write::Simulate()
 {
+	return;
 }
 
 void Write::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	return;
 }
 
 bool Write::checkvar(varinfo vars[], int& varcount, string& msg)

@@ -39,19 +39,24 @@ void Condition::Draw(Output* pOut) const
 void Condition::Save(ofstream& OutFile)
 {
 	// to be implemented 
+	return;
 }
 void Condition::Load(ifstream& InFile)
 {
-	// to be implemented 
+	// to be implemented
+	return;
 }
 void Condition::Edit()
 {
+	return;
 }
 void Condition::Simulate()
 {
+	return;
 }
 void Condition::GenerateCode(ofstream& OutFile)
 {
+	return;
 }
 void Condition::UpdateStatementText()
 {
