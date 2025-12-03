@@ -57,6 +57,22 @@ void VariableAssign::Simulate()
     // For now, this can be left empty or add a comment for TODO
 	return;
 }
+Point VariableAssign::GetOutletPoint() const
+{
+    return Outlet;
+}
+Point VariableAssign::GetInletPoint() const
+{
+    return Inlet;
+}
+bool VariableAssign::IsPointInside(Point P) const
+{
+    if(P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+       P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI) {
+        return true;
+	}
+	return false;
+}
 void VariableAssign::UpdateStatementText()
 {
     Text = LHS + " = " + RHS;

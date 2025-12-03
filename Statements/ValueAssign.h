@@ -41,6 +41,9 @@ public:
 	void Edit() override; //n
 	void Simulate(); //n
 	void  GenerateCode(ofstream& OutFile) override; //n
+	Point GetOutletPoint() const override; //n
+	Point GetInletPoint() const override; //n
+	bool IsPointInside(Point P) const override; //n
 	//Statement* Clone() const override;
 	/*bool checkvar(varinfo vars[], int& varcount, string& msg) override;*/
 };

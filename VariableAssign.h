@@ -27,6 +27,9 @@ public:
 	void Edit() override;
     void Simulate() override; //n
 	void  GenerateCode(ofstream& OutFile) override; //n
+    Point GetOutletPoint() const override; //n
+	Point GetInletPoint() const override; //n
+	bool IsPointInside(Point P) const override; //n
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
      // Statement* Clone() const override;
     //Statement* Clone() const override;

@@ -18,6 +18,10 @@ class Condition :
 	Condition(Point Lcorner, string L="", string R="");
 	void setLHS(const string& L);
 	void setRHS(const string& R);
+	Connector* GetTrueConn() const;
+	void SetTrueConn(Connector* C);
+	Connector* GetFalseConn() const;
+	void SetFalseConn(Connector* C);
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
@@ -26,5 +30,8 @@ class Condition :
 	void Edit() override;
 	void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
+	Point GetOutletPoint() const override;
+	Point GetInletPoint() const override;
+	bool IsPointInside(Point P) const override;
 };
 

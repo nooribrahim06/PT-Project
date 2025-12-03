@@ -45,7 +45,6 @@ public:
 
 	void AddConnector(Connector* pConn);    //Adds a new Connector to the Flowchart
 	Connector *GetConnector(Point P) const;	//search for a Connector where point P belongs
-
 	// Note: you should use the following 4 functions 
 	//       in order not to break class responsibilities (especially in copy, cut and paste)
 	Statement *GetSelectedStatement() const;	 //Returns the selected Statement
