@@ -15,6 +15,7 @@ public:
     virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
+	void Edit() override;
     void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;

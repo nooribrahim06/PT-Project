@@ -34,20 +34,29 @@ void OpAssign::Draw(Output* pOut) const {
 
 void OpAssign::Save(ofstream& OutFile)
 {
+	return;
 }
 
 void OpAssign::Load(ifstream& InFile)
 {
+	return;
+}
+
+void OpAssign::Edit()
+{
+	return;
 }
 
 void OpAssign::Simulate()
 {
+	return;
 }
 
 
 void OpAssign::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
+	return;
 }
 
 bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)

@@ -5,11 +5,13 @@ class End :
 {
 	Point Inlet; //A point where connections enters this statement
 	Point Leftcorner; //center point of the End statement
-    public:
+	void UpdateStatementText() override; // to update the statement text (virtual function)   
+public:
     End(Point Lcorner);
 	virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
+	void Edit() override;
     void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
 	bool IsEnd() const override;
