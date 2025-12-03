@@ -72,6 +72,24 @@ void ValueAssign::GenerateCode(ofstream& OutFile)
 	return;
 }
 
+Point ValueAssign::GetOutletPoint() const
+{
+	return Outlet;
+}
+Point ValueAssign::GetInletPoint() const
+{
+	return Inlet;
+}
+
+bool ValueAssign::IsPointInside(Point P) const
+{
+	if (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI)
+		return true;
+	else
+		return false;
+}
+
 //commented to avoid error string to double 
 //bool ValueAssign::checkvar(varinfo vars[], int& varcount, string& msg)
 //{
