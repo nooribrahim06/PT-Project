@@ -24,7 +24,7 @@ public:
     void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
     //Statement* Clone() const override;
-    bool checkvar(varinfo vars[], int& varcount, string& msg) override;
+    bool Validate(varinfo vars[], int& varcount, string& msg) override;
 
 };
 

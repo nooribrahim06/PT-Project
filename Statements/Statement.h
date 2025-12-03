@@ -53,7 +53,7 @@ public:
 	virtual bool IsStart() const;
 	virtual bool IsEnd() const;
 	virtual bool Isconditional() const;
-	virtual bool checkvar(varinfo vars[], int &varcount,string &msg);
+	virtual bool Validate(varinfo vars[], int &varcount,string &msg) =0;
 	
 	virtual ~Statement();
 	///TODO:The following functions should be supported by the Statement class

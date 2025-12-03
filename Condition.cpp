@@ -44,6 +44,67 @@ void Condition::Load(ifstream& InFile)
 {
 	// to be implemented 
 }
+bool Condition::Isconditional() const
+{
+	return true;
+}
+bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
+{
+	if (LHS.empty()) {
+		msg = "Left hand side of condition is empty.";
+		return false;
+	}
+	if (RHS.empty()) {
+		msg = "Right hand side of condition is empty.";
+		return false;
+	}
+	if (CompOp.empty()) {
+		msg = "Operator in condition is EMPTY";
+		return false;
+	}
+	if (CompOp != " >= " && CompOp != " == " && CompOp != " != " && CompOp != " =< " && CompOp != " > " && CompOp != " <") {
+		msg = "Operator in condition is INVALID.";
+		return false;
+	}
+
+	OpType T1 = ValueOrVariable(LHS);
+	if (T1 == INVALID_OP) {
+		msg = "Left hand side of  condition is INVALID";
+		return false;
+	}
+	else if (T1 == VARIABLE_OP) {
+
+		int LHSIdx = Findvarindex(LHS, vars, varcount);
+		if (LHSIdx == -1 || !vars[LHSIdx].declared) {
+			msg = "Variable " + LHS + " used without declaration.";
+			return false;
+		}
+		else if (!vars[LHSIdx].initialized) {
+			msg = "Variable " + LHS + " used without initialization.";
+			return false;
+		}
+	}
+	OpType T = ValueOrVariable(RHS);
+	if (T == INVALID_OP) {
+		msg = "Right hand side of  condition is INVALID";
+		return false;
+	}
+	else if (T == VARIABLE_OP) {
+
+		int RHSIdx = Findvarindex(RHS, vars, varcount);
+		if (RHSIdx == -1 || !vars[RHSIdx].declared) {
+			msg = "Variable " + RHS + " used without declaration.";
+			return false;
+		}
+		else if (!vars[RHSIdx].initialized) {
+			msg = "Variable " + RHS + " used without initialization.";
+			return false;
+		}
+
+		
+	}
+	return true;
+}
 void Condition::UpdateStatementText()
 {
 	// to be implemented 
