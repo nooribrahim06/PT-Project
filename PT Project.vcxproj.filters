@@ -200,7 +200,13 @@
     <ClCompile Include="AddRead.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
-    <ClCompile Include="AddWrite.cpp" />
+    <ClCompile Include="AddConnect.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="AddWrite.cpp">
+      <Filter>Action Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -337,7 +343,13 @@
     <ClInclude Include="AddRead.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
-    <ClInclude Include="AddWrite.h" />
+    <ClInclude Include="AddConnect.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AddWrite.h">
+      <Filter>Action Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

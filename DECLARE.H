@@ -17,7 +17,12 @@ public:
     void Load(ifstream& InFile) override;
 	void Edit() override;
     void Simulate() override;
+	Point GetOutletPoint() const override;
+	Point GetInletPoint() const override;
+    Connector* GetOutConnector() const override;
+    virtual void SetOutconnector(Connector* C) override;
 	void  GenerateCode(ofstream& OutFile) override;
+	bool IsPointInside(Point P) const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	
 };

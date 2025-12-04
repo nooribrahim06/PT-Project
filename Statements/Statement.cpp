@@ -47,6 +47,8 @@ bool Statement::Validate(varinfo vars[], int& varcount, string& msg)
 	return true;
 }
 
+
+
 Statement::~Statement()
 {	
 }

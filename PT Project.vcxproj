@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AddCondition.cpp" />
+    <ClCompile Include="AddConnect.cpp" />
     <ClCompile Include="AddDeclare.cpp" />
     <ClCompile Include="AddEnd.cpp" />
     <ClCompile Include="AddOperAssign.cpp" />
@@ -287,6 +288,7 @@
     <ClCompile Include="HelperFn.cpp" />
     <ClCompile Include="OpAssign.cpp" />
     <ClCompile Include="Read.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Start.cpp" />
     <ClCompile Include="Statements\ValueAssign.cpp" />
     <ClCompile Include="Statements\Statement.cpp" />
@@ -299,6 +301,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddCondition.h" />
+    <ClInclude Include="AddConnect.h" />
     <ClInclude Include="AddDeclare.h" />
     <ClInclude Include="AddEnd.h" />
     <ClInclude Include="AddOperAssign.h" />
@@ -340,6 +343,7 @@
     <ClInclude Include="HelperFn.h" />
     <ClInclude Include="OpAssign.h" />
     <ClInclude Include="Read.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />
     <ClInclude Include="Statements\Statement.h" />
