@@ -16,6 +16,11 @@ OpAssign::OpAssign(Point Lcorner, string L, string R1, string R2, string op) {
 	UpdateStatementText();
 
 	LeftCorner = Lcorner;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+
 	pOutConn = NULL;	//No connectors yet
 }
 void OpAssign::setLHS(const string& L) {
@@ -57,6 +62,29 @@ void OpAssign::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented
 	return;
+}
+
+Point OpAssign::GetInletPoint() const
+{
+	return Inlet;
+}
+Connector* OpAssign::GetOutConnector() const
+{
+	return pOutConn;
+}
+void OpAssign::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
+Point OpAssign::GetOutletPoint() const
+{
+	return Outlet;
+}
+bool OpAssign::IsPointInside(Point P) const
+{
+	bool x_inside = (P.x >= LeftCorner.x) && (P.x <= LeftCorner.x + UI.ASSGN_WDTH);
+	bool y_inside = (P.y >= LeftCorner.y) && (P.y <= LeftCorner.y + UI.ASSGN_HI);
+	return (x_inside && y_inside);
 }
 
 bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)

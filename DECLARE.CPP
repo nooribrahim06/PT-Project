@@ -45,6 +45,30 @@ void Declare::GenerateCode(ofstream& OutFile)
 	// TO be implemented
 	return;
 }
+bool Declare::IsPointInside(Point P) const
+{
+	bool x_inside = (P.x >= LeftCorner.x) && (P.x <= LeftCorner.x + UI.ASSGN_WDTH);
+	bool y_inside = (P.y >= LeftCorner.y) && (P.y <= LeftCorner.y + UI.ASSGN_HI);
+	return (x_inside && y_inside);
+}
+Point Declare::GetOutletPoint() const
+{
+	return Outlet;
+}
+Point Declare::GetInletPoint() const
+{
+	return Inlet;
+}
+
+Connector* Declare::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void Declare::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
 
 bool Declare::Validate(varinfo vars[], int& varcount, string& msg)
 {

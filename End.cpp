@@ -37,6 +37,29 @@ void End::GenerateCode(ofstream& OutFile)
 	// to be implemented
 	return;
 }
+bool End::IsPointInside(Point P) const
+{
+	bool insideX = (P.x >= Leftcorner.x) && (P.x <= Leftcorner.x + UI.ASSGN_WDTH);
+	bool insideY = (P.y >= Leftcorner.y) && (P.y <= Leftcorner.y + UI.ASSGN_HI);
+	return (insideX && insideY);
+}
+Point End::GetOutletPoint() const
+{
+	// End statement has no outlet point
+	return Point(-1, -1); // Indicate no outlet point
+}
+Point End::GetInletPoint() const
+{
+	return Inlet;
+}
+Connector* End::GetOutConnector() const
+{
+	return nullptr;
+}
+void End::SetOutconnector(Connector* C)
+{
+	// should not be called
+}
 bool End::IsEnd() const
 {
 	return true;

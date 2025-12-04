@@ -31,6 +31,22 @@ void Condition::setRHS(const string& R)
 	RHS = R;
 	UpdateStatementText();
 }
+Connector* Condition::GetTrueConn() const
+{
+	return pTrueOutConn;
+}
+void Condition::SetTrueConn(Connector* C)
+{
+	pTrueOutConn = C;
+}
+Connector* Condition::GetFalseConn() const
+{
+	return pFalseOutConn;
+}
+void Condition::SetFalseConn(Connector* C)
+{
+	pFalseOutConn = C;
+}
 void Condition::Draw(Output* pOut) const
 {
 	// to be implemented 
@@ -57,6 +73,45 @@ void Condition::Simulate()
 void Condition::GenerateCode(ofstream& OutFile)
 {
 	return;
+}
+Point Condition::GetOutletPoint() const
+{
+	// to be implemented 
+	return (-1, -1); // or FalseOutlet based on context
+}
+Point Condition::GetTrueOutlet() const
+{
+	return TrueOutlet;
+}
+Point Condition::GetFalseOutlet() const
+{
+	return FalseOutlet;
+}
+Point Condition::GetInletPoint() const
+{
+	return Inlet;
+}
+Connector* Condition::GetOutConnector() const
+{
+	return nullptr;
+}
+void Condition::SetOutconnector(Connector* C)
+{
+	//will not be called
+}
+bool Condition::IsPointInside(Point P) const
+{
+	bool x_inside;
+	bool y_inside;
+	if(P.x >= Center.x - UI.ASSGN_WDTH / 2 && P.x <= Center.x + UI.ASSGN_WDTH / 2)
+		x_inside = true;
+	else
+		x_inside = false;
+	if (P.y >= Center.y - UI.ASSGN_HI / 2 && P.y <= Center.y + UI.ASSGN_HI / 2)
+		y_inside = true;
+	else
+		y_inside = false;
+	return (x_inside && y_inside);
 }
 bool Condition::Isconditional() const
 {

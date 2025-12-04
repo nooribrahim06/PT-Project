@@ -22,7 +22,12 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Edit() override;
+	Point GetOutletPoint() const override;
+	Point GetInletPoint() const override;
+    Connector* GetOutConnector() const override;
+    virtual void SetOutconnector(Connector* C) override;
     void Simulate() override;
+	bool IsPointInside(Point P) const override;
 	void  GenerateCode(ofstream& OutFile) override;
     //Statement* Clone() const override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;
