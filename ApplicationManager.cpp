@@ -9,6 +9,7 @@
 #include "AddRead.h"
 #include "AddWrite.h"
 #include "AddConnect.h"
+#include "Select.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 
@@ -85,7 +86,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case SELECT:
 			///create Select Action here
-
+			pAct = new Select(this);
 			break;
 
 		case EXIT1:
@@ -157,6 +158,16 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
+Connector* ApplicationManager::GetSelectedConn() const
+{
+	return pSelectedConn;
+}
+
+void ApplicationManager::SetSelectedConn(Connector* pConn)
+{
+	pSelectedConn = pConn;
+}
+
 
 //N: Add Connector to the list of connectors
 void ApplicationManager::AddConnector(Connector* pConn)
@@ -169,7 +180,13 @@ Connector* ApplicationManager::GetConnector(Point P) const
 	//If this point P(x,y) belongs to a connector return a pointer to it.
 	//otherwise, return NULL
 	// to be implemented later
-	return nullptr;
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (StatList[i]->IsPointInside(P))
+			return ConnList[i];
+	}
+
+	return NULL;
 }
 
 //==================================================================================//
