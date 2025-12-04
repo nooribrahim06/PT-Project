@@ -60,6 +60,16 @@ Point Declare::GetInletPoint() const
 	return Inlet;
 }
 
+Connector* Declare::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void Declare::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
+
 bool Declare::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (var.empty()) {

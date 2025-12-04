@@ -14,6 +14,8 @@ public:
 	void Edit() override;
 	Point GetOutletPoint() const override;
 	Point GetInletPoint() const override;
+	Connector* GetOutConnector() const override;
+	virtual void SetOutconnector(Connector* C) override;
     void Simulate() override;
 	void  GenerateCode(ofstream& OutFile) override;
 	bool IsPointInside(Point P) const override;

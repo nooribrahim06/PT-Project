@@ -46,6 +46,16 @@ Point Write::GetInletPoint() const
 	return Inlet;
 }
 
+Connector* Write::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void Write::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
+
 bool Write::IsPointInside(Point P) const
 {
 	int W = UI.ASSGN_WDTH;

@@ -68,6 +68,14 @@ Point OpAssign::GetInletPoint() const
 {
 	return Inlet;
 }
+Connector* OpAssign::GetOutConnector() const
+{
+	return pOutConn;
+}
+void OpAssign::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
 Point OpAssign::GetOutletPoint() const
 {
 	return Outlet;

@@ -56,6 +56,8 @@ public:
 	virtual bool Validate(varinfo vars[], int &varcount,string &msg) =0;
 	virtual Point GetOutletPoint() const = 0;
 	virtual Point GetInletPoint() const = 0;
+	virtual Connector* GetOutConnector() const = 0;
+	virtual void SetOutconnector(Connector* C) = 0;
 	virtual bool IsPointInside(Point P) const = 0;
 	virtual ~Statement();
 	///TODO:The following functions should be supported by the Statement class

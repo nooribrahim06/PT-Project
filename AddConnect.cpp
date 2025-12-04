@@ -5,6 +5,7 @@
 #include <sstream>
 AddConnect::AddConnect(ApplicationManager* pAppManager) : Action(pAppManager)
 {
+	conditionbranch = true;
 }
 // this is need a lot of validations
 void AddConnect::ReadActionParameters()
@@ -13,57 +14,25 @@ void AddConnect::ReadActionParameters()
 	Input* pIn = pManager->GetInput();
 	Output* pOut = pManager->GetOutput();
 	//Read the (Source and Destination Statements) parameters
-	pOut->PrintMessage("Connector: Click on the source statement");
 	Point P1;
-	pIn->GetPointClicked(P1);
-	SrcStat = pManager->GetStatement(P1);
-	while (SrcStat == NULL || SrcStat->IsEnd()) // keep asking until a valid statement is selected
+	pOut->PrintMessage("Connector: Click on the source statement");
+
+	while (true)
 	{
-		pOut->PrintMessage("Connector: Invalid selection. Please click on a valid source statement");
+		//pOut->PrintMessage("Connector: Click on the source statement");
 		pIn->GetPointClicked(P1);
 		SrcStat = pManager->GetStatement(P1);
-	}
 
-	// if it is conditional , we need to check no or yes connector
-	//if (SrcStat->Isconditional())
-	//{
-	//	pOut->PrintMessage("Connector: Is this a 'Yes' or 'No' branch? Click 'Y' for Yes and 'N' for No");
-	//	string branch;
-	//	while (true)
-	//	{
-	//		branch = pIn->GetString(pOut);
-	//		if (branch == "Y" || branch == "y")
-	//		{
-	//			// check if yes connector already exists
-	//			if()
-	//		}
-	//		else if (branch == "N" || branch == "n")
-	//		{
-	//			// check if no connector already exists
-	//			bool noExists = false;
-	//			for (int i = 0; i < pManager->ConnCount; i++)
-	//			{
-	//				if (pManager->ConnList[i]->getSrcStat() == SrcStat)
-	//				{
-	//					noExists = true;
-	//					break;
-	//				}
-	//			}
-	//			if (noExists)
-	//			{
-	//				pOut->PrintMessage("Connector: 'No' branch already exists. Please choose 'Yes' branch.");
-	//			}
-	//			else
-	//			{
-	//				break; // valid no branch
-	//			}
-	//		}
-	//		else
-	//		{
-	//			pOut->PrintMessage("Connector: Invalid input. Please click 'Y' for Yes and 'N' for No");
-	//		}
-	//	}
-	//}
+		if (!SrcStat || SrcStat->IsEnd()) {
+			pOut->PrintMessage("Invalid selection. Please click on a valid *non-End* source statement");
+			continue;
+		}
+		if (!IsvalidSrc(SrcStat, pIn, pOut)) {
+			pOut->PrintMessage("Invalid source for connector (already has connector on that branch)");
+			continue;
+		}
+		break; // valid source
+	}
 
 
 	pOut->PrintMessage("Connector: Click on the destination statement");
@@ -81,7 +50,19 @@ void AddConnect::ReadActionParameters()
 void AddConnect::Execute()
 {
 	ReadActionParameters();
-	SrcPoint = SrcStat->GetOutletPoint();
+	// case conditional 
+	if (SrcStat->Isconditional()) {
+		Condition* pCond = dynamic_cast <Condition*>(SrcStat);
+		if (conditionbranch)
+		{
+			SrcPoint = pCond->GetTrueOutlet();
+		}
+		else
+			SrcPoint = pCond->GetFalseOutlet();
+	}
+	else {
+		SrcPoint = SrcStat->GetOutletPoint();
+	}
 	DstPoint = DstStat->GetInletPoint();
 	//Calculating source and destination points
 	// For simplicity, we assume connectors start from the bottom center of the source statement
@@ -89,6 +70,58 @@ void AddConnect::Execute()
 	Connector* pConn = new Connector(SrcStat, DstStat);
 	pConn->setStartPoint(SrcPoint);
 	pConn->setEndPoint(DstPoint);
+	if (SrcStat->Isconditional()) {
+		Condition* pCond = dynamic_cast <Condition*>(SrcStat);
+		if (conditionbranch)
+			pCond->SetTrueConn(pConn);
+		else
+			pCond->SetFalseConn(pConn);
+	}
+	else
+	{
+		SrcStat->SetOutconnector(pConn);
+	}
+
 	//Add the created Connector to the list of connectors in the application manager
 	pManager->AddConnector(pConn);
+}
+
+bool AddConnect::IsvalidSrc(Statement* stat,Input* pIn, Output* pOut)
+{
+	if (!stat) return false;
+
+	// case1: condition statement
+	if (stat->Isconditional()) {
+		pOut->PrintMessage("conditional, please type Y or N branch");
+		string branch = pIn->GetString(pOut);
+
+		while (branch != "Y" && branch != "y" && branch != "N" && branch != "n") {
+			pOut->PrintMessage("Invalid! Enter Y or N");
+			branch = pIn->GetString(pOut);
+		}
+
+		Condition* pCond = dynamic_cast<Condition*>(stat);
+		if (!pCond) return false;   // safety
+
+		if (branch == "Y" || branch == "y") {
+			if (pCond->GetTrueConn()) {
+				return false;       // already has true branch
+			}
+			conditionbranch = true;
+			return true;
+		}
+		else {
+			if (pCond->GetFalseConn()) {
+				return false;       // already has false branch
+			}
+			conditionbranch = false;
+			return true;
+		}
+	}
+	// case 2: normal statement 
+	else {
+		if (stat->GetOutConnector())
+			return false;           // already has outgoing connector
+		return true;
+	}
 }
