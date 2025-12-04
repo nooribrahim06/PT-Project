@@ -52,6 +52,14 @@ Point End::GetInletPoint() const
 {
 	return Inlet;
 }
+Connector* End::GetOutConnector() const
+{
+	return nullptr;
+}
+void End::SetOutconnector(Connector* C)
+{
+	// should not be called
+}
 bool End::IsEnd() const
 {
 	return true;

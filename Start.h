@@ -17,6 +17,8 @@ class Start :
 	void  GenerateCode(ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
 	Point GetInletPoint() const override;
+	Connector* GetOutConnector() const override;
+	virtual void SetOutconnector(Connector* C) override;
 	bool IsStart() const override;
 	bool IsPointInside(Point P) const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;

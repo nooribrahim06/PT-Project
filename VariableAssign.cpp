@@ -65,6 +65,14 @@ Point VariableAssign::GetInletPoint() const
 {
     return Inlet;
 }
+Connector* VariableAssign::GetOutConnector() const
+{
+    return pOutConn;
+}
+void VariableAssign::SetOutconnector(Connector* C)
+{
+    pOutConn = C;
+}
 bool VariableAssign::IsPointInside(Point P) const
 {
     if(P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&

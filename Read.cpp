@@ -50,6 +50,14 @@ Point Read::GetInletPoint() const
 {
 	return Inlet;
 }
+Connector* Read::GetOutConnector() const
+{
+	return pOutConn;
+}
+void Read::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
 bool Read::IsPointInside(Point P) const
 {
 	int W = UI.ASSGN_WDTH;

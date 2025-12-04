@@ -206,6 +206,7 @@
     <ClCompile Include="AddWrite.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Select.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -348,6 +349,7 @@
     <ClInclude Include="AddWrite.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Select.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -81,6 +81,16 @@ Point ValueAssign::GetInletPoint() const
 	return Inlet;
 }
 
+Connector* ValueAssign::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void ValueAssign::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
+
 bool ValueAssign::IsPointInside(Point P) const
 {
 	if (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
@@ -88,6 +98,11 @@ bool ValueAssign::IsPointInside(Point P) const
 		return true;
 	else
 		return false;
+}
+
+bool ValueAssign::Validate(varinfo vars[], int& varcount, string& msg)
+{
+	return false;
 }
 
 //commented to avoid error string to double 

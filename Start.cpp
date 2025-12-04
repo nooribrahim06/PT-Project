@@ -12,6 +12,7 @@ Start::Start(Point Lcorner)
 	Outlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 	Text = "Start";
+	pOutConn = NULL;
 }
 void Start::Draw(Output* pOut) const
 {
@@ -53,6 +54,16 @@ Point Start::GetInletPoint() const
 {
 	// Start has no inlet point
 	return Point(-1, -1); // or some invalid point
+}
+
+Connector* Start::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void Start::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
 }
 
 bool Start::IsStart() const

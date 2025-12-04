@@ -77,11 +77,27 @@ void Condition::GenerateCode(ofstream& OutFile)
 Point Condition::GetOutletPoint() const
 {
 	// to be implemented 
-	return TrueOutlet; // or FalseOutlet based on context
+	return (-1, -1); // or FalseOutlet based on context
+}
+Point Condition::GetTrueOutlet() const
+{
+	return TrueOutlet;
+}
+Point Condition::GetFalseOutlet() const
+{
+	return FalseOutlet;
 }
 Point Condition::GetInletPoint() const
 {
 	return Inlet;
+}
+Connector* Condition::GetOutConnector() const
+{
+	return nullptr;
+}
+void Condition::SetOutconnector(Connector* C)
+{
+	//will not be called
 }
 bool Condition::IsPointInside(Point P) const
 {

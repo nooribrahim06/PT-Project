@@ -43,7 +43,10 @@ public:
 	void  GenerateCode(ofstream& OutFile) override; //n
 	Point GetOutletPoint() const override; //n
 	Point GetInletPoint() const override; //n
+	Connector* GetOutConnector() const override;
+	virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override; //n
+	virtual bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	//Statement* Clone() const override;
 	/*bool checkvar(varinfo vars[], int& varcount, string& msg) override;*/
 };
