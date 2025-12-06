@@ -13,7 +13,7 @@ void RunAction::Execute() {
 	bool Run = pManager->Run(Runmsg);
 	Output* pOut = pManager->GetOutput();
 	if (Run) {
-		pOut->PrintMessage("Run successfully");
+		pOut->PrintMessage(Runmsg);
 	}
 	else {
 		pOut->PrintMessage( Runmsg);

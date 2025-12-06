@@ -90,18 +90,20 @@ Statement* Condition::Simulate(Input* pIn, Output* pOut)
 		compresult = (Lhs != Rhs);
 	}
 	if (compresult) {
-		if (pTrueOutConn) 
+		if (pTrueOutConn) {
 			return pTrueOutConn->getDstStat();
+		}
 			return NULL;
 		
 	}
 	else {
 		if (pFalseOutConn)
 			return pFalseOutConn->getDstStat();
+	}
 		return NULL;
 	}
 
-}
+
 void Condition::GenerateCode(ofstream& OutFile)
 {
 	return;
@@ -124,10 +126,13 @@ bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "Operator in condition is EMPTY";
 		return false;
 	}
-	if (CompOp != ">=" && CompOp != "==" && CompOp != "!=" && CompOp != "=<" && CompOp != ">" && CompOp != "<") {
+	if (CompOp != "==" && CompOp != "<=" && CompOp != ">=" && CompOp != ">" && CompOp != "<"
+		&& CompOp != "!=")
+	{
 		msg = "Operator in condition is INVALID.";
 		return false;
 	}
+	
 
 	OpType T1 = ValueOrVariable(LHS);
 	if (T1 == INVALID_OP) {
@@ -162,9 +167,9 @@ bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
 			msg = "Variable " + RHS + " used without initialization.";
 			return false;
 		}
-
-		
 	}
+	
+
 	return true;
 }
 void Condition::UpdateStatementText()

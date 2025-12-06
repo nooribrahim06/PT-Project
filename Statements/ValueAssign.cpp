@@ -100,14 +100,7 @@ bool ValueAssign::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "Variable ' " + LHS + " ' used without declaration.";
 		return false;
 	}
-	if ( to_string(RHS).empty()) {
-		msg = "Right hand side of assignment is empty.";
-		return false;
-	}
-	if (!IsValue(to_string(RHS)) ){
-		msg = "Right hand side of assignment '" + to_string(RHS) + "' is not a valid value.";
-		return false;
-	}
+	
 
 	vars[LHSIdx].initialized = true;
 	return true;

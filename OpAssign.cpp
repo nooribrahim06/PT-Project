@@ -55,7 +55,7 @@ Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
 	if (ValueOrVariable(RHS1) == VALUE_OP) {
 		val1 = stod(RHS1);
 	}
-	else if (ValueOrVariable(LHS) == VARIABLE_OP)
+	else if (ValueOrVariable(RHS1) == VARIABLE_OP)
 	{
 		val1 = GetVar(RHS1);
 	}
@@ -81,7 +81,7 @@ Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
 	else if (op == "/") {
 		if (val2 == 0) {
 			pOut->PrintMessage("Runtime Error: Can't divide by 0");
-			opresult = 0;
+			return NULL;
 		}
 		else {
 			opresult = val1 / val2;

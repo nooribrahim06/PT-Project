@@ -5,10 +5,10 @@
 #include "..\Connector.h"
 //class Output;
 #include "..\GUI\Output.h"
-string VarNames[200];
-double VarValues[200];
-bool VarIntial[200];
-int varCount = 0;
+ extern string* VarNames;
+ extern double *VarValues;
+ extern  bool* VarIntial;
+ extern int varCount  ;
 
 
 struct varinfo {
@@ -80,5 +80,10 @@ public:
 	///TODO: Add more functions if needed
 
 };
-
 #endif
+
+// Remove the invalid line at the end of the file
+// Replace:
+// #endif extern int VarIntial[200]
+// With just:
+
