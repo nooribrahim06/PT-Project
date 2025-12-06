@@ -1,4 +1,5 @@
 #include "Connector.h"
+#include <cmath>   // for std::abs
 
 Connector::Connector(Statement* Src, Statement* Dst)	
 //When a connector is created, it must have a source statement and a destination statement
@@ -29,39 +30,60 @@ void Connector::setStartPoint(Point P)
 Point Connector::getStartPoint()
 {	return Start;	}
 
-bool Connector::IsPointInside(Point P)
+bool Connector::IsPointInside(Point P) 
 {
-	if (Start.x == End.x) // vertical line 
+	const int tol = 10;  // "thickness" of the clickable area
+
+	// ----- Case 1: pure vertical connector (Start.x == End.x) -----
+	if (Start.x == End.x)
 	{
-		if (Start.y < End.y)
-			return (P.y >= Start.y && P.y <= End.y);
-		if (Start.y > End.y)
-			return (P.y >= End.y && P.y <= Start.y);
+		int minY = min(Start.y, End.y);
+		int maxY = max(Start.y, End.y);
+
+		bool withinY = (P.y >= minY && P.y <= maxY);
+		bool closeX = (std::abs(P.x - Start.x) <= tol);
+
+		return withinY && closeX;
 	}
-	else if (Start.y == End.y) // horizontal line 
+
+	// ----- Case 2: pure horizontal connector (Start.y == End.y) -----
+	if (Start.y == End.y)
 	{
-		if (Start.x < End.x)
-			return (P.x >= Start.x && P.x <= End.x);
-		if (Start.x > End.x)
-			return (P.x >= End.x && P.x <= Start.x);
+		int minX = min(Start.x, End.x);
+		int maxX = max(Start.x, End.x);
+
+		bool withinX = (P.x >= minX && P.x <= maxX);
+		bool closeY = (std::abs(P.y - Start.y) <= tol);
+
+		return withinX && closeY;
 	}
-	else 
+
+	// ----- Case 3: general L-shaped connector -----
+	// Segment 1: horizontal from (Start.x, Start.y) to (End.x, Start.y)
 	{
-		if (Start.x < End.x)
-		{
-			if (P.y == Start.y)
-				return (P.x >= Start.x && P.x <= End.x);
-			if (P.x == End.x)
-				return (P.y >= Start.y && P.y <= End.y);
-		}
-		if (Start.x > End.x)
-		{
-			if (P.y == Start.y)
-				return (P.x >= End.x && P.x <= Start.x);
-			if (P.x == End.x)
-				return (P.y >= Start.y && P.y <= End.y);
-		}
+		int minX = min(Start.x, End.x);
+		int maxX = max(Start.x, End.x);
+
+		bool withinX = (P.x >= minX && P.x <= maxX);
+		bool closeY = (std::abs(P.y - Start.y) <= tol);
+
+		if (withinX && closeY)
+			return true;
 	}
+
+	// Segment 2: vertical from (End.x, Start.y) to (End.x, End.y)
+	{
+		int minY = min(Start.y, End.y);
+		int maxY = max(Start.y, End.y);
+
+		bool withinY = (P.y >= minY && P.y <= maxY);
+		bool closeX = (std::abs(P.x - End.x) <= tol);
+
+		if (withinY && closeX)
+			return true;
+	}
+
+	return false;
 }
 
 bool Connector::IsSelected()
@@ -83,6 +105,6 @@ Point Connector::getEndPoint()
 void Connector::Draw(Output* pOut) const
 {
 	///TODO: Call Output to draw a connector from SrcStat to DstStat on the output window
-	pOut->DrawConnector(Start, End);
+	pOut->DrawConnector(Start, End, Selected);
 }
 
