@@ -10,6 +10,13 @@
 #include "AddWrite.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
+#include "ValidateAction.h"
+#include"GenerateCodeAction.h"
+#include"DebugRunAction.h"
+#include"RunAction.h"
+#include"SwitchtoDesignAction.h"
+
+
 
 //Constructor
 ApplicationManager::ApplicationManager()
@@ -79,11 +86,27 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
 			break;
+		case VALIDATE:
+			pAct = new ValidateAction(this);
+			break;
+		case GENERATE_CODE:
+			pAct = new GenerateCodeAction(this);
+			break;
+		case RUN:
+			pAct = new RunAction(this);
+			break;
+		case DEBUG_RUN:
+			pAct = new DebugRunAction(this);
+			break;
+		case SWITCH_DSN_MODE:
+			pAct = new SwitchtoDesignAction(this);
+			break;
+		case SWITCH_SIM_MODE:
+			
 		case SELECT:
 			///create Select Action here
-
 			break;
-
+		
 		case EXIT1:
 			///create Exit Action here
 			
@@ -286,6 +309,74 @@ bool ApplicationManager::ValidateAll(string& msg)
 
 	msg = " Valid Flowchart";
 	return true;
+}
+
+bool ApplicationManager::Run(string& msg)
+{
+	if (!ValidateAll(msg))
+	{
+		msg = "Error : Cannot Run the Flowchart. " + msg;
+		return false;
+	}
+	varCount = 0;
+	for (int i = 0; i < 200; i++)
+	{
+		VarIntial[i] = false;
+	}
+	Statement* cur = NULL;
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			cur = StatList[i];
+			break;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error no Start Statement .";
+		return false;
+	}
+	Input* pIn = GetInput();
+	Output* pOut = GetOutput();
+
+	int count = 0;
+	const int Steps = 500;
+	while (cur && !cur->IsEnd())
+	{
+		cur = cur->Simulate(pIn, pOut);
+		if (!cur) {
+			msg = "Missing connector or invalid next Statment";
+			return false;
+		}
+		count++;
+		if (count > Steps)
+		{
+			msg = "Error :No End Statement";
+			return false;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error ";
+		return false;
+	}
+	msg = "Run finished successfully";
+	return true;
+}
+
+bool ApplicationManager::Debug(string& msg)
+{
+	if (!ValidateAll(msg))
+	{
+		msg = "Error : Cannot Run the Flowchart. " + msg;
+		return false;
+	}
+}
+
+bool ApplicationManager::GenerateCode(const string& filename, string& msg)
+{
+	/*ofstream out(filename);*/
 }
 
 

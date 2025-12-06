@@ -39,10 +39,10 @@ public:
 	void Save(ofstream& OutFile) override; //n
 	void Load(ifstream& InFile) override; //n
 	void Edit() override; //n
-	void Simulate(); //n
+	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
 	//Statement* Clone() const override;
-	/*bool checkvar(varinfo vars[], int& varcount, string& msg) override;*/
+	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };
 
 #endif

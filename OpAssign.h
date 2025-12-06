@@ -22,7 +22,7 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Edit() override;
-    void Simulate() override;
+    Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
     //Statement* Clone() const override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;
