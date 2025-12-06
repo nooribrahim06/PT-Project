@@ -42,6 +42,21 @@ void VariableAssign::Edit()
     return;
 }
 
+Statement* VariableAssign::Simulate(Input* pIn, Output* pOut)
+{
+    double value = GetVar(RHS);
+    SetVar(LHS, value);
+    if (pOutConn != NULL)
+    {
+        return pOutConn->getDstStat();
+    }
+    else
+    {
+        return NULL;
+    }
+
+}
+
 void VariableAssign::Load(ifstream& InFile)
 {
     return;
@@ -51,12 +66,6 @@ void VariableAssign::GenerateCode(ofstream& OutFile)
     return;
 }
 
-void VariableAssign::Simulate()
-{
-    // Implementation for simulating variable assignment
-    // For now, this can be left empty or add a comment for TODO
-	return;
-}
 Point VariableAssign::GetOutletPoint() const
 {
     return Outlet;

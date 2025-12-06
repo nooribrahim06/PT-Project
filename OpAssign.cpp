@@ -52,10 +52,58 @@ void OpAssign::Edit()
 	return;
 }
 
-void OpAssign::Simulate()
-{
-	return;
+Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
+{ 
+	double val1 = GetVar(RHS1);
+	double val2 = GetVar(RHS2);
+	double opresult = 0;
+	if (ValueOrVariable(RHS1) == VALUE_OP) {
+		val1 = stod(RHS1);
+	}
+	else if (ValueOrVariable(LHS) == VARIABLE_OP)
+	{
+		val1 = GetVar(RHS1);
+	}
+	if (ValueOrVariable(RHS2) == VALUE_OP) {
+		val2 = stod(RHS2);
+	}
+	else if (ValueOrVariable(RHS2) == VARIABLE_OP)
+	{
+		val2 = GetVar(RHS2);
+	}
+
+
+	if (op == "+")
+	{
+		opresult = val1 + val2;
+	}
+	else if (op == "-") {
+		opresult = val1 - val2;
+	}
+	else if (op == "*") {
+		opresult = val1 * val2;
+	}
+	else if (op == "/") {
+		if (val2 == 0) {
+			pOut->PrintMessage("Runtime Error: Can't divide by 0");
+			opresult = 0;
+		}
+		else {
+			opresult = val1 / val2;
+		}
+	}
+	SetVar(LHS, opresult);
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else
+	{
+		return NULL;
+	}
 }
+
+
 
 
 void OpAssign::GenerateCode(ofstream& OutFile)

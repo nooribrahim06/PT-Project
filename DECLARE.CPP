@@ -34,11 +34,21 @@ void Declare::Edit()
 	// to be implemented
 	return;
 }
-void Declare::Simulate()
+Statement* Declare::Simulate(Input* pIn, Output* pOut)
 {
-	// add var to the context's variable table with default value
-	return;
+	SetVar(var, 0.0);
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else
+	{
+		return NULL;
+	}
 }
+	
+
+
 
 void Declare::GenerateCode(ofstream& OutFile)
 {

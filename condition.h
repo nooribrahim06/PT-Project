@@ -27,7 +27,7 @@ class Condition :
 	bool Isconditional() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	void Edit() override;
-	void Simulate() override;
+	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
 	Point GetTrueOutlet() const;

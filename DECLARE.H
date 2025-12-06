@@ -16,7 +16,7 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Edit() override;
-    void Simulate() override;
+    Statement* Simulate(Input* pIn, Output* pOut) override;
 	Point GetOutletPoint() const override;
 	Point GetInletPoint() const override;
     Connector* GetOutConnector() const override;

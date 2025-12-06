@@ -13,7 +13,7 @@ class Start :
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
 	void Edit() override;
-	void Simulate() override;
+	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
 	Point GetInletPoint() const override;

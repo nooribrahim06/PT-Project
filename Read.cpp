@@ -32,9 +32,19 @@ void Read::Edit()
 	// to be implemented
 	return;
 }
-void Read::Simulate()
+Statement* Read::Simulate(Input* pIn, Output* pOut)
 {
-	return;
+	pOut->PrintMessage("Enter the value for " + varName + ":");
+	double value = pIn->GetValue(pOut);
+	SetVar(varName, value);
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 void Read::GenerateCode(ofstream& OutFile)

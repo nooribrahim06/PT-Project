@@ -25,7 +25,7 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Edit() override;
-    void Simulate() override; //n
+    Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
     Point GetOutletPoint() const override; //n
 	Point GetInletPoint() const override; //n
