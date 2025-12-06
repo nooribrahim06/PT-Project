@@ -39,7 +39,7 @@ public:
 	void Save(ofstream& OutFile) override; //n
 	void Load(ifstream& InFile) override; //n
 	void Edit() override; //n
-	void Simulate(); //n
+	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
 	Point GetOutletPoint() const override; //n
 	Point GetInletPoint() const override; //n
@@ -48,7 +48,7 @@ public:
 	bool IsPointInside(Point P) const override; //n
 	virtual bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	//Statement* Clone() const override;
-	/*bool checkvar(varinfo vars[], int& varcount, string& msg) override;*/
+	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };
 
 #endif

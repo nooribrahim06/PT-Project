@@ -60,8 +60,12 @@ public:
 	Input *GetInput() const;        //Return pointer to the input
 	Output *GetOutput() const;      //Return pointer to the output
 	void UpdateInterface() const;	//Redraws all the drawing window
-	// Simulation / Validation //
+	// Simulation  //
 	bool ValidateAll(string &msg ); // Validates the flowchart
+	bool Run(string& msg);
+	bool Debug(string& msg);
+	bool GenerateCode(const string& filename, string& msg);
+	
 
 	
 

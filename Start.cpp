@@ -35,10 +35,17 @@ void Start::Edit()
 	return;
 }
 
-void Start::Simulate()
+Statement* Start::Simulate(Input* pIn, Output* pOut)
 {
-	return;
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else {
+		return NULL;
+	}
 }
+
 
 void Start::GenerateCode(ofstream& OutFile)
 {
