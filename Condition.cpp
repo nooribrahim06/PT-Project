@@ -1,7 +1,7 @@
 #include "Condition.h"
 #include <sstream>
 
-Condition::Condition(Point C, string L, string R)
+Condition::Condition(Point C, string L, string Op, string R)
 {
 	// to be implemented 
 	int W = UI.ASSGN_WDTH;
@@ -9,6 +9,7 @@ Condition::Condition(Point C, string L, string R)
 	Center = C;
 	LHS = L;
 	RHS = R;
+	CompOp = Op;
 	UpdateStatementText();
 	Inlet.x = Center.x;
 	Inlet.y = Center.y - H / 2;

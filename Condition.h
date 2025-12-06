@@ -14,7 +14,7 @@ class Condition :
     Connector* pFalseOutConn; // false connector
 	Point Center;	//Center of the statement block
 	public:
-	Condition(Point Lcorner, string L="", string R="");
+	Condition(Point Lcorner, string L="",string Op = "", string R = "");
 	void setLHS(const string& L);
 	void setRHS(const string& R);
 	Connector* GetTrueConn() const;
