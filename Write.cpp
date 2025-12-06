@@ -26,10 +26,27 @@ void Write::Edit()
 	// to be implemented
 	return;
 }
-void Write::Simulate()
+Statement* Write::Simulate(Input* pIn, Output* pOut)
 {
-	return;
+	bool GVAL = false;
+	double value = GetVar(var);
+		pOut->PrintMessage(var + " = " + to_string(value));
+
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else
+	{
+		return NULL;
+	}
+
+
+
+
 }
+
+
 
 void Write::GenerateCode(ofstream& OutFile)
 {

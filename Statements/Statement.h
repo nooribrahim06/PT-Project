@@ -5,7 +5,10 @@
 #include "..\Connector.h"
 //class Output;
 #include "..\GUI\Output.h"
-
+string VarNames[200];
+double VarValues[200];
+bool VarIntial[200];
+int varCount = 0;
 
 
 struct varinfo {
@@ -13,6 +16,7 @@ struct varinfo {
 	bool declared;
 	bool initialized;
 };
+
  inline int Findvarindex(const string&name ,varinfo vars[],int varcount) {
 	 for (int i = 0; i < varcount; i++) {
 		 if (vars[i].name == name) {
@@ -21,6 +25,9 @@ struct varinfo {
 	 }
 	 return -1;
  }
+ double GetVar(const string& name);
+ void SetVar(const string& name, double value);
+
 //Base class for all Statements
 class Statement
 {
@@ -47,8 +54,8 @@ public:
 	virtual void Save(ofstream& OutFile) = 0;
 	virtual void Load(ifstream& Infile) = 0;
 	virtual void Edit() = 0;
-	virtual void Simulate() ;
-	virtual void GenerateCode(ofstream& OutFile) = 0;
+	virtual Statement* Simulate(Input*pIn,Output*pOut)=0;
+	virtual  void GenerateCode(ofstream& OutFile) = 0;
 	/*virtual Statement* Clone() const = 0;*/
 	virtual bool IsStart() const;
 	virtual bool IsEnd() const;

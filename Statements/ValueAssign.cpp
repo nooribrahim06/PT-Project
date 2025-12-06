@@ -54,15 +54,27 @@ void ValueAssign::Edit()
 	return;
 }
 
+Statement* ValueAssign::Simulate(Input* pIn, Output* pOut)
+{
+	SetVar(LHS, RHS);
+
+	if (pOutConn != NULL)
+	{
+		return pOutConn->getDstStat();
+	}
+	else
+	{
+		return NULL;
+	}
+
+
+}
+
 void ValueAssign::Load(ifstream& InFile)
 {
 	return;
 }
 
-void ValueAssign::Simulate()
-{
-	return;
-}
 
 void ValueAssign::GenerateCode(ofstream& OutFile)
 {
@@ -72,35 +84,35 @@ void ValueAssign::GenerateCode(ofstream& OutFile)
 	return;
 }
 
-//commented to avoid error string to double 
-//bool ValueAssign::checkvar(varinfo vars[], int& varcount, string& msg)
-//{
-//	if (LHS.empty()) {
-//		msg = "Left hand side of assignment is empty.";
-//		return false;
-//	}
-//	if (!IsVariable(LHS)) {
-//		msg = "Left hand side ' " + LHS + " ' not a valid Variable";
-//		return false;
-//	}
-//	int LHSIdx = Findvarindex(LHS, vars, varcount);
-//	if(LHSIdx==-1||!vars[LHSIdx].declared) {
-//		msg = "Variable ' " + LHS + " ' used without declaration.";
-//		return false;
-//	}
-//	if (RHS.empty()) {
-//		msg = "Right hand side of assignment is empty.";
-//		return false;
-//	}
-//	if (!IsValue(RHS)) {
-//		msg = "Right hand side of assignment '" + RHS + "' is not a valid value.";
-//		return false;
-//	}
-//
-//	vars[LHSIdx].initialized = true;
-//	return true;
-//
-//}
+
+bool ValueAssign::Validate(varinfo vars[], int& varcount, string& msg)
+{
+	if (LHS.empty()) {
+		msg = "Left hand side of assignment is empty.";
+		return false;
+	}
+	if (!IsVariable(LHS)) {
+		msg = "Left hand side ' " + LHS + " ' not a valid Variable";
+		return false;
+	}
+	int LHSIdx = Findvarindex(LHS, vars, varcount);
+	if(LHSIdx==-1||!vars[LHSIdx].declared) {
+		msg = "Variable ' " + LHS + " ' used without declaration.";
+		return false;
+	}
+	if ( to_string(RHS).empty()) {
+		msg = "Right hand side of assignment is empty.";
+		return false;
+	}
+	if (!IsValue(to_string(RHS)) ){
+		msg = "Right hand side of assignment '" + to_string(RHS) + "' is not a valid value.";
+		return false;
+	}
+
+	vars[LHSIdx].initialized = true;
+	return true;
+
+}
 
 
 

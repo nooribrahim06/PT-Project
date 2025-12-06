@@ -28,10 +28,12 @@ void End::Edit()
 	return;
 }
 
-void End::Simulate()
+Statement* End::Simulate(Input* pIn, Output* pOut)
 {
-	return;
+	return this;
 }
+
+
 void End::GenerateCode(ofstream& OutFile)
 {
 	// to be implemented

@@ -50,9 +50,57 @@ void Condition::Edit()
 {
 	return;
 }
-void Condition::Simulate()
+Statement* Condition::Simulate(Input* pIn, Output* pOut)
 {
-	return;
+	
+	double Lhs;
+	double Rhs;
+	if (ValueOrVariable(LHS) == VALUE_OP) {
+		Lhs = stod(LHS);
+	}
+	else if (ValueOrVariable(LHS) == VARIABLE_OP)
+	{
+		Lhs = GetVar(LHS);
+	}
+	if (ValueOrVariable(RHS) == VALUE_OP) {
+		Rhs = stod(RHS);
+	}
+	else if (ValueOrVariable(RHS) == VARIABLE_OP)
+	{
+		Rhs = GetVar(RHS);
+	}
+	bool compresult = false;
+
+	if (CompOp == "==") {
+		compresult = (Lhs == Rhs);
+	}
+	else if (CompOp == ">=") {
+		compresult = (Lhs >= Rhs);
+	}
+	else if (CompOp == "<=") {
+		compresult = (Lhs <= Rhs);
+	}
+	else if (CompOp == ">") {
+		compresult = (Lhs > Rhs);
+	}
+	else if (CompOp == "<") {
+		compresult = (Lhs < Rhs);
+	}
+	else if (CompOp == "!=") {
+		compresult = (Lhs != Rhs);
+	}
+	if (compresult) {
+		if (pTrueOutConn) 
+			return pTrueOutConn->getDstStat();
+			return NULL;
+		
+	}
+	else {
+		if (pFalseOutConn)
+			return pFalseOutConn->getDstStat();
+		return NULL;
+	}
+
 }
 void Condition::GenerateCode(ofstream& OutFile)
 {
@@ -76,7 +124,7 @@ bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "Operator in condition is EMPTY";
 		return false;
 	}
-	if (CompOp != " >= " && CompOp != " == " && CompOp != " != " && CompOp != " =< " && CompOp != " > " && CompOp != " <") {
+	if (CompOp != ">=" && CompOp != "==" && CompOp != "!=" && CompOp != "=<" && CompOp != ">" && CompOp != "<") {
 		msg = "Operator in condition is INVALID.";
 		return false;
 	}
