@@ -106,6 +106,35 @@ bool ValueAssign::Validate(varinfo vars[], int& varcount, string& msg)
 	return true;
 
 }
+Point ValueAssign::GetOutletPoint() const
+{
+	return Outlet;
+}
+Point ValueAssign::GetInletPoint() const
+{
+	return Inlet;
+}
+
+Connector* ValueAssign::GetOutConnector() const
+{
+	return pOutConn;
+}
+
+void ValueAssign::SetOutconnector(Connector* C)
+{
+	pOutConn = C;
+}
+
+bool ValueAssign::IsPointInside(Point P) const
+{
+	if (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
+		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI)
+		return true;
+	else
+		return false;
+}
+
+
 
 
 

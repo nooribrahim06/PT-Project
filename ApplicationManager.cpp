@@ -8,6 +8,8 @@
 #include "AddVarAssign.h"
 #include "AddRead.h"
 #include "AddWrite.h"
+#include "AddConnect.h"
+#include "Select.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 #include "ValidateAction.h"
@@ -27,6 +29,7 @@ ApplicationManager::ApplicationManager()
 	StatCount = 0;
 	ConnCount = 0;
 	pSelectedStat = NULL;	//no Statement is selected yet
+	pSelectedConn = NULL;
 	pClipboard = NULL;
 	
 	//Create an array of Statement pointers and set them to NULL		
@@ -101,9 +104,13 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new SwitchtoDesignAction(this);
 			break;
 		case SWITCH_SIM_MODE:
-			
+		
+		case ADD_CONNECTOR:
+			pAct = new AddConnect(this);
+			break;
 		case SELECT:
 			///create Select Action here
+			pAct = new Select(this);
 			break;
 		
 		case EXIT1:
@@ -147,6 +154,11 @@ Statement *ApplicationManager::GetStatement(Point P) const
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities
+	for(int i=0; i<StatCount; i++)
+	{
+		if(StatList[i]->IsPointInside(P))
+			return StatList[i];
+	}
 
 	return NULL;
 }
@@ -170,6 +182,36 @@ Statement *ApplicationManager::GetClipboard() const
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
 
+Connector* ApplicationManager::GetSelectedConn() const
+{
+	return pSelectedConn;
+}
+
+void ApplicationManager::SetSelectedConn(Connector* pConn)
+{
+	pSelectedConn = pConn;
+}
+
+
+//N: Add Connector to the list of connectors
+void ApplicationManager::AddConnector(Connector* pConn)
+{
+	if (ConnCount < MaxCount)
+		ConnList[ConnCount++] = pConn;
+}
+Connector* ApplicationManager::GetConnector(Point P) const
+{
+	//If this point P(x,y) belongs to a connector return a pointer to it.
+	//otherwise, return NULL
+	// to be implemented later
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i]->IsPointInside(P))
+			return ConnList[i];
+	}
+
+	return NULL;
+}
 
 //==================================================================================//
 //							Interface Management Functions							//
