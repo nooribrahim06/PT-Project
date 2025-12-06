@@ -23,6 +23,7 @@ ApplicationManager::ApplicationManager()
 	StatCount = 0;
 	ConnCount = 0;
 	pSelectedStat = NULL;	//no Statement is selected yet
+	pSelectedConn = NULL;
 	pClipboard = NULL;
 	
 	//Create an array of Statement pointers and set them to NULL		
@@ -182,7 +183,7 @@ Connector* ApplicationManager::GetConnector(Point P) const
 	// to be implemented later
 	for (int i = 0; i < ConnCount; i++)
 	{
-		if (StatList[i]->IsPointInside(P))
+		if (ConnList[i]->IsPointInside(P))
 			return ConnList[i];
 	}
 
