@@ -17,7 +17,6 @@
 #include"SwitchtoDesignAction.h"
 
 
-
 //Constructor
 ApplicationManager::ApplicationManager()
 {
@@ -318,7 +317,7 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error : Cannot Run the Flowchart. " + msg;
 		return false;
 	}
-	varCount = 0;
+	
 	for (int i = 0; i < 200; i++)
 	{
 		VarIntial[i] = false;
@@ -358,7 +357,7 @@ bool ApplicationManager::Run(string& msg)
 	}
 	if (cur == NULL)
 	{
-		msg = "Error ";
+		msg = "Error: FLowchart terminated without reaching End ";
 		return false;
 	}
 	msg = "Run finished successfully";
@@ -376,6 +375,7 @@ bool ApplicationManager::Debug(string& msg)
 
 bool ApplicationManager::GenerateCode(const string& filename, string& msg)
 {
+	return false;
 	/*ofstream out(filename);*/
 }
 

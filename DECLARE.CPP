@@ -36,7 +36,7 @@ void Declare::Edit()
 }
 Statement* Declare::Simulate(Input* pIn, Output* pOut)
 {
-	SetVar(var, 0.0);
+	/*SetVar(var, 0.0);*/
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();

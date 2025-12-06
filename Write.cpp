@@ -28,8 +28,16 @@ void Write::Edit()
 }
 Statement* Write::Simulate(Input* pIn, Output* pOut)
 {
-	bool GVAL = false;
-	double value = GetVar(var);
+	
+	double value = 0;
+	OpType t = ValueOrVariable(var);
+	if (t == VALUE_OP) {
+		value = stod(var);
+	}
+	else if (t==VARIABLE_OP){
+		value= GetVar(var);
+	}
+
 		pOut->PrintMessage(var + " = " + to_string(value));
 
 	if (pOutConn != NULL)
