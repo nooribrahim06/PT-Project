@@ -21,15 +21,21 @@ void AddCondition::ReadActionParameters()
 	pOut->PrintMessage("Condition Statement: Enter Comparison Operator");
 	CompOp = pIn->GetCompOperator(pOut);
 	pOut->PrintMessage("Condition Statement: Enter Right Hand Side (RHS)");
-	RHS = pIn->GetVariable(pOut);
+	string test = pIn->GetString(pOut);
+	while (true) {
+		if (IsVariable(test) || IsValue(test))
+			break;
+		pOut->PrintMessage("Invalid input1 Enter a variable or value");
+		test = pIn->GetString(pOut);
+	}
+	RHS = test;
 	pOut->ClearStatusBar();
 }
 void AddCondition::Execute()
 {
 	ReadActionParameters();
 	//Calculating center of Condition statement block
-	string FullRHS = CompOp + " " + RHS;
-	Condition* pCondition = new Condition(Position, LHS, FullRHS);
+	Condition* pCondition = new Condition(Position, LHS, CompOp, RHS);
 	//Add the created Condition statement to the list of statements in the application manager
 	pManager->AddStatement(pCondition);
 }
