@@ -175,7 +175,7 @@ ActionType Input::GetUserAction() const
 
 				//---------------- MODE SWITCH / EXIT ---------------
 			case ITM_SIM_MODE:     return SWITCH_SIM_MODE;    // <== use your actual ActionType for "go to simulation"
-			case ITM_EXIT1:         return EXIT1;               // exit application
+			case ITM_EXIT:         return EXIT;               // exit application
 
 			default:               return DSN_TOOL;           // click beyond existing icons
 			}
@@ -210,7 +210,7 @@ ActionType Input::GetUserAction() const
 			case ITM_DEBUG:     return DEBUG_RUN;       // step-by-step debug (use your ActionType name)
 			case ITM_GEN_CODE:  return GENERATE_CODE;   // generate C++ code to file
 			case ITM_DSN_MODE:  return SWITCH_DSN_MODE; // back to design mode
-			case ITM_EXIT2:         return EXIT2;
+			case ITM_EXIT_SIM:         return EXIT;
 			default:            return SIM_TOOL;        // generic "clicked in sim toolbar" if you have such an ActionType
 			}
 		}

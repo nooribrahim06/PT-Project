@@ -108,7 +108,7 @@ void Output::CreateDesignToolBar() //Draws the Design Menu
 	MenuItemImages[ITM_REDO] = "images\\redo.jpg";
 
 	MenuItemImages[ITM_SIM_MODE] = "images\\sim.jpg";      // simulation mode icon
-	MenuItemImages[ITM_EXIT1] = "images\\Exit.jpg";
+	MenuItemImages[ITM_EXIT] = "images\\Exit.jpg";
 
 	//TODO: Prepare images for each menu item and add it to the list DONE
 
@@ -141,7 +141,7 @@ void Output::CreateSimulationToolBar() //Draws the Simulation Menu
 	MenuItemImages[ITM_DEBUG] = "images\\debug.jpg";          // Debugging
 	MenuItemImages[ITM_GEN_CODE] = "images\\gen_code.jpg";       // Generate code
 	MenuItemImages[ITM_DSN_MODE] = "images\\design.jpg";       // Generate code
-	MenuItemImages[ITM_EXIT2] = "images\\Exit.jpg";
+	MenuItemImages[ITM_EXIT_SIM] = "images\\Exit.jpg";
 	//Draw menu item one image at a time
 	for (int i = 0; i < SIM_ITM_CNT; i++)
 		pWind->DrawImage(MenuItemImages[i], i * UI.MenuItemWidth, 0, UI.MenuItemWidth, UI.ToolBarHeight);

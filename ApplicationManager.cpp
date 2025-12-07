@@ -115,7 +115,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new Select(this);
 			break;
 		
-		case EXIT1:
+		case EXIT:
 			///create Exit Action here
 			
 			break;
