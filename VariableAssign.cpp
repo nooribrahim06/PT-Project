@@ -1,6 +1,7 @@
 #include "VariableAssign.h"
 #include "Statements/Statement.h"
-
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 VariableAssign::VariableAssign(Point Lcorner, string left, string right) { 
@@ -63,7 +64,7 @@ void VariableAssign::Load(ifstream& InFile)
 }
 void VariableAssign::GenerateCode(ofstream& OutFile)
 {
-    return;
+    OutFile << LHS << " = " << RHS << " ;\n";
 }
 
 Point VariableAssign::GetOutletPoint() const

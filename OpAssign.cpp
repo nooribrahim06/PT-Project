@@ -1,8 +1,10 @@
 #include "OpAssign.h"
 #include "Statements/Statement.h"
 #include <sstream>
-
+#include <iostream>
+#include <fstream>
 using namespace std;
+
 
 OpAssign::OpAssign(Point Lcorner, string L, string R1, string R2, string op) {
 	// Note: The LHS, RHS1, RHS2 and op should be validated inside (AddOpAssign) action
@@ -108,8 +110,7 @@ Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
 
 void OpAssign::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	return;
+	OutFile << LHS << " = " << RHS1 << " " << op << " " << RHS2 << ";\n";
 }
 
 Point OpAssign::GetInletPoint() const

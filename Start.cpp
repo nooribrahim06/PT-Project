@@ -1,5 +1,7 @@
 #include "Start.h"
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 void Start::UpdateStatementText()
 {
 	Text = "Start";
@@ -49,8 +51,10 @@ Statement* Start::Simulate(Input* pIn, Output* pOut)
 
 void Start::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	return;
+	OutFile << "#include <iostream>\n";
+	OutFile << "#include <cmath>\n";
+	OutFile << "using namespace std;\n";
+	OutFile << "int main () {\n";
 }
 
 Point Start::GetOutletPoint() const

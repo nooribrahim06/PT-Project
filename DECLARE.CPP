@@ -1,7 +1,8 @@
 #include "Declare.h"
 #include <sstream>
-
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 Declare::Declare(Point Lcorner, string& V)
 {
@@ -52,8 +53,7 @@ Statement* Declare::Simulate(Input* pIn, Output* pOut)
 
 void Declare::GenerateCode(ofstream& OutFile)
 {
-	// TO be implemented
-	return;
+	OutFile << "double " << var << ";\n";
 }
 bool Declare::IsPointInside(Point P) const
 {
