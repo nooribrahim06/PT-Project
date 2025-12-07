@@ -1,5 +1,7 @@
 #include "End.h"
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 void End::UpdateStatementText()
 {
 	Text = "End";
@@ -36,8 +38,7 @@ Statement* End::Simulate(Input* pIn, Output* pOut)
 
 void End::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	return;
+	OutFile << "return 0;\n" << "}";
 }
 bool End::IsPointInside(Point P) const
 {
