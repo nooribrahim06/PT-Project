@@ -1,6 +1,7 @@
 #include "ValueAssign.h"
 #include <sstream>
-
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 ValueAssign::ValueAssign(Point Lcorner, string LeftHS, double RightHS)
@@ -78,10 +79,7 @@ void ValueAssign::Load(ifstream& InFile)
 
 void ValueAssign::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	
-
-	return;
+	OutFile << LHS << " = " << RHS << " ;\n";
 }
 
 
