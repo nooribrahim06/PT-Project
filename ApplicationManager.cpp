@@ -308,7 +308,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 			}
 		}
 		else if (stat->IsEnd()) {
-				if (inc != 1 || Otc != 0) {
+				if (inc <1 || Otc != 0) {
 					msg = " End statement can't have outgoing connectors or more than one incoming connector.";
 					return false;
 				}
