@@ -1,5 +1,7 @@
 #include "Read.h"
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 Read::Read(Point Lcorner, const string& var)
 {
 	this->varName = var;
@@ -49,8 +51,7 @@ Statement* Read::Simulate(Input* pIn, Output* pOut)
 
 void Read::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	return;
+	OutFile << "cin >> " << varName << ";\n";
 }
 Point Read::GetOutletPoint() const
 {
