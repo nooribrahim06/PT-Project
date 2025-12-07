@@ -5,11 +5,10 @@
 #include "..\Connector.h"
 //class Output;
 #include "..\GUI\Output.h"
-string VarNames[200];
-double VarValues[200];
-bool VarIntial[200];
-int varCount = 0;
-
+extern string VarNames[200];
+extern double VarValues[200];
+extern bool   VarIntial[200];
+extern int    varCount;
 
 struct varinfo {
 	string name;
