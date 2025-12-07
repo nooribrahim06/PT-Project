@@ -1,9 +1,11 @@
 #include "Statement.h"
 
+#include "Statement.h"
+
 string VarNames[200];
 double VarValues[200];
-bool VarIntial[200];
-int varCount = 0;
+bool   VarIntial[200];
+int    varCount = 0;
 
 void SetVar(const string& name, double value)
 {
