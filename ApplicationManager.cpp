@@ -17,7 +17,7 @@
 #include"DebugRunAction.h"
 #include"RunAction.h"
 #include"SwitchtoDesignAction.h"
-
+#include "SwitchToSim.h"
 
 
 //Constructor
@@ -105,7 +105,8 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new SwitchtoDesignAction(this);
 			break;
 		case SWITCH_SIM_MODE:
-		
+			pAct = new SwitchToSim(this);
+			break;
 		case ADD_CONNECTOR:
 			pAct = new AddConnect(this);
 			break;
@@ -350,7 +351,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 	}
 
 	msg = " Valid Flowchart";
-	return true;
+	return true; 
 }
 
 bool ApplicationManager::Run(string& msg)
@@ -419,6 +420,7 @@ bool ApplicationManager::Debug(string& msg)
 bool ApplicationManager::GenerateCode(const string& filename, string& msg)
 {
 	/*ofstream out(filename);*/
+	return false;
 }
 
 

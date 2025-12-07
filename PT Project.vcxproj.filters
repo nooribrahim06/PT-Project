@@ -223,6 +223,7 @@
       <Filter>Action Classes</Filter>
     </ClCompile>
     <ClCompile Include="Select.cpp" />
+    <ClCompile Include="SwitchToSim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -382,6 +383,7 @@
       <Filter>Action Classes</Filter>
     </ClInclude>
     <ClInclude Include="Select.h" />
+    <ClInclude Include="SwitchToSim.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
