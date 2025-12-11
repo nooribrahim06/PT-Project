@@ -291,6 +291,7 @@
     <ClCompile Include="OpAssign.cpp" />
     <ClCompile Include="Read.cpp" />
     <ClCompile Include="RunAction.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Start.cpp" />
     <ClCompile Include="Statements\ValueAssign.cpp" />
@@ -352,6 +353,7 @@
     <ClInclude Include="OpAssign.h" />
     <ClInclude Include="Read.h" />
     <ClInclude Include="RunAction.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Start.h" />
     <ClInclude Include="Statements\ValueAssign.h" />

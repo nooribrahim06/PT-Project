@@ -64,8 +64,8 @@ public:
 	bool ValidateAll(string &msg ); // Validates the flowchart
 	bool Run(string& msg);
 	bool Debug(string& msg);
-	bool GenerateCode(const string& filename, string& msg);
-	
+	bool GenerateCode(ofstream&  filename, string& msg);
+	void SaveAll(ofstream& file);
 
 	
 

@@ -22,7 +22,7 @@ void Declare::Draw(Output* pOut) const {
 }
 void Declare::Save(ofstream& OutFile)
 {
-	// to be implemented 
+	OutFile << "DCLR	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << var << endl;
 	return;
 }
 void Declare::Load(ifstream& InFile)
