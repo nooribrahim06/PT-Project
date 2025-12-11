@@ -58,8 +58,9 @@ void ValueAssign::Edit()
 
 Statement* ValueAssign::Simulate(Input* pIn, Output* pOut)
 {
-	SetVar(LHS, RHS);
+	Statement::SetVar(LHS, RHS);
 
+	Connector* pOutConn = GetOutConnector();
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();
@@ -95,15 +96,15 @@ bool ValueAssign::Validate(varinfo vars[], int& varcount, string& msg)
 		return false;
 	}
 	int LHSIdx = Findvarindex(LHS, vars, varcount);
-	if(LHSIdx==-1||!vars[LHSIdx].declared) {
+	if (LHSIdx == -1 || !vars[LHSIdx].declared) {
 		msg = "Variable ' " + LHS + " ' used without declaration.";
 		return false;
 	}
-	if ( to_string(RHS).empty()) {
+	if (to_string(RHS).empty()) {
 		msg = "Right hand side of assignment is empty.";
 		return false;
 	}
-	if (!IsValue(to_string(RHS)) ){
+	if (!IsValue(to_string(RHS))) {
 		msg = "Right hand side of assignment '" + to_string(RHS) + "' is not a valid value.";
 		return false;
 	}

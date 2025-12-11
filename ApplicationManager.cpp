@@ -261,7 +261,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (stat->IsEnd()) {
 			endStat = StatList[i];
 			endcount++;
-
+			
 		}
 
 	}
@@ -322,6 +322,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				return false;
 			}
 		}
+
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
@@ -450,18 +451,20 @@ bool ApplicationManager::ValidateAll(string& msg)
 	return true;
 }
 
+
 bool ApplicationManager::Run(string& msg)
 {
+	Input* pIn = GetInput();
+	Output* pOut = GetOutput();
+
 	if (!ValidateAll(msg))
 	{
 		msg = "Error : Cannot Run the Flowchart. " + msg;
 		return false;
 	}
-	varCount = 0;
-	for (int i = 0; i < 200; i++)
-	{
-		VarIntial[i] = false;
-	}
+	
+	Statement::Resetrunvars();
+	
 	Statement* cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -476,11 +479,9 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error no Start Statement .";
 		return false;
 	}
-	Input* pIn = GetInput();
-	Output* pOut = GetOutput();
-
+	
 	int count = 0;
-	const int Steps = 500;
+	const int Steps = 1000;
 	while (cur && !cur->IsEnd())
 	{
 		cur = cur->Simulate(pIn, pOut);
@@ -497,10 +498,10 @@ bool ApplicationManager::Run(string& msg)
 	}
 	if (cur == NULL)
 	{
-		msg = "Error ";
+		msg = "Error: FLowchart terminated without reaching End ";
 		return false;
 	}
-	msg = "Run finished successfully";
+	
 	return true;
 }
 

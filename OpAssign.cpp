@@ -62,22 +62,22 @@ void OpAssign::Edit()
 
 Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
 { 
-	double val1 = GetVar(RHS1);
-	double val2 = GetVar(RHS2);
+	double val1 = 0;
+	double val2 = 0;
 	double opresult = 0;
 	if (ValueOrVariable(RHS1) == VALUE_OP) {
 		val1 = stod(RHS1);
 	}
-	else if (ValueOrVariable(LHS) == VARIABLE_OP)
+	else if (ValueOrVariable(RHS1) == VARIABLE_OP)
 	{
-		val1 = GetVar(RHS1);
+		val1 = Statement:: GetVar(RHS1);
 	}
 	if (ValueOrVariable(RHS2) == VALUE_OP) {
 		val2 = stod(RHS2);
 	}
 	else if (ValueOrVariable(RHS2) == VARIABLE_OP)
 	{
-		val2 = GetVar(RHS2);
+		val2 = Statement:: GetVar(RHS2);
 	}
 
 
@@ -94,13 +94,14 @@ Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
 	else if (op == "/") {
 		if (val2 == 0) {
 			pOut->PrintMessage("Runtime Error: Can't divide by 0");
-			opresult = 0;
+			return NULL;
 		}
 		else {
 			opresult = val1 / val2;
 		}
 	}
-	SetVar(LHS, opresult);
+	 Statement::SetVar(LHS, opresult);
+	 Connector* pOutConn = GetOutConnector();
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();
@@ -150,7 +151,7 @@ bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)
 	}
 	if (!IsVariable(LHS)) {
 		msg = "Left-hand side '" + LHS + " '  is not a valid Variable name";
-			return false;
+		return false;
 	}
 	if (op.empty()) {
 		msg = "Operator in assignment is empty.";
@@ -210,7 +211,7 @@ bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "Right hand side 2 of assignment is empty.";
 		return false;
 	}
-	
+
 	vars[LHSIdx].initialized = true;
 	return true;
 }
