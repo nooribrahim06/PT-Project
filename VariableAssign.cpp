@@ -47,8 +47,9 @@ void VariableAssign::Edit()
 
 Statement* VariableAssign::Simulate(Input* pIn, Output* pOut)
 {
-    double value = GetVar(RHS);
-    SetVar(LHS, value);
+    double value =  Statement::GetVar(RHS);
+    Statement::SetVar(LHS, value);
+	Connector* pOutConn = GetOutConnector();
     if (pOutConn != NULL)
     {
         return pOutConn->getDstStat();
@@ -110,19 +111,19 @@ bool VariableAssign::Validate(varinfo vars[], int& varcount, string& msg)
     }
     int LHSIdx = Findvarindex(LHS, vars, varcount);
     if (LHSIdx == -1 || !vars[LHSIdx].declared) {
-                msg = "Variable " + LHS + " used without declaration.";
-				return false;
+        msg = "Variable " + LHS + " used without declaration.";
+        return false;
     }
     if (RHS.empty()) {
         msg = "Right hand side of assignment is empty.";
         return false;
     }
 
-        if(!IsVariable(RHS)) {
+    if (!IsVariable(RHS)) {
         msg = "Right hand side of assignment must be a variable.";
         return false;
-	}
-    int RHSIdx= Findvarindex(RHS, vars, varcount);
+    }
+    int RHSIdx = Findvarindex(RHS, vars, varcount);
     if (RHSIdx == -1 || !vars[RHSIdx].declared) {
         msg = "Variable " + RHS + " used without declaration.";
         return false;
@@ -132,5 +133,5 @@ bool VariableAssign::Validate(varinfo vars[], int& varcount, string& msg)
         return false;
     }
     vars[LHSIdx].initialized = true;
-	return true;
+    return true;
 }

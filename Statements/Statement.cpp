@@ -1,46 +1,91 @@
 #include "Statement.h"
 
-string VarNames[200];
-double VarValues[200];
-bool   VarIntial[200];
-int    varCount = 0;
+//string* VarNames=nullptr;
+//double *VarValues = nullptr;
+//bool *VarIntial = nullptr;
+// int varCount =0 ;
 
-void SetVar(const string& name, double value)
+//void SetVar(const string& name, double value)
+//{
+//	for (int i = 0; i < varCount; i++) {
+//		if (VarNames[i] == name)
+//		{
+//			VarValues[i] = value;
+//			VarIntial[i] = true;
+//			return;
+//		}
+//	}
+//	if (varCount < 200)
+//	{
+//		VarNames[varCount] = name;
+//		VarValues[varCount] = value;
+//		VarIntial[varCount] = true;
+//		varCount++;
+//	}
+//}
+//
+//double GetVar(const string& name)
+//{
+//	for (int i = 0; i < varCount; i++)
+//	{
+//		if (VarNames[i] == name)
+//		{
+//			
+//			return VarValues[i];
+//		}
+//	}
+//	
+//	return 0.0;
+//}
+
+int Statement::ID = 1; //Initialize static ID variable
+string Statement::R_names[Statement::Maxrunvars];
+double Statement::R_values[Statement::Maxrunvars]; // copied from chat needs to be written//
+int    Statement::R_count = 0;
+
+void Statement::Resetrunvars()
 {
-	for (int i = 0; i < varCount; i++) {
-		if (VarNames[i] == name)
+	R_count = 0;
+	for (int i = 0; i < Maxrunvars; ++i)
+	{
+		R_names[i].clear(); // copied from chat needs to be written//
+		R_values[i] = 0;
+
+	}
+}
+void Statement::SetVar(const string& name, double value)
+{
+	for (int i = 0; i < R_count; i++) {
+		if (R_names[i] == name)
 		{
-			VarValues[i] = value;
-			VarIntial[i] = true;
+			R_values[i] = value;
 			return;
 		}
 	}
-	if (varCount < 200)
+	if (R_count < Maxrunvars)
 	{
-		VarNames[varCount] = name;
-		VarValues[varCount] = value;
-		VarIntial[varCount] = true;
-		varCount++;
-	}
+		R_names[R_count] = name;
+		R_values[R_count] = value;
+		R_count++;
+}
 }
 
-double GetVar(const string& name)
+double Statement::GetVar(const string& name)
 {
-	for (int i = 0; i < varCount; i++)
+	for (int i = 0; i < R_count; i++)
 	{
-		if (VarNames[i] == name)
+		if (R_names[i] == name)
 		{
-			
-			return VarValues[i];
+
+			return R_values[i];
 		}
 	}
-	
-	return 0.0;
-}
 
-int Statement::ID = 1; //Initialize static ID variable
+	return 0;
+	}
+	// If you reach here, something is wrong with Validate or flowchart
 
-Statement::Statement()	
+Statement::Statement()
 { 
 	//TODO: set the ID with a unique value
 	Text = "";
