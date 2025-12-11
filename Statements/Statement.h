@@ -5,7 +5,7 @@
 #include "..\Connector.h"
 //class Output;
 #include "..\GUI\Output.h"
-#include "../Varhelper.h"
+
  /*extern string* VarNames;
  extern double *VarValues;
  extern  bool* VarIntial;

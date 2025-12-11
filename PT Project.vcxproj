@@ -301,7 +301,6 @@
     </ClCompile>
     <ClCompile Include="SwitchtoDesignAction.cpp" />
     <ClCompile Include="ValidateAction.cpp" />
-    <ClCompile Include="Varhelper.cpp" />
     <ClCompile Include="VariableAssign.cpp" />
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
@@ -358,7 +357,6 @@
     <ClInclude Include="Statements\Statement.h" />
     <ClInclude Include="SwitchtoDesignAction.h" />
     <ClInclude Include="ValidateAction.h" />
-    <ClInclude Include="Varhelper.h" />
     <ClInclude Include="VariableAssign.h" />
     <ClInclude Include="Write.h" />
   </ItemGroup>
