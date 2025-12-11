@@ -57,7 +57,15 @@ void Condition::Draw(Output* pOut) const
 }
 void Condition::Save(ofstream& OutFile)
 {
-	// to be implemented 
+	// to be implemented
+	string Comp;
+	if (CompOp == "==") Comp = "EQUL";
+	else if (CompOp == "!=") Comp = "NEQL";
+	else if (CompOp == ">") Comp = "GRT_";
+	else if (CompOp == "<") Comp = "SML_";
+	else if (CompOp == "<=") Comp = "SMLE";
+	else if (CompOp == ">=") Comp = "GRTE";
+	OutFile << "COND	" << GetstatementID() << "	" << Center.x << "	" << Center.y << "	" << RHS << "	" << Comp << "	" << LHS << endl;
 	return;
 }
 void Condition::Load(ifstream& InFile)
@@ -153,7 +161,8 @@ Point Condition::GetInletPoint() const
 }
 Connector* Condition::GetOutConnector() const
 {
-	return nullptr;
+	//true by default
+	return pTrueOutConn;
 }
 void Condition::SetOutconnector(Connector* C)
 {

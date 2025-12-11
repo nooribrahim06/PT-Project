@@ -46,6 +46,7 @@ void ValueAssign::Draw(Output* pOut) const
 
 void ValueAssign::Save(ofstream& OutFile)
 {
+	OutFile << "VLAS	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << LHS << "	" << RHS << endl;
 	return;
 }
 
