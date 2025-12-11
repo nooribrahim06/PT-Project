@@ -5,10 +5,11 @@
 #include "..\Connector.h"
 //class Output;
 #include "..\GUI\Output.h"
- extern string* VarNames;
+#include "../Varhelper.h"
+ /*extern string* VarNames;
  extern double *VarValues;
  extern  bool* VarIntial;
- extern int varCount  ;
+ extern int varCount  ;*/
 
 
 struct varinfo {
@@ -25,8 +26,8 @@ struct varinfo {
 	 }
 	 return -1;
  }
- double GetVar(const string& name);
- void SetVar(const string& name, double value);
+ /*double GetVar(const string& name);
+ void SetVar(const string& name, double value);*/
 
 //Base class for all Statements
 class Statement
@@ -37,12 +38,22 @@ protected:
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
 
-
+	static const int Maxrunvars = 200;// max no. of run-time variables
 	virtual void UpdateStatementText() = 0;	//is called when any part of the stat. is edited	
 
 	/// Add more parameters if needed.
+private:
+	static string R_names[Maxrunvars];
+	static double R_values[Maxrunvars];
+	static int R_count;
+
 
 public:
+	
+	static void Resetrunvars();
+	static void SetVar(const string& name, double value);
+	 static double GetVar(const string& name);
+
 	Statement();
 
 	int GetstatementID() const; // get the current statement ID
@@ -60,7 +71,7 @@ public:
 	virtual bool IsStart() const;
 	virtual bool IsEnd() const;
 	virtual bool Isconditional() const;
-	virtual bool Validate(varinfo vars[], int &varcount,string &msg) =0;
+	virtual bool Validate(varinfo vars[], int& varcount, string& msg) = 0;
 	virtual Point GetOutletPoint() const = 0;
 	virtual Point GetInletPoint() const = 0;
 	virtual Connector* GetOutConnector() const = 0;

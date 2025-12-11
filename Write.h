@@ -23,6 +23,5 @@ class Write :
     virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override;
 	void  GenerateCode(ofstream& OutFile) override;
-	bool Validate(varinfo vars[], int& varcount, string& msg) override;
-     
+    bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };
