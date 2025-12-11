@@ -41,7 +41,13 @@ void OpAssign::Draw(Output* pOut) const {
 
 void OpAssign::Save(ofstream& OutFile)
 {
-	return;
+	string arthm;
+	if (op == "+") arthm = "PLS";
+	else if (op == "-") arthm = "MIN";
+	else if (op == "*") arthm = "MUL";
+	else if (op == "/") arthm = "DIV";
+	OutFile << "OPAS	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << LHS << "	" << RHS1 << "	" << arthm << "	" << RHS2 << endl;
+	return;									//OPAS	12	200	30	n	12	MUL	10
 }
 
 void OpAssign::Load(ifstream& InFile)

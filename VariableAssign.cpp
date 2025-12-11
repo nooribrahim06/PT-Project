@@ -35,6 +35,8 @@ void VariableAssign::Draw(Output* pOut) const {
 
 void VariableAssign::Save(ofstream& OutFile)
 {
+    OutFile << "VRAS	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << LHS << "	" << RHS << endl;
+
     return;
 }
 
