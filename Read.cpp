@@ -21,7 +21,7 @@ void Read::Draw(Output* pOut) const
 }
 void Read::Save(ofstream& OutFile)
 {
-	// to be implemented 
+	OutFile << "READ	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << varName << endl;
 	return;
 }
 void Read::Load(ifstream& InFile)

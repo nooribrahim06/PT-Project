@@ -18,6 +18,7 @@
 #include"RunAction.h"
 #include"SwitchtoDesignAction.h"
 #include "SwitchToSim.h"
+#include "Save.h"
 #include <fstream>
 
 //Constructor
@@ -88,6 +89,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
+			break;
+		case SAVE:
+			pAct = new Save(this);
 			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
@@ -240,7 +244,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 	Statement* endStat = nullptr;
 	// Find Start and End statements
 	int stcount = 0, endcount = 0;
-	int startidx = -1; 
+	int startidx = -1;
 
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -313,12 +317,12 @@ bool ApplicationManager::ValidateAll(string& msg)
 			}
 		}
 		else if (stat->IsEnd()) {
-				if (inc < 1 || Otc != 0) {
-					msg = " End statement can't have outgoing connectors or more than one incoming connector.";
-					return false;
-				}
+			if (inc < 1 || Otc != 0) {
+				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
+				return false;
 			}
 		
+
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
@@ -444,7 +448,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 	}*/
 
 	msg = " Valid Flowchart";
-	return true; 
+	return true;
 }
 
 
@@ -530,15 +534,8 @@ bool ApplicationManager::Debug(string& msg,Statement*&cur)
 	return true;
 }
 
-bool ApplicationManager::GenerateCode(const string& filename, string& msg)
+bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
 {
-	string code = filename + ".cpp";
-	ofstream file(code);
-	if (!file)
-	{
-		msg = "File Can't be Opened!";
-		return false;
-	}
 	Statement* current = nullptr;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -608,6 +605,19 @@ bool ApplicationManager::GenerateCode(const string& filename, string& msg)
 	}
 	return true;
 }
+
+void ApplicationManager::SaveAll(ofstream& file)
+{
+	file << StatCount << endl;
+	for (int i = 0; i < StatCount; i++) {
+		StatList[i]->Save(file);
+	}
+	file << ConnCount << endl;
+	for (int i = 0; i < ConnCount; i++) {
+		ConnList[i]->Save(file);
+	}
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////
