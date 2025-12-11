@@ -17,6 +17,7 @@ End::End(Point Lcorner)
 
 void End::Save(ofstream& OutFile)
 {
+	OutFile << "ENDS	" << GetstatementID() << "	" << Leftcorner.x << "	" << Leftcorner.y << endl;
 	return;
 }
 

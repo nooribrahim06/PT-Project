@@ -1,7 +1,5 @@
 #include "Statement.h"
 
-#include "Statement.h"
-
 string VarNames[200];
 double VarValues[200];
 bool   VarIntial[200];
