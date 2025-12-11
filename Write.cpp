@@ -23,6 +23,7 @@ void Write::Draw(Output* pOut) const {
 }
 void Write::Save(ofstream& OutFile)
 {
+	OutFile << "WRTE	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << var << endl;
 	return;
 }
 void Write::Load(ifstream& InFile)

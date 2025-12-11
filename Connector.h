@@ -33,6 +33,7 @@ public:
 
 	void Draw(Output* pOut) const;
 	
+	void Save(ofstream& file);
 
 };
 
