@@ -1,5 +1,9 @@
 #include "Connector.h"
+#include "Statements/Statement.h"
 #include <cmath>   // for std::abs
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 Connector::Connector(Statement* Src, Statement* Dst)	
 //When a connector is created, it must have a source statement and a destination statement
@@ -108,3 +112,14 @@ void Connector::Draw(Output* pOut) const
 	pOut->DrawConnector(Start, End, Selected);
 }
 
+void Connector::Save(ofstream& OutFile) {
+	int out = 0;
+	if (SrcStat->Isconditional())
+	{
+		if (this == SrcStat->GetOutConnector())
+			out = 1;
+		else
+			out = 2;
+	}
+	OutFile << SrcStat->GetstatementID() << "   " << DstStat->GetstatementID() << "   " << out << endl;
+}

@@ -66,6 +66,8 @@ public:
 	bool Debug(string& msg,Statement*&cur);
 	bool GenerateCode(const string& filename, string& msg);
 	
+	
+	void SaveAll(ofstream& file);
 
 	
 
