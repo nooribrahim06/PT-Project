@@ -38,7 +38,8 @@ Statement* Read::Simulate(Input* pIn, Output* pOut)
 {
 	pOut->PrintMessage("Enter the value for " + varName + ":");
 	double value = pIn->GetValue(pOut);
-	SetVar(varName, value);
+	 Statement::SetVar(varName, value);
+	 Connector* pOutConn = GetOutConnector();
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();
@@ -120,19 +121,18 @@ bool Read::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "The variable name in Read statement is empty";
 		return false;
 	}
-	if(!IsVariable(varName)) {
+	if (!IsVariable(varName)) {
 		msg = "Read statement variable '" + varName + "' is not a valid variable name.";
 		return false;
 	}
 	int idx = Findvarindex(varName, vars, varcount);
-	if (idx == -1||!vars[idx].declared) {
-		msg= "Variable " + varName + " used without declaration.";
+	if (idx == -1 || !vars[idx].declared) {
+		msg = "Variable " + varName + " used without declaration.";
 		return false;
 	}
 	else {
 		vars[idx].initialized = true;
 		return true;
-		
+
 	}
 }
-

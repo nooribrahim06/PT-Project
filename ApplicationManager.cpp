@@ -240,10 +240,11 @@ bool ApplicationManager::ValidateAll(string& msg)
 	Statement* endStat = nullptr;
 	// Find Start and End statements
 	int stcount = 0, endcount = 0;
-	
+	int startidx = -1; 
+
 	for (int i = 0; i < StatCount; i++)
 	{
-		Statement * stat = StatList[i];
+		Statement* stat = StatList[i];
 		if (!stat)
 		{
 			continue;
@@ -251,10 +252,12 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (stat->IsStart()) {
 			startStat = StatList[i];
 			stcount++;
+			startidx = i;
 		}
 		if (stat->IsEnd()) {
 			endStat = StatList[i];
 			endcount++;
+			
 		}
 
 	}
@@ -268,7 +271,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		msg = "Flowchart must have one End statement.";
 		return false;
 	}
-	
+
 	// Now for the connectors//
 	for (int i = 0; i < ConnCount; i++)
 	{
@@ -282,10 +285,10 @@ bool ApplicationManager::ValidateAll(string& msg)
 			msg = " Error: Free Connector (Missing Source Or Destination)";
 			return false;
 		}
-			
+
 	}
-// legal connectors //
-	for(int j=0;j<StatCount;j++) {
+	// legal connectors //
+	for (int j = 0; j < StatCount; j++) {
 		int inc = 0, Otc = 0;
 		Statement* stat = StatList[j];
 		if (!stat)
@@ -296,17 +299,17 @@ bool ApplicationManager::ValidateAll(string& msg)
 		for (int i = 0; i < ConnCount; i++)
 		{
 			Connector* CO = ConnList[i];
-			if(!CO)
+			if (!CO)
 			{
 				continue;
 			}
-			if (CO->getSrcStat()==stat) Otc++;
+			if (CO->getSrcStat() == stat) Otc++;
 			if (CO->getDstStat() == stat) inc++;
 		}
 		if (stat->IsStart()) {
 			if (inc != 0 || Otc != 1) {
-			   msg = " Start statement can't have incoming connectors or more than one outgoing connector.";
-			return false;
+				msg = " Start statement can't have incoming connectors or more than one outgoing connector.";
+				return false;
 			}
 		}
 		else if (stat->IsEnd()) {
@@ -315,9 +318,10 @@ bool ApplicationManager::ValidateAll(string& msg)
 					return false;
 				}
 			}
+		}
 
 		else if (stat->Isconditional()) {
-			if(inc!=1|| Otc != 2) {
+			if (inc != 1 || Otc != 2) {
 				msg = " Conditional statement must have one incoming and two outgoing connectors.";
 				return false;
 			}
@@ -326,13 +330,102 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 		else {
 			if (inc < 1 || Otc != 1) {
-				msg = " Each statement must have at least one incoming and one outgoing connector.";
+				msg = " Statement must have at least one incoming and one outgoing connector.";
 				return false;
-		    }
+			}
 		}
 	}
+	varinfo vars[200];   // same size you used elsewhere
+	int varcount = 0;
+	for (int i = 0; i < 200; ++i) {
+		vars[i].name = "";
+		vars[i].declared = false;
+		vars[i].initialized = false;
+	}
+	// ============ 4) BFS from Start, following connectors ============
+	//const int MAX_STMTS = 200;   // must be >= StatList capacity
+
+	Statement* Q[MaxCount];
+	bool visited[MaxCount];
+
+	for (int i = 0; i < MaxCount; ++i)
+		visited[i] = false;
+
+	int front = 0, back = 0;
+
+	Q[back++] = startStat;
+	visited[startidx] = true;
+
+	while (front < back)
+	{
+		Statement* cur = Q[front++];
+
+		// 4.1) Validate this statement with current vars table
+		if (!cur->Validate(vars, varcount, msg))
+		{
+			// msg already filled by the statement
+			return false;
+		}
+
+		// 4.2) Follow all connectors that go out of this statement
+		for (int c = 0; c < ConnCount; ++c)
+		{
+			Connector* conn = ConnList[c];
+			if (!conn)
+				continue;
+
+			if (conn->getSrcStat() != cur)
+				continue;
+
+			Statement* next = conn->getDstStat();
+			if (!next)
+				continue;
+
+			// find index of next in StatList
+			int nextIdx = -1;
+			for (int i = 0; i < StatCount; ++i)
+			{
+				if (StatList[i] == next)
+				{
+					nextIdx = i;
+					break;
+				}
+			}
+			if (nextIdx == -1)
+				continue;   // should not happen if StatList is consistent
+
+			if (!visited[nextIdx])
+			{
+				visited[nextIdx] = true;
+				Q[back++] = next;
+			}
+		}
+	}
+
+	// ============ 5) Check for unreachable statements ============
+	for (int i = 0; i < StatCount; ++i)
+	{
+		if (!StatList[i])
+			continue;
+
+		if (!visited[i])
+		{
+			msg = "Flowchart has unreachable statements (not reachable from Start).";
+			return false;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
 	//Check for the Variable Validation//
-	varinfo vars[MaxCount];
+	/*varinfo vars[MaxCount];
 	int varcount = 0;
 	for (int i = 0; i < MaxCount; i++) {
 		vars[i].declared = false;
@@ -348,24 +441,26 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (!stat->Validate(vars, varcount, msg)) {
 			return false;
 		}
-	}
+	}*/
 
 	msg = " Valid Flowchart";
 	return true; 
 }
 
+
 bool ApplicationManager::Run(string& msg)
 {
+	Input* pIn = GetInput();
+	Output* pOut = GetOutput();
+
 	if (!ValidateAll(msg))
 	{
 		msg = "Error : Cannot Run the Flowchart. " + msg;
 		return false;
 	}
-	varCount = 0;
-	for (int i = 0; i < 200; i++)
-	{
-		VarIntial[i] = false;
-	}
+	
+	Statement::Resetrunvars();
+	
 	Statement* cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -380,11 +475,9 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error no Start Statement .";
 		return false;
 	}
-	Input* pIn = GetInput();
-	Output* pOut = GetOutput();
-
+	
 	int count = 0;
-	const int Steps = 500;
+	const int Steps = 1000;
 	while (cur && !cur->IsEnd())
 	{
 		cur = cur->Simulate(pIn, pOut);
@@ -401,10 +494,10 @@ bool ApplicationManager::Run(string& msg)
 	}
 	if (cur == NULL)
 	{
-		msg = "Error ";
+		msg = "Error: FLowchart terminated without reaching End ";
 		return false;
 	}
-	msg = "Run finished successfully";
+	
 	return true;
 }
 

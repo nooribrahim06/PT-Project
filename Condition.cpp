@@ -71,22 +71,22 @@ void Condition::Edit()
 }
 Statement* Condition::Simulate(Input* pIn, Output* pOut)
 {
-	
-	double Lhs;
-	double Rhs;
+
+	double Lhs = 0;
+	double Rhs = 0;
 	if (ValueOrVariable(LHS) == VALUE_OP) {
 		Lhs = stod(LHS);
 	}
 	else if (ValueOrVariable(LHS) == VARIABLE_OP)
 	{
-		Lhs = GetVar(LHS);
+		Lhs = Statement::GetVar(LHS);
 	}
 	if (ValueOrVariable(RHS) == VALUE_OP) {
 		Rhs = stod(RHS);
 	}
 	else if (ValueOrVariable(RHS) == VARIABLE_OP)
 	{
-		Rhs = GetVar(RHS);
+		Rhs = Statement::GetVar(RHS);
 	}
 	bool compresult = false;
 
@@ -109,18 +109,27 @@ Statement* Condition::Simulate(Input* pIn, Output* pOut)
 		compresult = (Lhs != Rhs);
 	}
 	if (compresult) {
-		if (pTrueOutConn) 
+		if (pTrueOutConn) {
 			return pTrueOutConn->getDstStat();
+		}
+		else {
+			pOut->PrintMessage("Runtime Error: True connector is missing");
 			return NULL;
-		
+		}
+
 	}
 	else {
-		if (pFalseOutConn)
+		if (pFalseOutConn) {
 			return pFalseOutConn->getDstStat();
-		return NULL;
+		}
+		else {
+			pOut->PrintMessage("Runtime Error: False connector is missing");
+			return NULL;
+		}
 	}
-
 }
+
+
 void Condition::GenerateCode(ofstream& OutFile)
 {
 	OutFile << "if (" << Text << ")";
@@ -182,7 +191,7 @@ bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
 		msg = "Operator in condition is EMPTY";
 		return false;
 	}
-	if (CompOp != ">=" && CompOp != "==" && CompOp != "!=" && CompOp != "=<" && CompOp != ">" && CompOp != "<") {
+	if (CompOp != ">=" && CompOp != "==" && CompOp != "!=" && CompOp != "<=" && CompOp != ">" && CompOp != "<") {
 		msg = "Operator in condition is INVALID.";
 		return false;
 	}
@@ -221,7 +230,7 @@ bool Condition::Validate(varinfo vars[], int& varcount, string& msg)
 			return false;
 		}
 
-		
+
 	}
 	return true;
 }

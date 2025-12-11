@@ -20,5 +20,5 @@ public:
 	void  GenerateCode(ofstream& OutFile) override;
 	bool IsPointInside(Point P) const override;
 	bool IsEnd() const override;
-    bool Validate(varinfo vars[], int& varcount, string& msg) override;
+	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };

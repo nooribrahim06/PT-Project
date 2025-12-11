@@ -39,6 +39,7 @@ void Start::Edit()
 
 Statement* Start::Simulate(Input* pIn, Output* pOut)
 {
+	Connector* pOutConn = GetOutConnector();
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();
@@ -92,7 +93,6 @@ bool Start::IsPointInside(Point P) const
 	return false;
 }
 
-bool Start::Validate(varinfo vars[], int& varcount, string& msg)
-{
+bool Start::Validate(varinfo vars[], int& varcount, string& msg) {
 	return true;
 }
