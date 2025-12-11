@@ -55,9 +55,13 @@ void OpAssign::Load(ifstream& InFile)
 	return;
 }
 
-void OpAssign::Edit()
+void OpAssign::Edit(string newLHS, string newRHS, string newRHS2, string newOp)
 {
-	return;
+	LHS = newLHS;
+	RHS1 = newRHS;
+	RHS2 = newRHS2;
+	op = newOp;
+	UpdateStatementText();
 }
 
 Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
@@ -221,6 +225,6 @@ void OpAssign::UpdateStatementText()
 {
 	//Build the statement text: Left handside then equals then right handside
 	ostringstream T;
-	T << LHS << " = " << RHS1 << op << RHS2;
+	T << LHS << " = " << RHS1 <<" "<< op << RHS2;
 	Text = T.str();
 }

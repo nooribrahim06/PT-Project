@@ -40,9 +40,11 @@ void VariableAssign::Save(ofstream& OutFile)
     return;
 }
 
-void VariableAssign::Edit()
+void VariableAssign::Edit(const string& newLHS, const string& newRHS)
 {
-    return;
+	LHS = newLHS;
+    RHS = newRHS;
+	UpdateStatementText();
 }
 
 Statement* VariableAssign::Simulate(Input* pIn, Output* pOut)

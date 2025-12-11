@@ -283,6 +283,7 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="DebugRunAction.cpp" />
     <ClCompile Include="Declare.cpp" />
+    <ClCompile Include="Edit.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="GenerateCodeAction.cpp" />
     <ClCompile Include="GUI\Input.cpp" />
@@ -344,6 +345,7 @@
     <ClInclude Include="DebugRunAction.h" />
     <ClInclude Include="Declare.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="Edit.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="GenerateCodeAction.h" />
     <ClInclude Include="GUI\Input.h" />

@@ -1,4 +1,6 @@
 #include "Start.h"
+#include "ApplicationManager.h"
+#include "Actions/Action.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -33,10 +35,11 @@ void Start::Load(ifstream& InFile)
 	return;
 }
 
-void Start::Edit()
-{
-	return;
-}
+//void Start::Edit()
+//{
+//	pOut->PrintMessage("Start statement cannot be edited.");
+//	return;
+//}
 
 Statement* Start::Simulate(Input* pIn, Output* pOut)
 {

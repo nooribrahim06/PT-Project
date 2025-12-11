@@ -73,8 +73,12 @@ void Condition::Load(ifstream& InFile)
 	// to be implemented
 	return;
 }
-void Condition::Edit()
+void Condition::Edit(const string& LHS, const string& RHS, const string& CompO)
 {
+	this->LHS = LHS;
+	this->RHS = RHS;
+	this->CompOp = CompO;
+	UpdateStatementText();
 	return;
 }
 Statement* Condition::Simulate(Input* pIn, Output* pOut)

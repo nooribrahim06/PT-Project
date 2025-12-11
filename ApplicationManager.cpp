@@ -12,6 +12,7 @@
 #include "Select.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
+#include "Edit.h"
 #include "ValidateAction.h"
 #include "GenerateCodeAction.h"
 #include "DebugRunAction.h"
@@ -89,6 +90,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
+			break;
+		case EDIT_STAT:
+			pAct = new Edit(this);
 			break;
 		case SAVE:
 			pAct = new Save(this);
