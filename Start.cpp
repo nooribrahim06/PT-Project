@@ -24,6 +24,7 @@ void Start::Draw(Output* pOut) const
 
 void Start::Save(ofstream& OutFile)
 {
+	OutFile << "STRT	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << endl;
 	return;
 }
 

@@ -18,6 +18,7 @@
 #include"RunAction.h"
 #include"SwitchtoDesignAction.h"
 #include "SwitchToSim.h"
+#include "Save.h"
 #include <fstream>
 
 //Constructor
@@ -88,6 +89,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
+			break;
+		case SAVE:
+			pAct = new Save(this);
 			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
@@ -240,10 +244,11 @@ bool ApplicationManager::ValidateAll(string& msg)
 	Statement* endStat = nullptr;
 	// Find Start and End statements
 	int stcount = 0, endcount = 0;
-	
+	int startidx = -1;
+
 	for (int i = 0; i < StatCount; i++)
 	{
-		Statement * stat = StatList[i];
+		Statement* stat = StatList[i];
 		if (!stat)
 		{
 			continue;
@@ -251,10 +256,12 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (stat->IsStart()) {
 			startStat = StatList[i];
 			stcount++;
+			startidx = i;
 		}
 		if (stat->IsEnd()) {
 			endStat = StatList[i];
 			endcount++;
+
 		}
 
 	}
@@ -268,7 +275,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		msg = "Flowchart must have one End statement.";
 		return false;
 	}
-	
+
 	// Now for the connectors//
 	for (int i = 0; i < ConnCount; i++)
 	{
@@ -282,10 +289,10 @@ bool ApplicationManager::ValidateAll(string& msg)
 			msg = " Error: Free Connector (Missing Source Or Destination)";
 			return false;
 		}
-			
+
 	}
-// legal connectors //
-	for(int j=0;j<StatCount;j++) {
+	// legal connectors //
+	for (int j = 0; j < StatCount; j++) {
 		int inc = 0, Otc = 0;
 		Statement* stat = StatList[j];
 		if (!stat)
@@ -296,28 +303,28 @@ bool ApplicationManager::ValidateAll(string& msg)
 		for (int i = 0; i < ConnCount; i++)
 		{
 			Connector* CO = ConnList[i];
-			if(!CO)
+			if (!CO)
 			{
 				continue;
 			}
-			if (CO->getSrcStat()==stat) Otc++;
+			if (CO->getSrcStat() == stat) Otc++;
 			if (CO->getDstStat() == stat) inc++;
 		}
 		if (stat->IsStart()) {
 			if (inc != 0 || Otc != 1) {
-			   msg = " Start statement can't have incoming connectors or more than one outgoing connector.";
-			return false;
+				msg = " Start statement can't have incoming connectors or more than one outgoing connector.";
+				return false;
 			}
 		}
 		else if (stat->IsEnd()) {
-				if (inc < 1 || Otc != 0) {
-					msg = " End statement can't have outgoing connectors or more than one incoming connector.";
-					return false;
-				}
+			if (inc < 1 || Otc != 0) {
+				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
+				return false;
 			}
+		}
 
 		else if (stat->Isconditional()) {
-			if(inc!=1|| Otc != 2) {
+			if (inc != 1 || Otc != 2) {
 				msg = " Conditional statement must have one incoming and two outgoing connectors.";
 				return false;
 			}
@@ -326,13 +333,102 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 		else {
 			if (inc < 1 || Otc != 1) {
-				msg = " Each statement must have at least one incoming and one outgoing connector.";
+				msg = " Statement must have at least one incoming and one outgoing connector.";
 				return false;
-		    }
+			}
 		}
 	}
+	varinfo vars[200];   // same size you used elsewhere
+	int varcount = 0;
+	for (int i = 0; i < 200; ++i) {
+		vars[i].name = "";
+		vars[i].declared = false;
+		vars[i].initialized = false;
+	}
+	// ============ 4) BFS from Start, following connectors ============
+	//const int MAX_STMTS = 200;   // must be >= StatList capacity
+
+	Statement* Q[MaxCount];
+	bool visited[MaxCount];
+
+	for (int i = 0; i < MaxCount; ++i)
+		visited[i] = false;
+
+	int front = 0, back = 0;
+
+	Q[back++] = startStat;
+	visited[startidx] = true;
+
+	while (front < back)
+	{
+		Statement* cur = Q[front++];
+
+		// 4.1) Validate this statement with current vars table
+		if (!cur->Validate(vars, varcount, msg))
+		{
+			// msg already filled by the statement
+			return false;
+		}
+
+		// 4.2) Follow all connectors that go out of this statement
+		for (int c = 0; c < ConnCount; ++c)
+		{
+			Connector* conn = ConnList[c];
+			if (!conn)
+				continue;
+
+			if (conn->getSrcStat() != cur)
+				continue;
+
+			Statement* next = conn->getDstStat();
+			if (!next)
+				continue;
+
+			// find index of next in StatList
+			int nextIdx = -1;
+			for (int i = 0; i < StatCount; ++i)
+			{
+				if (StatList[i] == next)
+				{
+					nextIdx = i;
+					break;
+				}
+			}
+			if (nextIdx == -1)
+				continue;   // should not happen if StatList is consistent
+
+			if (!visited[nextIdx])
+			{
+				visited[nextIdx] = true;
+				Q[back++] = next;
+			}
+		}
+	}
+
+	// ============ 5) Check for unreachable statements ============
+	for (int i = 0; i < StatCount; ++i)
+	{
+		if (!StatList[i])
+			continue;
+
+		if (!visited[i])
+		{
+			msg = "Flowchart has unreachable statements (not reachable from Start).";
+			return false;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
 	//Check for the Variable Validation//
-	varinfo vars[MaxCount];
+	/*varinfo vars[MaxCount];
 	int varcount = 0;
 	for (int i = 0; i < MaxCount; i++) {
 		vars[i].declared = false;
@@ -348,10 +444,10 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (!stat->Validate(vars, varcount, msg)) {
 			return false;
 		}
-	}
+	}*/
 
 	msg = " Valid Flowchart";
-	return true; 
+	return true;
 }
 
 bool ApplicationManager::Run(string& msg)
@@ -417,15 +513,8 @@ bool ApplicationManager::Debug(string& msg)
 	}
 }
 
-bool ApplicationManager::GenerateCode(const string& filename, string& msg)
+bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
 {
-	string code = filename + ".cpp";
-	ofstream file(code);
-	if (!file)
-	{
-		msg = "File Can't be Opened!";
-		return false;
-	}
 	Statement* current = nullptr;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -495,6 +584,19 @@ bool ApplicationManager::GenerateCode(const string& filename, string& msg)
 	}
 	return true;
 }
+
+void ApplicationManager::SaveAll(ofstream& file)
+{
+	file << StatCount << endl;
+	for (int i = 0; i < StatCount; i++) {
+		StatList[i]->Save(file);
+	}
+	file << ConnCount << endl;
+	for (int i = 0; i < ConnCount; i++) {
+		ConnList[i]->Save(file);
+	}
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////

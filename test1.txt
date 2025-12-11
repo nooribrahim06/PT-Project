@@ -1,0 +1,19 @@
+9
+STRT	1	133	103	
+DCLR	2	121	218	price
+DCLR	3	95	364	discount
+READ	4	134	480	price
+COND	5	431	330	100000	GRT_	price
+OPAS	6	515	212	discount	price	MUL	0.01
+VLAS	7	452	433	discount	0.02
+WRTE	8	649	313	discount
+ENDS	9	687	470
+8
+1   2   0
+2   3   0
+3   4   0
+4   5   0
+5   6   1
+5   7   2
+7   8   0
+8   9   0
