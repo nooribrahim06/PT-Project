@@ -49,7 +49,7 @@ private:
 
 
 public:
-	
+	static string GetDebug_RunVars();
 	static void Resetrunvars();
 	static void SetVar(const string& name, double value);
 	 static double GetVar(const string& name);

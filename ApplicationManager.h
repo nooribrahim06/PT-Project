@@ -63,7 +63,7 @@ public:
 	// Simulation  //
 	bool ValidateAll(string &msg ); // Validates the flowchart
 	bool Run(string& msg);
-	bool Debug(string& msg);
+	bool Debug(string& msg,Statement*&cur);
 	bool GenerateCode(const string& filename, string& msg);
 	
 
