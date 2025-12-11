@@ -321,7 +321,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
 				return false;
 			}
-		}
+		
 
 
 		else if (stat->Isconditional()) {
@@ -505,13 +505,33 @@ bool ApplicationManager::Run(string& msg)
 	return true;
 }
 
-bool ApplicationManager::Debug(string& msg)
+bool ApplicationManager::Debug(string& msg,Statement*&cur)
 {
 	if (!ValidateAll(msg))
 	{
-		msg = "Error : Cannot Run the Flowchart. " + msg;
+		msg = "Error : Cannot Debug the Flowchart. " + msg;
 		return false;
 	}
+
+	Statement::Resetrunvars();
+    cur = NULL;
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			cur = StatList[i];
+			break;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error no Start Statement .";
+		return false;
+	}
+
+
+	
+	return true;
 }
 
 bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
