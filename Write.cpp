@@ -25,9 +25,11 @@ void Write::Load(ifstream& InFile)
 {
 	return;
 }
-void Write::Edit()
+void Write::Edit( string& var)
 {
 	// to be implemented
+	this ->var = var;
+	UpdateStatementText();
 	return;
 }
 Statement* Write::Simulate(Input* pIn, Output* pOut)

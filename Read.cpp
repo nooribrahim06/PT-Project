@@ -29,9 +29,11 @@ void Read::Load(ifstream& InFile)
 	// to be implemented
 	return;
 }
-void Read::Edit()
+void Read::Edit(const string& varName)
 {
 	// to be implemented
+	this->varName = varName;
+	UpdateStatementText();	
 	return;
 }
 Statement* Read::Simulate(Input* pIn, Output* pOut)

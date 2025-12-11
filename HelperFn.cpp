@@ -59,6 +59,12 @@ bool IsVariable(string input)
     return valid;
     //TODO: complete this function .done 
 }
+
+bool IsValidOperand(const string& s) 
+{
+    return IsValue(s) || IsVariable(s);
+}
+
 OpType ValueOrVariable(string input)
 {// checks if the input string is a double value or a variable name
 // chand returns enum "OpType" (the enum is declared in the .h)

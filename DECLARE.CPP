@@ -30,9 +30,10 @@ void Declare::Load(ifstream& InFile)
 	// to be implemented
 	return;
 }
-void Declare::Edit()
+void Declare::Edit(string& newVar)
 {
-	// to be implemented
+    var = newVar;
+    UpdateStatementText();
 	return;
 }
 Statement* Declare::Simulate(Input* pIn, Output* pOut)

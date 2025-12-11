@@ -50,9 +50,11 @@ void ValueAssign::Save(ofstream& OutFile)
 	return;
 }
 
-void ValueAssign::Edit()
+void ValueAssign::Edit(string LHS, string RHS)
 {
-	// to be implemented
+	setLHS(LHS);
+	setRHS(stod(RHS));
+	UpdateStatementText();	
 	return;
 }
 

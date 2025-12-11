@@ -38,7 +38,7 @@ public:
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override; //n
 	void Load(ifstream& InFile) override; //n
-	void Edit() override; //n
+	void Edit(string LHS, string RHS) ; //n
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
 	Point GetOutletPoint() const override; //n

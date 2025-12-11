@@ -16,7 +16,7 @@ class Read :
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
-	void Edit() override;
+	void Edit(const string& varName);
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode (ofstream& OutFile) override;
 	Point GetOutletPoint() const override;

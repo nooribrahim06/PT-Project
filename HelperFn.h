@@ -17,4 +17,5 @@ enum OpType
 
 bool IsValue(string input);
 bool IsVariable(string input);
+bool IsValidOperand(const string& s);
 OpType ValueOrVariable(string input);
