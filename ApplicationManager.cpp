@@ -318,7 +318,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 					return false;
 				}
 			}
-		}
+		
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
