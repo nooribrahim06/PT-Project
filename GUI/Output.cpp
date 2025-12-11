@@ -215,6 +215,13 @@ void Output::DrawAssign(Point Left, int width, int height, string Text, bool Sel
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+void Output::PrintOnOutputBar(string msg, int L)
+{
+	int x = UI.DrawingAreaWidth + 10;
+	int y = UI.ToolBarHeight + 20 + (L * 20);
+	DrawString(x, y, msg);
+}
+
 void Output::DrawStart(Point left, int width, int height, string Text, bool Selected)
 {
 	if (Selected)  // then the pen gonna have highleted color

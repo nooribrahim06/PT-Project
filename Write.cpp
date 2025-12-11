@@ -2,6 +2,11 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+int Write::OutputCount = 0;
+void Write::ResetOutputCount()
+{
+	OutputCount = 0;
+}
 Write::Write(Point Lcorner,string& variable)
 {
 	var = variable;
@@ -41,8 +46,9 @@ Statement* Write::Simulate(Input* pIn, Output* pOut)
 	else if (t==VARIABLE_OP){
 		value=  Statement::GetVar(var);
 	}
-
-		pOut->PrintMessage(var + " = " + to_string(value));
+	string msg = var + " = " + to_string(value);
+		pOut->PrintOnOutputBar(msg,OutputCount);
+		OutputCount++;
 		Connector* pOutConn = GetOutConnector();
 
 	if (pOutConn != NULL)

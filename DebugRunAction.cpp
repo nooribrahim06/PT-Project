@@ -10,9 +10,10 @@ void DebugRunAction::ReadActionParameters() {
 
 }
 void DebugRunAction::Execute() {
-
+	
 	Input* pIn = pManager-> GetInput();
 	Output* pOut = pManager->GetOutput();
+	pOut->ClearOutputBar();
 	Statement* cur = nullptr;
 	string msg;
 	if (!pManager->Debug(msg, cur)) {
@@ -38,6 +39,7 @@ void DebugRunAction::Execute() {
 		}
 
 		string debugInfo = Statement::GetDebug_RunVars();
+
 		string outmsg = "Debug Info:  " + debugInfo + "\n Click to continue";
 		pOut->PrintMessage(outmsg);
 		Next->SetSelected(true);
