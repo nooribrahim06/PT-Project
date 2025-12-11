@@ -35,7 +35,7 @@ public:
 	//		Decide the parameters that should be passed to each of them
 
 	//TODO: Add DrawConnector function
-
+	void PrintOnOutputBar(string msg,int L); //Prints a message on the Output bar
 	void DrawStart(Point left, int width, int height, string Text, bool Selected);
 	void DrawEnd(Point left, int width, int height, string Text, bool Selected);
 	void DrawDeclareStatement(Point left, int width, int height, string Text, bool Selected);
