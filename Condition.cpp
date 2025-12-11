@@ -1,6 +1,8 @@
 #include "Condition.h"
 #include <sstream>
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 Condition::Condition(Point C, string L, string Op, string R)
 {
 	// to be implemented 
@@ -130,7 +132,7 @@ Statement* Condition::Simulate(Input* pIn, Output* pOut)
 
 void Condition::GenerateCode(ofstream& OutFile)
 {
-	return;
+	OutFile << "if (" << Text << ")";
 }
 Point Condition::GetOutletPoint() const
 {
@@ -236,6 +238,6 @@ void Condition::UpdateStatementText()
 {
 	// to be implemented 
 	ostringstream T;
-	T << LHS << " " << RHS;
+	T << LHS << " " << CompOp << " " << RHS;
 	Text = T.str();
 }

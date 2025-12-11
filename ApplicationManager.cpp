@@ -17,8 +17,8 @@
 #include"DebugRunAction.h"
 #include"RunAction.h"
 #include"SwitchtoDesignAction.h"
-
-
+#include "SwitchToSim.h"
+#include <fstream>
 
 //Constructor
 ApplicationManager::ApplicationManager()
@@ -105,7 +105,8 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new SwitchtoDesignAction(this);
 			break;
 		case SWITCH_SIM_MODE:
-		
+			pAct = new SwitchToSim(this);
+			break;
 		case ADD_CONNECTOR:
 			pAct = new AddConnect(this);
 			break;
@@ -114,7 +115,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			pAct = new Select(this);
 			break;
 		
-		case EXIT1:
+		case EXIT:
 			///create Exit Action here
 			
 			break;
@@ -312,9 +313,10 @@ bool ApplicationManager::ValidateAll(string& msg)
 			}
 		}
 		else if (stat->IsEnd()) {
-			if (inc != 1 || Otc != 0) {
-				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
-				return false;
+				if (inc < 1 || Otc != 0) {
+					msg = " End statement can't have outgoing connectors or more than one incoming connector.";
+					return false;
+				}
 			}
 		}
 
@@ -442,7 +444,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 	}*/
 
 	msg = " Valid Flowchart";
-	return true;
+	return true; 
 }
 
 
@@ -510,8 +512,81 @@ bool ApplicationManager::Debug(string& msg)
 
 bool ApplicationManager::GenerateCode(const string& filename, string& msg)
 {
-	return false;
-	/*ofstream out(filename);*/
+	string code = filename + ".cpp";
+	ofstream file(code);
+	if (!file)
+	{
+		msg = "File Can't be Opened!";
+		return false;
+	}
+	Statement* current = nullptr;
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			current = StatList[i];
+			break; // we found it, stop
+		}
+	}
+	if (!current)
+	{
+		msg = "No START statement found.";
+		return false;
+	}
+
+	while (true)
+	{
+		if (current->IsEnd())
+		{
+			current->GenerateCode(file);
+			break;
+		}
+		current->GenerateCode(file);
+		if (current->Isconditional())
+		{
+
+			Condition* TempCond = dynamic_cast<Condition*>(current);
+			Statement* trueStart = TempCond->GetTrueConn()->getDstStat();
+			Statement* falseStart = TempCond->GetFalseConn()->getDstStat();
+
+			bool trueIsEmpty = trueStart->IsEnd();
+			bool falseIsEmpty = falseStart->IsEnd();
+			Statement* condition_road = TempCond->GetTrueConn()->getDstStat();
+			file << "{\n";
+			if (!trueIsEmpty)
+			{
+				// TRUE branch
+				while (!condition_road->IsEnd())
+				{
+					condition_road->GenerateCode(file);
+					condition_road = condition_road->GetOutConnector()->getDstStat();
+				}
+			}
+			file << "}\n";
+			// FALSE branch
+			if (!falseIsEmpty)
+			{
+				file << "else\n{\n";
+				condition_road = TempCond->GetFalseConn()->getDstStat();
+				while (!condition_road->IsEnd())
+				{
+					condition_road->GenerateCode(file);
+					condition_road = condition_road->GetOutConnector()->getDstStat();
+				}
+				file << "}\n";
+			}
+
+			if ((condition_road->IsEnd()))
+			{
+				condition_road->GenerateCode(file);
+				break;
+			}
+		}
+
+		current = (current->GetOutConnector())->getDstStat();
+		
+	}
+	return true;
 }
 
 

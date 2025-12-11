@@ -300,6 +300,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="SwitchtoDesignAction.cpp" />
+    <ClCompile Include="SwitchToSim.cpp" />
     <ClCompile Include="ValidateAction.cpp" />
     <ClCompile Include="VariableAssign.cpp" />
     <ClCompile Include="Write.cpp" />
@@ -356,6 +357,7 @@
     <ClInclude Include="Statements\ValueAssign.h" />
     <ClInclude Include="Statements\Statement.h" />
     <ClInclude Include="SwitchtoDesignAction.h" />
+    <ClInclude Include="SwitchToSim.h" />
     <ClInclude Include="ValidateAction.h" />
     <ClInclude Include="VariableAssign.h" />
     <ClInclude Include="Write.h" />
