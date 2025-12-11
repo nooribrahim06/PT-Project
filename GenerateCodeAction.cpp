@@ -28,6 +28,7 @@ void GenerateCodeAction::Execute() {
 	if (!file)
 	{
 		pOut->PrintMessage("File Can't be Opened!");
+		return;
 	}
 	bool Gen = pManager->GenerateCode(file,msg);
 	if (Gen) {

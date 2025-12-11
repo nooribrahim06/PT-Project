@@ -26,5 +26,5 @@ class Read :
 	bool IsPointInside(Point P) const override;
 	//Statement* Clone() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
-
+	static double TriArea2(Point A, Point B, Point C);
 };

@@ -24,4 +24,5 @@ class Write :
 	bool IsPointInside(Point P) const override;
 	void  GenerateCode(ofstream& OutFile) override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;
+    static double TriArea2(Point A, Point B, Point C);
 };
