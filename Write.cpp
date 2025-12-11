@@ -1,4 +1,7 @@
 #include "Write.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 Write::Write(Point Lcorner,string& variable)
 {
 	var = variable;
@@ -59,8 +62,7 @@ Statement* Write::Simulate(Input* pIn, Output* pOut)
 
 void Write::GenerateCode(ofstream& OutFile)
 {
-	// to be implemented
-	return;
+	OutFile << "cout << " << var << " ;\n";
 }
 
 Point Write::GetOutletPoint() const
