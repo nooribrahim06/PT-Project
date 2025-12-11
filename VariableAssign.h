@@ -32,7 +32,7 @@ public:
     Connector* GetOutConnector() const override;
     virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override; //n
-	bool Validate(varinfo vars[], int& varcount, string& msg) override;
+    bool Validate(varinfo vars[], int& varcount, string& msg) override;
      // Statement* Clone() const override;
     //Statement* Clone() const override;
     //void SetInlet / SetOutlet(depends on type)

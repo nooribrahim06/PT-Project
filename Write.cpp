@@ -35,10 +35,11 @@ Statement* Write::Simulate(Input* pIn, Output* pOut)
 		value = stod(var);
 	}
 	else if (t==VARIABLE_OP){
-		value= GetVar(var);
+		value=  Statement::GetVar(var);
 	}
 
 		pOut->PrintMessage(var + " = " + to_string(value));
+		Connector* pOutConn = GetOutConnector();
 
 	if (pOutConn != NULL)
 	{

@@ -36,7 +36,8 @@ void Declare::Edit()
 }
 Statement* Declare::Simulate(Input* pIn, Output* pOut)
 {
-	/*SetVar(var, 0.0);*/
+	 Statement ::SetVar(var, 0);
+	 Connector* pOutConn = GetOutConnector();
 	if (pOutConn != NULL)
 	{
 		return pOutConn->getDstStat();
@@ -99,11 +100,14 @@ bool Declare::Validate(varinfo vars[], int& varcount, string& msg)
 		vars[index].initialized = false;
 	}
 	else {
-	vars[index].declared = true;
-}
+		vars[index].declared = true;
+	}
 	return true;
 	// 
 }
+	
+	
+
 void Declare::UpdateStatementText()
 {
 	ostringstream T;

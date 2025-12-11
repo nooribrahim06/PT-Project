@@ -12,12 +12,10 @@ void RunAction::Execute() {
 	string Runmsg;
 	bool Run = pManager->Run(Runmsg);
 	Output* pOut = pManager->GetOutput();
-	if (Run) {
+	if (!Run) {
 		pOut->PrintMessage(Runmsg);
 	}
-	else {
-		pOut->PrintMessage( Runmsg);
-	}
+	
 	
 
 }

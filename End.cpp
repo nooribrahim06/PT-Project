@@ -66,7 +66,7 @@ bool End::IsEnd() const
 {
 	return true;
 }
-bool End::Validate(varinfo vars[], int& varcount, string& msg)
+bool End:: Validate(varinfo vars[], int& varcount, string& msg) 
 {
 	return true;
 }
