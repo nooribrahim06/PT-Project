@@ -43,6 +43,24 @@ string Statement::R_names[Statement::Maxrunvars];
 double Statement::R_values[Statement::Maxrunvars]; // copied from chat needs to be written//
 int    Statement::R_count = 0;
 
+string Statement::GetDebug_RunVars()
+{
+	string msg = "";
+	if (R_count == 0)
+	{
+		msg = "No Variabes.";
+			return msg;
+	}
+	for (int i = 0; i < R_count; ++i)
+	{
+		msg += R_names[i] + " = " + to_string(R_values[i]) + "\n";
+		if (i < R_count - 1) {
+			msg += " , ";
+		}
+	}
+		return msg;
+}
+
 void Statement::Resetrunvars()
 {
 	R_count = 0;

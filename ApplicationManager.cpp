@@ -318,7 +318,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 					return false;
 				}
 			}
-		}
+		
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
@@ -501,13 +501,33 @@ bool ApplicationManager::Run(string& msg)
 	return true;
 }
 
-bool ApplicationManager::Debug(string& msg)
+bool ApplicationManager::Debug(string& msg,Statement*&cur)
 {
 	if (!ValidateAll(msg))
 	{
-		msg = "Error : Cannot Run the Flowchart. " + msg;
+		msg = "Error : Cannot Debug the Flowchart. " + msg;
 		return false;
 	}
+
+	Statement::Resetrunvars();
+    cur = NULL;
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			cur = StatList[i];
+			break;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error no Start Statement .";
+		return false;
+	}
+
+
+	
+	return true;
 }
 
 bool ApplicationManager::GenerateCode(const string& filename, string& msg)
