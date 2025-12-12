@@ -10,6 +10,8 @@
 #include "AddWrite.h"
 #include "AddConnect.h"
 #include "Select.h"
+#include "Copy.h"
+#include "Paste.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 #include "Edit.h"
@@ -96,6 +98,12 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case SAVE:
 			pAct = new Save(this);
+			break;
+		case COPY:
+			pAct = new Copy(this);
+			break;
+		case PASTE:
+			pAct = new Paste(this);
 			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
@@ -191,6 +199,17 @@ Statement *ApplicationManager::GetClipboard() const
 //Set the Clipboard
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
+////////////////////////////////////////////////////////////////////////////////////
+//Clears the Clipboard
+void ApplicationManager::ClearClipboard()
+{
+	if(pClipboard)
+	{
+		delete pClipboard;
+		pClipboard = NULL;	
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////
 
 Connector* ApplicationManager::GetSelectedConn() const
 {
@@ -265,7 +284,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (stat->IsEnd()) {
 			endStat = StatList[i];
 			endcount++;
-			
+
 		}
 
 	}
@@ -325,8 +344,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
 				return false;
 			}
-		
-
+		}
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
@@ -423,34 +441,6 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-	//Check for the Variable Validation//
-	/*varinfo vars[MaxCount];
-	int varcount = 0;
-	for (int i = 0; i < MaxCount; i++) {
-		vars[i].declared = false;
-		vars[i].name = "";
-		vars[i].initialized = false;
-	}
-	for (int j = 0; j < StatCount; j++) {
-		Statement* stat = StatList[j];
-		if (!stat)
-		{
-			continue;
-		}
-		if (!stat->Validate(vars, varcount, msg)) {
-			return false;
-		}
-	}*/
-
 	msg = " Valid Flowchart";
 	return true;
 }
@@ -466,9 +456,9 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error : Cannot Run the Flowchart. " + msg;
 		return false;
 	}
-	
+
 	Statement::Resetrunvars();
-	
+
 	Statement* cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -483,7 +473,7 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error no Start Statement .";
 		return false;
 	}
-	
+
 	int count = 0;
 	const int Steps = 1000;
 	while (cur && !cur->IsEnd())
@@ -505,11 +495,11 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error: FLowchart terminated without reaching End ";
 		return false;
 	}
-	
+
 	return true;
 }
 
-bool ApplicationManager::Debug(string& msg,Statement*&cur)
+bool ApplicationManager::Debug(string& msg, Statement*& cur)
 {
 	if (!ValidateAll(msg))
 	{
@@ -518,7 +508,7 @@ bool ApplicationManager::Debug(string& msg,Statement*&cur)
 	}
 
 	Statement::Resetrunvars();
-    cur = NULL;
+	cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] && StatList[i]->IsStart())
@@ -534,7 +524,7 @@ bool ApplicationManager::Debug(string& msg,Statement*&cur)
 	}
 
 
-	
+
 	return true;
 }
 
@@ -641,6 +631,10 @@ ApplicationManager::~ApplicationManager()
 		delete StatList[i];
 	for(int i=0; i<ConnCount; i++)
 		delete ConnList[i];
+	if (pClipboard)
+	{
+		delete pClipboard;
+	}
 	delete pIn;
 	delete pOut;
 	

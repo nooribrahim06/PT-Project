@@ -66,7 +66,7 @@ public:
 	//virtual void Edit() = 0;
 	virtual Statement* Simulate(Input*pIn,Output*pOut)=0;
 	virtual  void GenerateCode(ofstream& OutFile) = 0;
-	/*virtual Statement* Clone() const = 0;*/
+	virtual Statement* Clone() const = 0;
 	virtual bool IsStart() const;
 	virtual bool IsEnd() const;
 	virtual bool Isconditional() const;
@@ -76,6 +76,7 @@ public:
 	virtual Connector* GetOutConnector() const = 0;
 	virtual void SetOutconnector(Connector* C) = 0;
 	virtual bool IsPointInside(Point P) const = 0;
+	virtual void Move(const Point& P) = 0;
 	//virtual void SetText(const string& text) { Text = text; }
 	virtual ~Statement();
 	///TODO:The following functions should be supported by the Statement class

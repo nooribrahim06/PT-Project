@@ -20,5 +20,7 @@ class Start :
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsStart() const override;
 	bool IsPointInside(Point P) const override;
+	virtual void Move(const Point& P) override;
+	virtual Statement* Clone() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };

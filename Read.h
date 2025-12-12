@@ -17,6 +17,8 @@ class Read :
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
 	void Edit(const string& varName);
+	virtual Statement* Clone() const override;
+	virtual void Move(const Point& P) override;
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode (ofstream& OutFile) override;
 	Point GetOutletPoint() const override;

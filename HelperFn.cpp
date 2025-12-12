@@ -62,7 +62,12 @@ bool IsVariable(string input)
 
 bool IsValidOperand(const string& s) 
 {
+
     return IsValue(s) || IsVariable(s);
+}
+bool IsValidComparator(const string& s) 
+{
+        return (s == "==" || s == "!=" || s == "<" || s == "<=" || s == ">" || s == ">=");
 }
 
 OpType ValueOrVariable(string input)

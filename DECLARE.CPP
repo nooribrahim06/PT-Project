@@ -49,6 +49,19 @@ Statement* Declare::Simulate(Input* pIn, Output* pOut)
 		return NULL;
 	}
 }
+void Declare::Move(const Point& P)
+{LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+Statement* Declare::Clone() const {
+	Declare* copy = new Declare(*this);
+	copy->SetOutconnector(nullptr);
+	copy->SetSelected(false);
+	return copy;
+}
 	
 
 

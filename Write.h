@@ -18,7 +18,9 @@ class Write :
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
 	void Edit(string& var);
-   Statement* Simulate(Input* pIn, Output* pOut) override;
+    virtual void Move(const Point& P) override;
+    virtual Statement* Clone() const override;
+    Statement* Simulate(Input* pIn, Output* pOut) override;
 	Point GetOutletPoint() const override;
     Point GetInletPoint() const override;
     Connector* GetOutConnector() const override;

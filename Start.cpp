@@ -100,3 +100,18 @@ bool Start::IsPointInside(Point P) const
 bool Start::Validate(varinfo vars[], int& varcount, string& msg) {
 	return true;
 }
+
+Statement* Start::Clone() const 
+{
+	Start* copy = new Start(*this);
+	copy->SetOutconnector(nullptr);
+	copy->SetSelected(false);
+	return copy;
+}
+
+void Start::Move(const Point& P) 
+{
+	LeftCorner = P;
+	Outlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
