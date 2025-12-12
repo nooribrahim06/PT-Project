@@ -40,9 +40,9 @@ void Paste::Execute()
     // 5) Add to the application’s statement list
     pManager->AddStatement(pasted);
 
+
     // 6) Optionally select the new pasted statement
     pasted->SetSelected(false);
-    pManager->SetSelectedStatement(nullptr);
 
     // 7) Redraw
     pManager->UpdateInterface();
