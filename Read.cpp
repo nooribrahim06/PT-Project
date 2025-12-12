@@ -20,6 +20,19 @@ void Read::Draw(Output* pOut) const
 {
 	pOut->DrawInputStatement(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
+
+void Read::Move(const Point& P)
+{
+	LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+Statement* Read::Clone() const {
+	Read* copy = new Read(*this);
+	return copy;
+}
 void Read::Save(ofstream& OutFile)
 {
 	OutFile << "READ	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << varName << endl;

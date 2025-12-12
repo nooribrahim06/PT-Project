@@ -17,6 +17,7 @@ class Condition :
 	Condition(Point Lcorner, string L="",string Op = "", string R = "");
 	void setLHS(const string& L);
 	void setRHS(const string& R);
+	void setCompOp(const string& Op);
 	Connector* GetTrueConn() const;
 	void SetTrueConn(Connector* C);
 	Connector* GetFalseConn() const;
@@ -36,5 +37,7 @@ class Condition :
 	Connector* GetOutConnector() const override;
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override;
+	virtual void Move(const Point& P) override;
+	virtual Statement* Clone() const override;
 };
 

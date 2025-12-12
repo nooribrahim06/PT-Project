@@ -6,7 +6,8 @@
 // Edit action:
 // Edits the *currently selected* statement.
 // If no statement is selected, it just prints an error on the status bar.
-class Edit : public Action
+class Edit :
+    public Action
 {
 private:
     // Pointer to the statement we are going to edit

@@ -18,4 +18,5 @@ enum OpType
 bool IsValue(string input);
 bool IsVariable(string input);
 bool IsValidOperand(const string& s);
+bool IsValidComparator(const string& s);
 OpType ValueOrVariable(string input);

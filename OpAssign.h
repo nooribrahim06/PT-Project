@@ -28,6 +28,8 @@ public:
     Connector* GetOutConnector() const override;
     virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override;
+    virtual Statement* Clone() const override;
+    virtual void Move(const Point& P) override;
 	void  GenerateCode(ofstream& OutFile) override;
     //Statement* Clone() const override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;

@@ -37,6 +37,20 @@ void Write::Edit( string& var)
 	UpdateStatementText();
 	return;
 }
+Statement* Write::Clone() const 
+{
+	// Clone the Write statement
+	Write* pNewWrite = new Write(*this);
+	return pNewWrite;
+}
+void Write::Move(const Point& P)
+{
+	LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
 Statement* Write::Simulate(Input* pIn, Output* pOut)
 {
 	
@@ -61,9 +75,6 @@ Statement* Write::Simulate(Input* pIn, Output* pOut)
 	{
 		return NULL;
 	}
-
-
-
 
 }
 

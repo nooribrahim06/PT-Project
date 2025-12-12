@@ -25,6 +25,8 @@ public:
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
     void Edit(const string& LHS, const string& RHS);
+    virtual Statement* Clone() const override;
+    virtual void Move(const Point& P) override;
     Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
     Point GetOutletPoint() const override; //n

@@ -46,7 +46,8 @@ public:
 	Connector* GetOutConnector() const override;
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override; //n
-	//Statement* Clone() const override;
+	virtual Statement* Clone() const override;
+	virtual void Move(const Point& P) override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	
 };
