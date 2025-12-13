@@ -27,7 +27,7 @@ void AddCondition::ReadActionParameters()
 			break;
 		pOut->PrintMessage("Invalid input1 Enter a variable or value");
 		test = pIn->GetString(pOut);
-	}
+	} 
 	RHS = test;
 	pOut->ClearStatusBar();
 }

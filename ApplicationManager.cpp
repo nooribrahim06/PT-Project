@@ -1,4 +1,4 @@
-#include "ApplicationManager.h"
+﻿#include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
 #include "AddStart.h"
 #include "AddEnd.h"
@@ -347,7 +347,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 
 		else if (stat->Isconditional()) {
-			if (inc != 1 || Otc != 2) {
+			if (inc < 1 || Otc != 2) {
 				msg = " Conditional statement must have one incoming and two outgoing connectors.";
 				return false;
 			}
@@ -531,14 +531,16 @@ bool ApplicationManager::Debug(string& msg, Statement*& cur)
 bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
 {
 	Statement* current = nullptr;
+
 	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] && StatList[i]->IsStart())
 		{
 			current = StatList[i];
-			break; // we found it, stop
+			break;
 		}
 	}
+
 	if (!current)
 	{
 		msg = "No START statement found.";
@@ -552,53 +554,193 @@ bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
 			current->GenerateCode(file);
 			break;
 		}
-		current->GenerateCode(file);
+
 		if (current->Isconditional())
 		{
-
 			Condition* TempCond = dynamic_cast<Condition*>(current);
+
 			Statement* trueStart = TempCond->GetTrueConn()->getDstStat();
 			Statement* falseStart = TempCond->GetFalseConn()->getDstStat();
 
 			bool trueIsEmpty = trueStart->IsEnd();
 			bool falseIsEmpty = falseStart->IsEnd();
-			Statement* condition_road = TempCond->GetTrueConn()->getDstStat();
-			file << "{\n";
-			if (!trueIsEmpty)
-			{
-				// TRUE branch
-				while (!condition_road->IsEnd())
-				{
-					condition_road->GenerateCode(file);
-					condition_road = condition_road->GetOutConnector()->getDstStat();
-				}
-			}
-			file << "}\n";
-			// FALSE branch
-			if (!falseIsEmpty)
-			{
-				file << "else\n{\n";
-				condition_road = TempCond->GetFalseConn()->getDstStat();
-				while (!condition_road->IsEnd())
-				{
-					condition_road->GenerateCode(file);
-					condition_road = condition_road->GetOutConnector()->getDstStat();
-				}
-				file << "}\n";
-			}
 
-			if ((condition_road->IsEnd()))
+			int loopType = SetIsLoop(TempCond);      // CALL ONCE
+			
+			bool loopTrue = (loopType == 1);
+			bool loopFalse = (loopType == 2);
+
+			if (loopTrue)
 			{
-				condition_road->GenerateCode(file);
-				break;
+				// while (cond)
+				TempCond->GenerateLoopCode(file, true);
+				file << "{\n";
+
+				Statement* road = trueStart;
+				while (!road->IsEnd() && road != TempCond)
+				{
+					road->GenerateCode(file);   // BODY STATEMENTS
+					road = road->GetOutConnector()->getDstStat();
+				}
+
+				file << "}\n";
+
+				// after loop, continue from FALSE road
+				current = falseStart;
+				continue;
+			}
+			else if (loopFalse)
+			{
+				// while (!cond)
+				TempCond->GenerateLoopCode(file, false);
+				file << "{\n";
+
+				Statement* road = falseStart;
+				while (!road->IsEnd() && road != TempCond)
+				{
+					road->GenerateCode(file);
+					road = road->GetOutConnector()->getDstStat();
+				}
+
+				file << "}\n";
+
+				// after loop, continue from TRUE road
+				current = trueStart;
+				continue;
+			}
+			else
+			{
+				// NORMAL if/else
+				TempCond->GenerateCode(file);   // prints: if (condition)
+
+				Statement* condition_road = trueStart;
+				file << "{\n";
+
+				if (!trueIsEmpty)
+				{
+					while (!condition_road->IsEnd())
+					{
+						condition_road->GenerateCode(file);
+						condition_road = condition_road->GetOutConnector()->getDstStat();
+					}
+				}
+
+				file << "}\n";
+
+				if (!falseIsEmpty)
+				{
+					file << "else\n{\n";
+					condition_road = falseStart;
+
+					while (!condition_road->IsEnd())
+					{
+						condition_road->GenerateCode(file);
+						condition_road = condition_road->GetOutConnector()->getDstStat();
+					}
+
+					file << "}\n";
+				}
+
+				// your current design: branches end at End
+				if (condition_road->IsEnd())
+				{
+					condition_road->GenerateCode(file);
+					break;
+				}
 			}
 		}
-
-		current = (current->GetOutConnector())->getDstStat();
-		
+		else
+		{
+			// normal statement
+			current->GenerateCode(file);
+			current = current->GetOutConnector()->getDstStat();
+		}
 	}
+
 	return true;
 }
+
+// return values:
+// 0 -> not a loop
+// 1 -> loop on TRUE road
+// 2 -> loop on FALSE road
+int ApplicationManager::SetIsLoop(Condition* cond)
+{
+	// loop over all coming statements
+	// we have 2 possiblities
+	// first: cond statement outer connector goes to an end (return 0)
+	// second: it goes to the same id again (return 1 or 2)
+	cond->LoopOnTrue = false;
+	cond->LoopOnFalse = false;
+
+	if (!cond) return 0;
+
+	int targetID = cond->GetstatementID();
+
+	Connector* tConn = cond->GetTrueConn();
+	Connector* fConn = cond->GetFalseConn();
+
+	// if connectors missing → can't be a loop
+	if (!tConn || !fConn) return 0;
+
+	// check both roads
+	Statement* roads[2];
+	roads[0] = tConn->getDstStat();   // TRUE road start
+	roads[1] = fConn->getDstStat();   // FALSE road start
+
+	for (int r = 0; r < 2; r++)
+	{
+		Statement* current = roads[r];
+
+		// walk forward
+		while (current)
+		{
+			// came back to same condition → LOOP
+			if (current->GetstatementID() == targetID)
+			{
+				if (r == 0)
+				{
+					cond->LoopOnTrue = true;
+					return 1; // loop on TRUE
+				}
+				else
+				{
+					cond->LoopOnFalse = true;
+					return 2; // loop on FALSE
+				}
+			}
+
+			// reached End → this road is safe
+			if (current->IsEnd())
+				break;
+
+			// if we hit another condition, follow ONE path forward
+			// (simple detection only, no branching)
+			if (current->Isconditional())
+			{
+				Condition* c = dynamic_cast<Condition*>(current);
+				if (!c || !c->GetTrueConn())
+					break;
+
+				current = c->GetTrueConn()->getDstStat();
+			}
+			else
+			{
+				Connector* out = current->GetOutConnector();
+				if (!out)
+					break;
+
+				current = out->getDstStat();
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+
+
 
 void ApplicationManager::SaveAll(ofstream& file)
 {

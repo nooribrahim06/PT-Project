@@ -6,7 +6,7 @@
 #include "Statements\Statement.h"
 class Input;
 class Output;
-
+class Condition;
 
 //Main class that manages everything in the application.
 class ApplicationManager
@@ -66,8 +66,8 @@ public:
 	bool Run(string& msg);
 	bool Debug(string& msg,Statement*&cur);
 	bool GenerateCode(ofstream& filename, string& msg);
-	
-	
+	int SetIsLoop(Condition* cond);
+	void GenerateLoopCode(ofstream& file, Condition* cond);
 	void SaveAll(ofstream& file);
 
 	
