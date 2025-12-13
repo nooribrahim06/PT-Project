@@ -17,8 +17,10 @@ class Write :
     virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
-	void Edit() override;
-   Statement* Simulate(Input* pIn, Output* pOut) override;
+	void Edit(string& var);
+    virtual void Move(const Point& P) override;
+    virtual Statement* Clone() const override;
+    Statement* Simulate(Input* pIn, Output* pOut) override;
 	Point GetOutletPoint() const override;
     Point GetInletPoint() const override;
     Connector* GetOutConnector() const override;
@@ -26,4 +28,5 @@ class Write :
 	bool IsPointInside(Point P) const override;
 	void  GenerateCode(ofstream& OutFile) override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;
+    static double TriArea2(Point A, Point B, Point C);
 };

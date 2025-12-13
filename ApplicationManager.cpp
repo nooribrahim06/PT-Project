@@ -3,13 +3,19 @@
 #include "AddStart.h"
 #include "AddEnd.h"
 #include "AddCondition.h"
+#include "Condition.h"
 #include "AddDeclare.h"
 #include "AddOperAssign.h"
 #include "AddVarAssign.h"
 #include "AddRead.h"
 #include "AddWrite.h"
 #include "AddConnect.h"
+#include "Connector.h"
 #include "Select.h"
+#include "Copy.h"
+#include "Paste.h"
+#include "Cut.h"
+#include "Delete.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 #include "ValidateAction.h"
@@ -20,6 +26,7 @@
 #include "SwitchToSim.h"
 #include "Save.h"
 #include"Load.h"
+#include"Edit.h"
 #include"Declare.h"
 #include <fstream>
 
@@ -64,73 +71,88 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
-	case ADD_START:
-		pAct = new AddStart(this);
-		break;
-	case ADD_END:
-		pAct = new AddEnd(this);
-		break;
-	case ADD_DECLARE_VARIABLE:
-		pAct = new AddDeclare(this);
-		break;
-	case ADD_VALUE_ASSIGN:
-		pAct = new AddValueAssign(this);
-		break;
-	case ADD_VAR_ASSIGN:
-		pAct = new AddVarAssign(this);
-		break;
-	case ADD_OPER_ASSIGN:
-		pAct = new AddOperAssign(this);
-		break;
-	case ADD_CONDITION:
-		///create AddCondition Action here
-		pAct = new AddCondition(this);
-		break;
-	case ADD_READ:
-		pAct = new AddRead(this);
-		break;
-	case ADD_WRITE:
-		pAct = new AddWrite(this);
-		break;
-	case SAVE:
-		pAct = new Save(this);
-		break;
-	case VALIDATE:
-		pAct = new ValidateAction(this);
-		break;
-	case GENERATE_CODE:
-		pAct = new GenerateCodeAction(this);
-		break;
-	case LOAD:
-		pAct = new Load(this);
-		break;
-	case RUN:
-		pAct = new RunAction(this);
-		break;
-	case DEBUG_RUN:
-		pAct = new DebugRunAction(this);
-		break;
-	case SWITCH_DSN_MODE:
-		pAct = new SwitchtoDesignAction(this);
-		break;
-	case SWITCH_SIM_MODE:
-		pAct = new SwitchToSim(this);
-		break;
-	case ADD_CONNECTOR:
-		pAct = new AddConnect(this);
-		break;
-	case SELECT:
-		///create Select Action here
-		pAct = new Select(this);
-		break;
-
-	case EXIT:
-		///create Exit Action here
-
-		break;
-
-	case STATUS:
-		return;
+		case ADD_START:
+			pAct = new AddStart(this);
+			break;
+		case ADD_END:
+			pAct = new AddEnd(this);
+			break;
+		case ADD_DECLARE_VARIABLE:
+			pAct = new AddDeclare(this);
+			break;
+		case ADD_VALUE_ASSIGN:
+			pAct = new AddValueAssign(this);
+			break;
+		case ADD_VAR_ASSIGN:
+			pAct = new AddVarAssign(this);
+			break;
+		case ADD_OPER_ASSIGN:
+			pAct = new AddOperAssign(this);
+			break;
+		case ADD_CONDITION:
+			///create AddCondition Action here
+			pAct = new AddCondition(this);
+			break;
+		case ADD_READ:
+			pAct = new AddRead(this);
+			break;
+		case ADD_WRITE:
+			pAct = new AddWrite(this);
+			break;
+		case EDIT_STAT:
+			pAct = new Edit(this);
+			break;
+		case SAVE:
+			pAct = new Save(this);
+			break;
+		case COPY:
+			pAct = new Copy(this);
+			break;
+		case PASTE:
+			pAct = new Paste(this);
+			break;
+		case CUT:
+			pAct = new Cut(this);
+			break;
+		case DEL:
+			pAct = new Delete(this);
+			break;
+		case LOAD:
+			pAct = new Load(this);
+			break;
+		case VALIDATE:
+			pAct = new ValidateAction(this);
+			break;
+		case GENERATE_CODE:
+			pAct = new GenerateCodeAction(this);
+			break;
+		case RUN:
+			pAct = new RunAction(this);
+			break;
+		case DEBUG_RUN:
+			pAct = new DebugRunAction(this);
+			break;
+		case SWITCH_DSN_MODE:
+			pAct = new SwitchtoDesignAction(this);
+			break;
+		case SWITCH_SIM_MODE:
+			pAct = new SwitchToSim(this);
+			break;
+		case ADD_CONNECTOR:
+			pAct = new AddConnect(this);
+			break;
+		case SELECT:
+			///create Select Action here
+			pAct = new Select(this);
+			break;
+		
+		case EXIT:
+			///create Exit Action here
+			
+			break;
+		
+		case STATUS:
+			return;
 	}
 
 	//Execute the created action
@@ -188,6 +210,136 @@ void ApplicationManager::SetSelectedStatement(Statement* pStat)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteConnector(Connector* pConn)
+{
+	if (!pConn) return;
+	//remove highlight and select pointer
+	pConn->Setselected(false);
+	if (pSelectedConn == pConn)
+	{
+		pSelectedConn = nullptr;
+	}
+
+	Statement* src = pConn->getSrcStat();
+
+	//detach from source statement
+
+	if (src)
+	{
+		if (src->Isconditional())
+		{
+			Condition* cond = dynamic_cast<Condition*>(src);
+			if (cond)
+			{
+				if (cond->GetTrueConn() == pConn) cond->SetTrueConn(nullptr);
+				if (cond->GetFalseConn() == pConn) cond->SetFalseConn(nullptr);
+			}
+		}
+		else
+		{
+
+			if (src->GetOutConnector() == pConn)
+			{
+				src->SetOutconnector(nullptr);
+			}
+		}
+	}
+
+	// Find and delete the connector from ConnList
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pConn)
+		{
+			delete ConnList[i];
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			break;
+		}
+	}
+	// Clear selection if it was the deleted connector
+	if (pSelectedConn == pConn) pSelectedConn = nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
+{
+	if (!s) 
+		return;
+
+	//deselect the statement
+	s->SetSelected(false);;
+	if (pSelectedStat == s)
+	{
+		pSelectedStat = nullptr;
+	}
+
+	if (pSelectedConn)
+	{
+		Statement* s = pSelectedConn->getSrcStat();
+		Statement* d = pSelectedConn->getDstStat();
+		if (s == s || d == s)
+			pSelectedConn = nullptr;
+	}
+
+	// delete all incoming connectors
+    for (int i = 0; i < ConnCount; )
+	{
+		Connector* conn = ConnList[i];
+		if (!conn)
+		{
+			i++;
+			continue;
+		}
+
+		Statement* src = conn->getSrcStat();
+		Statement* dst = conn->getDstStat();
+
+		if (src == s || dst == s)
+		{
+			if (src ==s)
+			{
+				s->SetOutconnector(nullptr);
+			}
+			
+			delete conn;
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			continue; //recheck same index after shift
+		}
+
+		i++;
+	}
+
+	// Then, delete the statement itself from StatList
+
+    for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == s)
+		{
+			delete StatList[i];
+			// Shift statements left
+			for (int j = i; j < StatCount - 1; j++)
+			{
+				StatList[j] = StatList[j + 1];
+			}
+			StatList[--StatCount] = nullptr;
+			break;
+		}
+	}
+
+	//clear selection if it was the deleted statement
+	if (pSelectedStat == s) pSelectedStat = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////////
+
 //Returns the Clipboard
 Statement* ApplicationManager::GetClipboard() const
 {
@@ -196,10 +348,19 @@ Statement* ApplicationManager::GetClipboard() const
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Set the Clipboard
-void ApplicationManager::SetClipboard(Statement* pStat)
+void ApplicationManager::SetClipboard(Statement *pStat)
+{	pClipboard = pStat;	}
+////////////////////////////////////////////////////////////////////////////////////
+//Clears the Clipboard
+void ApplicationManager::ClearClipboard()
 {
-	pClipboard = pStat;
+	if(pClipboard)
+	{
+		delete pClipboard;
+		pClipboard = NULL;	
+	}
 }
+////////////////////////////////////////////////////////////////////////////////////
 
 Connector* ApplicationManager::GetSelectedConn() const
 {
@@ -443,9 +604,9 @@ bool ApplicationManager::ValidateAll(string& msg)
 	//Check for the Variable Validation//
 	/*varinfo vars[MaxCount];
 	int varcount = 0;
-	for (int i = 0; i < MaxCount; i++) {
-		vars[i].declared = false;
+	for (int i = 0; i < 200; ++i) {
 		vars[i].name = "";
+		vars[i].declared = false;
 		vars[i].initialized = false;
 	}
 	for (int j = 0; j < StatCount; j++) {
@@ -755,7 +916,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		
 	}
 
-
+	
 	////////////////////////////////////////////////////////////////////////////////////
 	//Return a pointer to the input
 	Input* ApplicationManager::GetInput() const
@@ -770,14 +931,18 @@ bool ApplicationManager::ValidateAll(string& msg)
 	////////////////////////////////////////////////////////////////////////////////////
 
 
-	//Destructor
-	ApplicationManager::~ApplicationManager()
+//Destructor
+ApplicationManager::~ApplicationManager()
+{
+	for(int i=0; i<StatCount; i++)
+		delete StatList[i];
+	for(int i=0; i<ConnCount; i++)
+		delete ConnList[i];
+	if (pClipboard)
 	{
-		for (int i = 0; i < StatCount; i++)
-			delete StatList[i];
-		for (int i = 0; i < ConnCount; i++)
-			delete ConnList[i];
-		delete pIn;
-		delete pOut;
-
+		delete pClipboard;
 	}
+	delete pIn;
+	delete pOut;
+	
+}

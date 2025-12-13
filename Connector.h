@@ -35,6 +35,7 @@ public:
 	
 	void Save(ofstream& file);
 	void Load(ifstream& InFile, int& srcID, int& dstID,int&type);
+	~Connector();
 
 };
 

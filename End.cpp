@@ -80,3 +80,23 @@ void End::Draw(Output* pOut) const
 {
 	pOut->DrawEnd(Leftcorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
+Statement* End::Clone() const {
+	// 1) Create a new object by copying *this*pa
+	End* c = new End(*this);  // uses default copy ctor
+
+	// 2) Fix any pointer members so they don't share stuff
+	c->SetOutconnector(nullptr);   // NO connectors are copied
+
+	// 3) A copied statement should not start as "selected"
+	c->SetSelected(false);
+
+	// 4) Return it as a Statement*
+	return c;
+}
+
+void End::Move(const Point& P)
+{
+	Leftcorner = P;
+	Inlet.x = Leftcorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = Leftcorner.y;
+}

@@ -11,7 +11,9 @@ public:
 	virtual void Draw(Output* pOut) const;
     void Save(ofstream& OutFile) override;
     void Load(ifstream& InFile) override;
-	void Edit() override;
+	void Edit();
+	virtual Statement* Clone() const override;
+	virtual void Move(const Point& P) override;
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	Point GetOutletPoint() const override;
 	Point GetInletPoint() const override;

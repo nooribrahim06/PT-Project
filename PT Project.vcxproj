@@ -281,8 +281,12 @@
     </ClCompile>
     <ClCompile Include="Condition.cpp" />
     <ClCompile Include="Connector.cpp" />
+    <ClCompile Include="Copy.cpp" />
+    <ClCompile Include="Cut.cpp" />
     <ClCompile Include="DebugRunAction.cpp" />
     <ClCompile Include="Declare.cpp" />
+    <ClCompile Include="Delete.cpp" />
+    <ClCompile Include="Edit.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="GenerateCodeAction.cpp" />
     <ClCompile Include="GUI\Input.cpp" />
@@ -290,6 +294,7 @@
     <ClCompile Include="HelperFn.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="OpAssign.cpp" />
+    <ClCompile Include="Paste.cpp" />
     <ClCompile Include="Read.cpp" />
     <ClCompile Include="RunAction.cpp" />
     <ClCompile Include="Save.cpp" />
@@ -342,9 +347,13 @@
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="Condition.h" />
     <ClInclude Include="Connector.h" />
+    <ClInclude Include="Copy.h" />
+    <ClInclude Include="Cut.h" />
     <ClInclude Include="DebugRunAction.h" />
     <ClInclude Include="Declare.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="Delete.h" />
+    <ClInclude Include="Edit.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="GenerateCodeAction.h" />
     <ClInclude Include="GUI\Input.h" />
@@ -353,6 +362,7 @@
     <ClInclude Include="HelperFn.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="OpAssign.h" />
+    <ClInclude Include="Paste.h" />
     <ClInclude Include="Read.h" />
     <ClInclude Include="RunAction.h" />
     <ClInclude Include="Save.h" />

@@ -22,10 +22,25 @@ void AddOperAssign::ReadActionParameters()
 	LHS = pIn->GetVariable(pOut);
 	pOut->PrintMessage("OperAssign Statement: Enter first RHS");
 	RHS1 = pIn->GetString(pOut);
+	string test = pIn->GetString(pOut);
+	while (true) {
+		if (IsVariable(test) || IsValue(test))
+			break;
+		pOut->PrintMessage("Invalid input1 Enter a variable or value");
+		test = pIn->GetString(pOut);
+	}
+	RHS1 = test;
 	pOut->PrintMessage("OperAssign Statement: Enter arithmetic operator (+, -, *, /)");
 	Op = pIn->GetArithOperator(pOut);
 	pOut->PrintMessage("OperAssign Statement: Enter second RHS");
-	RHS2 = pIn->GetString(pOut);
+	test = pIn->GetString(pOut);
+	while (true) {
+		if (IsVariable(test) || IsValue(test))
+			break;
+		pOut->PrintMessage("Invalid input2 Enter a variable or value");
+		test = pIn->GetString(pOut);
+	}
+	RHS2 = test;
 	pOut->ClearStatusBar();
 }
 void AddOperAssign::Execute()

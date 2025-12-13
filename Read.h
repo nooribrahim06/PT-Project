@@ -16,7 +16,9 @@ class Read :
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
-	void Edit() override;
+	void Edit(const string& varName);
+	virtual Statement* Clone() const override;
+	virtual void Move(const Point& P) override;
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode (ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
@@ -26,5 +28,5 @@ class Read :
 	bool IsPointInside(Point P) const override;
 	//Statement* Clone() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
-
+	static double TriArea2(Point A, Point B, Point C);
 };

@@ -144,6 +144,11 @@ bool Statement::Validate(varinfo vars[], int& varcount, string& msg)
 	return true;
 }
 
+void Statement::Move(const Point& P) 
+{
+	//Default implementation does nothing
+}
+
 
 
 Statement::~Statement()

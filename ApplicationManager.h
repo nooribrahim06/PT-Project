@@ -51,9 +51,16 @@ public:
 	void SetSelectedStatement(Statement *pStat); //Set the Statement selected by the user
 	Statement *GetClipboard() const;	         //Returns the Clipboard
 	void SetClipboard(Statement *pStat);         //Set the Clipboard
+	void ClearClipboard();                     //Clears the Clipboard
+
+	void DeleteStatementWithConnectors(Statement* s);
+	void DeleteConnector(Connector* pConn); //N
 
 	Connector* GetSelectedConn() const; //N
 	void SetSelectedConn(Connector* pConn); //N
+
+
+	
 
 
 	// == Interface Management Functions ==

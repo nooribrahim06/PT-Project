@@ -17,6 +17,7 @@ class Condition :
 	Condition(Point Lcorner, string L="",string Op = "", string R = "");
 	void setLHS(const string& L);
 	void setRHS(const string& R);
+	void setCompOp(const string& Op);
 	Connector* GetTrueConn() const;
 	void SetTrueConn(Connector* C);
 	Connector* GetFalseConn() const;
@@ -26,7 +27,7 @@ class Condition :
 	void Load(ifstream& InFile) override;
 	bool Isconditional() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
-	void Edit() override;
+	void Edit(const string& LHS, const string& RHS, const string& CompOp);
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
@@ -36,5 +37,7 @@ class Condition :
 	Connector* GetOutConnector() const override;
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override;
+	virtual void Move(const Point& P) override;
+	virtual Statement* Clone() const override;
 };
 

@@ -50,9 +50,11 @@ void ValueAssign::Save(ofstream& OutFile)
 	return;
 }
 
-void ValueAssign::Edit()
+void ValueAssign::Edit(string LHS, string RHS)
 {
-	// to be implemented
+	setLHS(LHS);
+	setRHS(stod(RHS));
+	UpdateStatementText();	
 	return;
 }
 
@@ -140,7 +142,7 @@ void ValueAssign::SetOutconnector(Connector* C)
 	pOutConn = C;
 }
 
-bool ValueAssign::IsPointInside(Point P) const
+bool ValueAssign::IsPointInside(Point P) const 
 {
 	if (P.x >= LeftCorner.x && P.x <= LeftCorner.x + UI.ASSGN_WDTH &&
 		P.y >= LeftCorner.y && P.y <= LeftCorner.y + UI.ASSGN_HI)
@@ -149,6 +151,29 @@ bool ValueAssign::IsPointInside(Point P) const
 		return false;
 }
 
+
+void ValueAssign::Move(const Point& P)
+{
+	LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+
+Statement* ValueAssign::Clone() const {
+	// 1) Create a new object by copying *this*pa
+	ValueAssign* c = new ValueAssign(*this);  // uses default copy ctor
+
+	// 2) Fix any pointer members so they don't share stuff
+	c->SetOutconnector(nullptr);   // NO connectors are copied
+
+	// 3) A copied statement should not start as "selected"
+	c->SetSelected(false);
+
+	// 4) Return it as a Statement*
+	return c;
+}
 
 
 

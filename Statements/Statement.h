@@ -64,10 +64,10 @@ public:
 	virtual void Draw(Output* pOut) const  = 0;	//Draw the statement
 	virtual void Save(ofstream& OutFile) = 0;
 	virtual void Load(ifstream& Infile) = 0;
-	virtual void Edit() = 0;
+	//virtual void Edit() = 0;
 	virtual Statement* Simulate(Input*pIn,Output*pOut)=0;
 	virtual  void GenerateCode(ofstream& OutFile) = 0;
-	/*virtual Statement* Clone() const = 0;*/
+	virtual Statement* Clone() const = 0;
 	virtual bool IsStart() const;
 	virtual bool IsEnd() const;
 	virtual bool Isconditional() const;
@@ -77,6 +77,8 @@ public:
 	virtual Connector* GetOutConnector() const = 0;
 	virtual void SetOutconnector(Connector* C) = 0;
 	virtual bool IsPointInside(Point P) const = 0;
+	virtual void Move(const Point& P) = 0;
+	//virtual void SetText(const string& text) { Text = text; }
 	virtual ~Statement();
 	///TODO:The following functions should be supported by the Statement class
 	///		It should then be overridden by each derived Statement
@@ -85,7 +87,6 @@ public:
 	//virtual void Save(ofstream &OutFile) = 0;	//Save the Statement parameters to a file
 	//virtual void Load(ifstream &Infile) = 0;	//Load the Statement parameters from a file
 
-	//virtual void Edit() = 0;		//Edit the Statement parameter
 
 	//virtual void Simulate();	//Execute the statement in the simulation mode
 

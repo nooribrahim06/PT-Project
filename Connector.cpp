@@ -130,3 +130,14 @@ void Connector::Load(ifstream& InFile, int& srcID, int& dstID, int& type)
 	
 }
 
+Connector::~Connector()
+{
+	// IMPORTANT:
+	// - Do NOT delete SrcStat or DstStat
+	// - Do NOT access *SrcStat or *DstStat here
+	// They are owned and deleted by ApplicationManager (StatList),
+	// and by the time connectors are being deleted, those statements
+	// are already gone.
+	SrcStat = nullptr;
+	DstStat = nullptr;
+}

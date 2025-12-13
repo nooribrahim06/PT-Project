@@ -1,4 +1,6 @@
 #include "Condition.h"
+#include "HelperFn.h"
+#include "GUI/Output.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -32,6 +34,12 @@ void Condition::setRHS(const string& R)
 {
 	// to be implemented 
 	RHS = R;
+	UpdateStatementText();
+}
+void Condition::setCompOp(const string& Op)
+{
+	// to be implemented 
+	CompOp = Op;
 	UpdateStatementText();
 }
 Connector* Condition::GetTrueConn() const
@@ -97,10 +105,33 @@ void Condition::Load(ifstream& InFile)
 
 	return;
 }
-void Condition::Edit()
+void Condition::Edit(const string& LHS, const string& RHS, const string& CompO)
 {
+	setLHS(LHS);
+	setRHS(RHS);
+	setCompOp(CompO);
 	return;
 }
+void Condition::Move(const Point& P)
+{
+	Center = P;
+	Inlet.x = Center.x;
+	Inlet.y = Center.y - UI.ASSGN_HI / 2;
+	TrueOutlet.x = Center.x + UI.ASSGN_WDTH / 2;
+	TrueOutlet.y = Center.y;
+	FalseOutlet.x = Center.x - UI.ASSGN_WDTH / 2;
+	FalseOutlet.y = Center.y;
+}
+
+Statement* Condition::Clone() const {
+	Condition* copy = new Condition(*this);
+	copy->SetTrueConn(nullptr);
+	copy->SetFalseConn(nullptr);
+	copy->SetSelected(false);
+	return copy;
+
+}
+
 Statement* Condition::Simulate(Input* pIn, Output* pOut)
 {
 
