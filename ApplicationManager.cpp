@@ -3,20 +3,27 @@
 #include "AddStart.h"
 #include "AddEnd.h"
 #include "AddCondition.h"
+#include "Condition.h"
 #include "AddDeclare.h"
 #include "AddOperAssign.h"
 #include "AddVarAssign.h"
 #include "AddRead.h"
 #include "AddWrite.h"
 #include "AddConnect.h"
+#include "Connector.h"
 #include "Select.h"
+#include "Copy.h"
+#include "Paste.h"
+#include "Cut.h"
+#include "Delete.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
+#include "Edit.h"
 #include "ValidateAction.h"
-#include"GenerateCodeAction.h"
-#include"DebugRunAction.h"
-#include"RunAction.h"
-#include"SwitchtoDesignAction.h"
+#include "GenerateCodeAction.h"
+#include "DebugRunAction.h"
+#include "RunAction.h"
+#include "SwitchtoDesignAction.h"
 #include "SwitchToSim.h"
 #include "Save.h"
 #include <fstream>
@@ -90,8 +97,23 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case ADD_WRITE:
 			pAct = new AddWrite(this);
 			break;
+		case EDIT_STAT:
+			pAct = new Edit(this);
+			break;
 		case SAVE:
 			pAct = new Save(this);
+			break;
+		case COPY:
+			pAct = new Copy(this);
+			break;
+		case PASTE:
+			pAct = new Paste(this);
+			break;
+		case CUT:
+			pAct = new Cut(this);
+			break;
+		case DEL:
+			pAct = new Delete(this);
 			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
@@ -179,6 +201,136 @@ void ApplicationManager::SetSelectedStatement(Statement *pStat)
 {	pSelectedStat = pStat;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteConnector(Connector* pConn)
+{
+	if (!pConn) return;
+	//remove highlight and select pointer
+	pConn->Setselected(false);
+	if (pSelectedConn == pConn)
+	{
+		pSelectedConn = nullptr;
+	}
+
+	Statement* src = pConn->getSrcStat();
+
+	//detach from source statement
+
+	if (src)
+	{
+		if (src->Isconditional())
+		{
+			Condition* cond = dynamic_cast<Condition*>(src);
+			if (cond)
+			{
+				if (cond->GetTrueConn() == pConn) cond->SetTrueConn(nullptr);
+				if (cond->GetFalseConn() == pConn) cond->SetFalseConn(nullptr);
+			}
+		}
+		else
+		{
+
+			if (src->GetOutConnector() == pConn)
+			{
+				src->SetOutconnector(nullptr);
+			}
+		}
+	}
+
+	// Find and delete the connector from ConnList
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pConn)
+		{
+			delete ConnList[i];
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			break;
+		}
+	}
+	// Clear selection if it was the deleted connector
+	if (pSelectedConn == pConn) pSelectedConn = nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
+{
+	if (!s) 
+		return;
+
+	//deselect the statement
+	s->SetSelected(false);;
+	if (pSelectedStat == s)
+	{
+		pSelectedStat = nullptr;
+	}
+
+	if (pSelectedConn)
+	{
+		Statement* s = pSelectedConn->getSrcStat();
+		Statement* d = pSelectedConn->getDstStat();
+		if (s == s || d == s)
+			pSelectedConn = nullptr;
+	}
+
+	// delete all incoming connectors
+    for (int i = 0; i < ConnCount; )
+	{
+		Connector* conn = ConnList[i];
+		if (!conn)
+		{
+			i++;
+			continue;
+		}
+
+		Statement* src = conn->getSrcStat();
+		Statement* dst = conn->getDstStat();
+
+		if (src == s || dst == s)
+		{
+			if (src ==s)
+			{
+				s->SetOutconnector(nullptr);
+			}
+			
+			delete conn;
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			continue; //recheck same index after shift
+		}
+
+		i++;
+	}
+
+	// Then, delete the statement itself from StatList
+
+    for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == s)
+		{
+			delete StatList[i];
+			// Shift statements left
+			for (int j = i; j < StatCount - 1; j++)
+			{
+				StatList[j] = StatList[j + 1];
+			}
+			StatList[--StatCount] = nullptr;
+			break;
+		}
+	}
+
+	//clear selection if it was the deleted statement
+	if (pSelectedStat == s) pSelectedStat = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////////
+
 //Returns the Clipboard
 Statement *ApplicationManager::GetClipboard() const
 {	return pClipboard;	}
@@ -187,6 +339,17 @@ Statement *ApplicationManager::GetClipboard() const
 //Set the Clipboard
 void ApplicationManager::SetClipboard(Statement *pStat)
 {	pClipboard = pStat;	}
+////////////////////////////////////////////////////////////////////////////////////
+//Clears the Clipboard
+void ApplicationManager::ClearClipboard()
+{
+	if(pClipboard)
+	{
+		delete pClipboard;
+		pClipboard = NULL;	
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////
 
 Connector* ApplicationManager::GetSelectedConn() const
 {
@@ -261,7 +424,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 		if (stat->IsEnd()) {
 			endStat = StatList[i];
 			endcount++;
-			
+
 		}
 
 	}
@@ -321,8 +484,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
 				return false;
 			}
-		
-
+		}
 
 		else if (stat->Isconditional()) {
 			if (inc != 1 || Otc != 2) {
@@ -419,34 +581,6 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-	//Check for the Variable Validation//
-	/*varinfo vars[MaxCount];
-	int varcount = 0;
-	for (int i = 0; i < MaxCount; i++) {
-		vars[i].declared = false;
-		vars[i].name = "";
-		vars[i].initialized = false;
-	}
-	for (int j = 0; j < StatCount; j++) {
-		Statement* stat = StatList[j];
-		if (!stat)
-		{
-			continue;
-		}
-		if (!stat->Validate(vars, varcount, msg)) {
-			return false;
-		}
-	}*/
-
 	msg = " Valid Flowchart";
 	return true;
 }
@@ -462,9 +596,9 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error : Cannot Run the Flowchart. " + msg;
 		return false;
 	}
-	
+
 	Statement::Resetrunvars();
-	
+
 	Statement* cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
@@ -479,7 +613,7 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error no Start Statement .";
 		return false;
 	}
-	
+
 	int count = 0;
 	const int Steps = 1000;
 	while (cur && !cur->IsEnd())
@@ -501,11 +635,11 @@ bool ApplicationManager::Run(string& msg)
 		msg = "Error: FLowchart terminated without reaching End ";
 		return false;
 	}
-	
+
 	return true;
 }
 
-bool ApplicationManager::Debug(string& msg,Statement*&cur)
+bool ApplicationManager::Debug(string& msg, Statement*& cur)
 {
 	if (!ValidateAll(msg))
 	{
@@ -514,7 +648,7 @@ bool ApplicationManager::Debug(string& msg,Statement*&cur)
 	}
 
 	Statement::Resetrunvars();
-    cur = NULL;
+	cur = NULL;
 	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] && StatList[i]->IsStart())
@@ -530,7 +664,7 @@ bool ApplicationManager::Debug(string& msg,Statement*&cur)
 	}
 
 
-	
+
 	return true;
 }
 
@@ -637,6 +771,10 @@ ApplicationManager::~ApplicationManager()
 		delete StatList[i];
 	for(int i=0; i<ConnCount; i++)
 		delete ConnList[i];
+	if (pClipboard)
+	{
+		delete pClipboard;
+	}
 	delete pIn;
 	delete pOut;
 	

@@ -38,7 +38,7 @@ public:
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override; //n
 	void Load(ifstream& InFile) override; //n
-	void Edit() override; //n
+	void Edit(string LHS, string RHS) ; //n
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override; //n
 	Point GetOutletPoint() const override; //n
@@ -46,7 +46,8 @@ public:
 	Connector* GetOutConnector() const override;
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsPointInside(Point P) const override; //n
-	//Statement* Clone() const override;
+	virtual Statement* Clone() const override;
+	virtual void Move(const Point& P) override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 	
 };

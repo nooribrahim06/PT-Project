@@ -32,6 +32,18 @@ void VariableAssign::Draw(Output* pOut) const {
     // Implementation here
 	pOut->DrawAssign(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
+void VariableAssign::Move(const Point& P)
+{
+    LeftCorner = P;
+    Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+    Inlet.y = LeftCorner.y;
+    Outlet.x = Inlet.x;
+    Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+Statement* VariableAssign::Clone() const {
+    VariableAssign* copy = new VariableAssign(*this);
+    return copy;
+}
 
 void VariableAssign::Save(ofstream& OutFile)
 {
@@ -40,9 +52,11 @@ void VariableAssign::Save(ofstream& OutFile)
     return;
 }
 
-void VariableAssign::Edit()
+void VariableAssign::Edit(const string& newLHS, const string& newRHS)
 {
-    return;
+	LHS = newLHS;
+    RHS = newRHS;
+	UpdateStatementText();
 }
 
 Statement* VariableAssign::Simulate(Input* pIn, Output* pOut)

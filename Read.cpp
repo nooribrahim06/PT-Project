@@ -1,6 +1,7 @@
 #include "Read.h"
 #include <iostream>
 #include <fstream>
+#include "GUI/UI_Info.h"
 using namespace std;
 Read::Read(Point Lcorner, const string& var)
 {
@@ -19,6 +20,19 @@ void Read::Draw(Output* pOut) const
 {
 	pOut->DrawInputStatement(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
 }
+
+void Read::Move(const Point& P)
+{
+	LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+Statement* Read::Clone() const {
+	Read* copy = new Read(*this);
+	return copy;
+}
 void Read::Save(ofstream& OutFile)
 {
 	OutFile << "READ	" << GetstatementID() << "	" << LeftCorner.x << "	" << LeftCorner.y << "	" << varName << endl;
@@ -29,9 +43,11 @@ void Read::Load(ifstream& InFile)
 	// to be implemented
 	return;
 }
-void Read::Edit()
+void Read::Edit(const string& varName)
 {
 	// to be implemented
+	this->varName = varName;
+	UpdateStatementText();	
 	return;
 }
 Statement* Read::Simulate(Input* pIn, Output* pOut)
@@ -72,43 +88,18 @@ void Read::SetOutconnector(Connector* C)
 }
 bool Read::IsPointInside(Point P) const
 {
-	int W = UI.ASSGN_WDTH;
-	int H = UI.ASSGN_HI;
-	int shift = W / 4;
+	Point A = LeftCorner;
+	Point B (LeftCorner.x + UI.ASSGN_WDTH, LeftCorner.y);
+	Point C (LeftCorner.x + 1.5 * UI.ASSGN_WDTH, LeftCorner.y + UI.ASSGN_HI);
+	Point D (LeftCorner.x + UI.ASSGN_WDTH/2 , LeftCorner.y + UI.ASSGN_HI);
+	
+	double Area2 = TriArea2(A, B, C) + TriArea2(A, C, D);
+	double sum = TriArea2(A, B, P) +
+		TriArea2(B, C, P) +
+		TriArea2(C, D, P) +
+		TriArea2(A, D, P);
 
-	// ===== case 1: central rectangle =====
-	if (P.x >= LeftCorner.x + shift && P.x <= LeftCorner.x + W &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + H)
-		return true;
-
-	// ===== case 2: left slanted part =====
-	if (P.x >= LeftCorner.x && P.x < LeftCorner.x + shift &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + H)
-	{
-		// line from (Left, top) to (Left+shift, bottom)
-		double slope = double(H) / double(shift);
-		double y_left = LeftCorner.y + slope * (P.x - LeftCorner.x);
-
-		// inside = between slanted edge and bottom
-		if (P.y >= y_left && P.y <= LeftCorner.y + H)
-			return true;
-	}
-
-	// ===== case 3: right slanted part =====
-	if (P.x > LeftCorner.x + W && P.x <= LeftCorner.x + W + shift &&
-		P.y >= LeftCorner.y && P.y <= LeftCorner.y + H)
-	{
-		// right edge: from (Left+W, top) to (Left+W+shift, bottom)
-		double slope = double(H) / double(shift);
-		double y_right = LeftCorner.y + slope * (P.x - (LeftCorner.x + W));
-
-		// inside = between that slanted edge and bottom
-		if (P.y >= y_right && P.y <= LeftCorner.y + H)
-			return true;
-	}
-
-	return false;
-
+	return sum == Area2;
 }
 void Read::UpdateStatementText()
 {
@@ -136,3 +127,13 @@ bool Read::Validate(varinfo vars[], int& varcount, string& msg)
 
 	}
 }
+
+ double Read::TriArea2(Point A, Point B, Point C)
+{
+	return abs(
+		A.x * (B.y - C.y) +
+		B.x * (C.y - A.y) +
+		C.x * (A.y - B.y)
+	);
+}
+

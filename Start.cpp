@@ -1,4 +1,6 @@
 #include "Start.h"
+#include "ApplicationManager.h"
+#include "Actions/Action.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -33,10 +35,11 @@ void Start::Load(ifstream& InFile)
 	return;
 }
 
-void Start::Edit()
-{
-	return;
-}
+//void Start::Edit()
+//{
+//	pOut->PrintMessage("Start statement cannot be edited.");
+//	return;
+//}
 
 Statement* Start::Simulate(Input* pIn, Output* pOut)
 {
@@ -96,4 +99,19 @@ bool Start::IsPointInside(Point P) const
 
 bool Start::Validate(varinfo vars[], int& varcount, string& msg) {
 	return true;
+}
+
+Statement* Start::Clone() const 
+{
+	Start* copy = new Start(*this);
+	copy->SetOutconnector(nullptr);
+	copy->SetSelected(false);
+	return copy;
+}
+
+void Start::Move(const Point& P) 
+{
+	LeftCorner = P;
+	Outlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
 }

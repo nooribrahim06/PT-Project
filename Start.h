@@ -12,7 +12,6 @@ class Start :
 	virtual void Draw(Output* pOut) const;
 	void Save(ofstream& OutFile) override;
 	void Load(ifstream& InFile) override;
-	void Edit() override;
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
 	Point GetOutletPoint() const override;
@@ -21,5 +20,7 @@ class Start :
 	virtual void SetOutconnector(Connector* C) override;
 	bool IsStart() const override;
 	bool IsPointInside(Point P) const override;
+	virtual void Move(const Point& P) override;
+	virtual Statement* Clone() const override;
 	bool Validate(varinfo vars[], int& varcount, string& msg) override;
 };

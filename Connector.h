@@ -35,6 +35,8 @@ public:
 	
 	void Save(ofstream& file);
 
+	~Connector();
+
 };
 
 #endif

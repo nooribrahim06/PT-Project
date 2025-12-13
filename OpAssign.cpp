@@ -55,9 +55,13 @@ void OpAssign::Load(ifstream& InFile)
 	return;
 }
 
-void OpAssign::Edit()
+void OpAssign::Edit(string newLHS, string newRHS, string newRHS2, string newOp)
 {
-	return;
+	LHS = newLHS;
+	RHS1 = newRHS;
+	RHS2 = newRHS2;
+	op = newOp;
+	UpdateStatementText();
 }
 
 Statement* OpAssign::Simulate(Input* pIn, Output* pOut)
@@ -143,6 +147,25 @@ bool OpAssign::IsPointInside(Point P) const
 	return (x_inside && y_inside);
 }
 
+void OpAssign::Move(const Point& P)
+{
+	LeftCorner = P;
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+}
+Statement* OpAssign::Clone() const {
+	// 1) Create a new object by copying *this*
+	OpAssign* c = new OpAssign(*this);  // uses default copy ctor
+	// 2) Fix any pointer members so they don't share stuff
+	c->SetOutconnector(nullptr);   // NO connectors are copied
+	// 3) A copied statement should not start as "selected"
+	c->SetSelected(false);
+	// 4) Return it as a Statement*
+	return c;
+}
+
 bool OpAssign::Validate(varinfo vars[], int& varcount, string& msg)
 {
 	if (LHS.empty()) {
@@ -221,6 +244,6 @@ void OpAssign::UpdateStatementText()
 {
 	//Build the statement text: Left handside then equals then right handside
 	ostringstream T;
-	T << LHS << " = " << RHS1 << op << RHS2;
+	T << LHS << " = " << RHS1 <<" "<< op << RHS2;
 	Text = T.str();
 }

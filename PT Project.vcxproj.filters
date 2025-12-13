@@ -233,6 +233,11 @@
     <ClCompile Include="Save.cpp">
       <Filter>Action Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Edit.cpp" />
+    <ClCompile Include="Copy.cpp" />
+    <ClCompile Include="Paste.cpp" />
+    <ClCompile Include="Cut.cpp" />
+    <ClCompile Include="Delete.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -402,6 +407,11 @@
     <ClInclude Include="Save.h">
       <Filter>Action Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Edit.h" />
+    <ClInclude Include="Copy.h" />
+    <ClInclude Include="Paste.h" />
+    <ClInclude Include="Cut.h" />
+    <ClInclude Include="Delete.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
