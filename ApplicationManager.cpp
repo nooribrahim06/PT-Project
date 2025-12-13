@@ -9,9 +9,11 @@
 #include "AddRead.h"
 #include "AddWrite.h"
 #include "AddConnect.h"
+#include "Connector.h"
 #include "Select.h"
 #include "Copy.h"
 #include "Paste.h"
+#include "Cut.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 #include "Edit.h"
@@ -105,6 +107,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case PASTE:
 			pAct = new Paste(this);
 			break;
+		case CUT:
+			pAct = new Cut(this);
+			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
 			break;
@@ -191,6 +196,64 @@ void ApplicationManager::SetSelectedStatement(Statement *pStat)
 {	pSelectedStat = pStat;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
+{
+	if (!s) return;
+	// First, delete all incoming connectors
+    for (int i = 0; i < ConnCount; )
+	{
+		Connector* conn = ConnList[i];
+		if (!conn)
+		{
+			i++;
+			continue;
+		}
+
+		Statement* src = conn->getSrcStat();
+		Statement* dst = conn->getDstStat();
+
+		if (src == s || dst == s)
+		{
+			if (src ==s)
+			{
+				s->SetOutconnector(nullptr);
+			}
+			
+			delete conn;
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			continue; //recheck same index after shift
+		}
+
+		i++;
+	}
+
+	// Then, delete the statement itself from StatList
+
+    for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] == s)
+		{
+			delete StatList[i];
+			// Shift statements left
+			for (int j = i; j < StatCount - 1; j++)
+			{
+				StatList[j] = StatList[j + 1];
+			}
+			StatList[--StatCount] = nullptr;
+			break;
+		}
+	}
+
+	//clear selection if it was the deleted statement
+	if (pSelectedStat == s) pSelectedStat = nullptr;
+}
+////////////////////////////////////////////////////////////////////////////////////
+
 //Returns the Clipboard
 Statement *ApplicationManager::GetClipboard() const
 {	return pClipboard;	}

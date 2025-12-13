@@ -53,6 +53,8 @@ public:
 	void SetClipboard(Statement *pStat);         //Set the Clipboard
 	void ClearClipboard();                     //Clears the Clipboard
 
+	void DeleteStatementWithConnectors(Statement* s);
+
 	Connector* GetSelectedConn() const; //N
 	void SetSelectedConn(Connector* pConn); //N
 
