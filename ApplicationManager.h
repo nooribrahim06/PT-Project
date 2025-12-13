@@ -54,6 +54,7 @@ public:
 	void ClearClipboard();                     //Clears the Clipboard
 
 	void DeleteStatementWithConnectors(Statement* s);
+	void DeleteConnector(Connector* pConn); //N
 
 	Connector* GetSelectedConn() const; //N
 	void SetSelectedConn(Connector* pConn); //N
