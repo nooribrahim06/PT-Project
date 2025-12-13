@@ -430,35 +430,6 @@ bool ApplicationManager::ValidateAll(string& msg)
 			return false;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-	//Check for the Variable Validation//
-	/*varinfo vars[MaxCount];
-	int varcount = 0;
-	for (int i = 0; i < MaxCount; i++) {
-		vars[i].declared = false;
-		vars[i].name = "";
-		vars[i].initialized = false;
-	}
-	for (int j = 0; j < StatCount; j++) {
-		Statement* stat = StatList[j];
-		if (!stat)
-		{
-			continue;
-		}
-		if (!stat->Validate(vars, varcount, msg)) {
-			return false;
-		}
-	}*/
-
 	msg = " Valid Flowchart";
 	return true;
 }
@@ -722,7 +693,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				src->SetOutconnector(C);
 				C->setStartPoint(src->GetOutletPoint());
 				
-				//C->Load(file, srcID, dstID, out);
+				
 
 			}
 			else{
@@ -734,7 +705,7 @@ bool ApplicationManager::ValidateAll(string& msg)
 				if (out == 1)
 				{
 					cond->SetTrueConn(C);
-					//C->Load(file, srcID, dstID, out);
+					
 				}
 				else if(out == 2)
 				{
