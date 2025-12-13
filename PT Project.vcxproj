@@ -285,6 +285,7 @@
     <ClCompile Include="Cut.cpp" />
     <ClCompile Include="DebugRunAction.cpp" />
     <ClCompile Include="Declare.cpp" />
+    <ClCompile Include="Delete.cpp" />
     <ClCompile Include="Edit.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="GenerateCodeAction.cpp" />
@@ -350,6 +351,7 @@
     <ClInclude Include="DebugRunAction.h" />
     <ClInclude Include="Declare.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="Delete.h" />
     <ClInclude Include="Edit.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="GenerateCodeAction.h" />

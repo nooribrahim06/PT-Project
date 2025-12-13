@@ -3,6 +3,7 @@
 #include "AddStart.h"
 #include "AddEnd.h"
 #include "AddCondition.h"
+#include "Condition.h"
 #include "AddDeclare.h"
 #include "AddOperAssign.h"
 #include "AddVarAssign.h"
@@ -14,6 +15,7 @@
 #include "Copy.h"
 #include "Paste.h"
 #include "Cut.h"
+#include "Delete.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
 #include "Edit.h"
@@ -110,6 +112,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case CUT:
 			pAct = new Cut(this);
 			break;
+		case DEL:
+			pAct = new Delete(this);
+			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
 			break;
@@ -196,10 +201,82 @@ void ApplicationManager::SetSelectedStatement(Statement *pStat)
 {	pSelectedStat = pStat;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
+void ApplicationManager::DeleteConnector(Connector* pConn)
+{
+	if (!pConn) return;
+	//remove highlight and select pointer
+	pConn->Setselected(false);
+	if (pSelectedConn == pConn)
+	{
+		pSelectedConn = nullptr;
+	}
+
+	Statement* src = pConn->getSrcStat();
+
+	//detach from source statement
+
+	if (src)
+	{
+		if (src->Isconditional())
+		{
+			Condition* cond = dynamic_cast<Condition*>(src);
+			if (cond)
+			{
+				if (cond->GetTrueConn() == pConn) cond->SetTrueConn(nullptr);
+				if (cond->GetFalseConn() == pConn) cond->SetFalseConn(nullptr);
+			}
+		}
+		else
+		{
+
+			if (src->GetOutConnector() == pConn)
+			{
+				src->SetOutconnector(nullptr);
+			}
+		}
+	}
+
+	// Find and delete the connector from ConnList
+	for (int i = 0; i < ConnCount; i++)
+	{
+		if (ConnList[i] == pConn)
+		{
+			delete ConnList[i];
+			// Shift connectors left
+			for (int j = i; j < ConnCount - 1; j++)
+			{
+				ConnList[j] = ConnList[j + 1];
+			}
+			ConnList[--ConnCount] = nullptr;
+			break;
+		}
+	}
+	// Clear selection if it was the deleted connector
+	if (pSelectedConn == pConn) pSelectedConn = nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
 {
-	if (!s) return;
-	// First, delete all incoming connectors
+	if (!s) 
+		return;
+
+	//deselect the statement
+	s->SetSelected(false);;
+	if (pSelectedStat == s)
+	{
+		pSelectedStat = nullptr;
+	}
+
+	if (pSelectedConn)
+	{
+		Statement* s = pSelectedConn->getSrcStat();
+		Statement* d = pSelectedConn->getDstStat();
+		if (s == s || d == s)
+			pSelectedConn = nullptr;
+	}
+
+	// delete all incoming connectors
     for (int i = 0; i < ConnCount; )
 	{
 		Connector* conn = ConnList[i];
