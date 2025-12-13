@@ -1,3 +1,4 @@
+
 #include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
 #include "AddStart.h"
@@ -18,6 +19,7 @@
 #include "Delete.h"
 #include "GUI\Input.h"
 #include "GUI\Output.h"
+#include "Edit.h"
 #include "ValidateAction.h"
 #include "GenerateCodeAction.h"
 #include "DebugRunAction.h"
@@ -25,9 +27,6 @@
 #include "SwitchtoDesignAction.h"
 #include "SwitchToSim.h"
 #include "Save.h"
-#include"Load.h"
-#include"Edit.h"
-#include"Declare.h"
 #include <fstream>
 
 //Constructor
@@ -36,17 +35,17 @@ ApplicationManager::ApplicationManager()
 	//Create Input and output
 	pOut = new Output;
 	pIn = pOut->CreateInput();
-
+	
 	StatCount = 0;
 	ConnCount = 0;
 	pSelectedStat = NULL;	//no Statement is selected yet
 	pSelectedConn = NULL;
 	pClipboard = NULL;
-
+	
 	//Create an array of Statement pointers and set them to NULL		
-	for (int i = 0; i < MaxCount; i++)
+	for(int i=0; i<MaxCount; i++)
 	{
-		StatList[i] = NULL;
+		StatList[i] = NULL;	
 		ConnList[i] = NULL;
 	}
 }
@@ -60,14 +59,14 @@ ApplicationManager::ApplicationManager()
 ActionType ApplicationManager::GetUserAction() const
 {
 	//Ask the input to get the action from the user.
-	return pIn->GetUserAction();
+	return pIn->GetUserAction();		
 }
 ////////////////////////////////////////////////////////////////////////////////////
 //Creates an action and executes it
-void ApplicationManager::ExecuteAction(ActionType ActType)
+void ApplicationManager::ExecuteAction(ActionType ActType) 
 {
 	Action* pAct = NULL;
-
+	
 	//According to ActioType, create the corresponding action object
 	switch (ActType)
 	{
@@ -117,9 +116,6 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case DEL:
 			pAct = new Delete(this);
 			break;
-		case LOAD:
-			pAct = new Load(this);
-			break;
 		case VALIDATE:
 			pAct = new ValidateAction(this);
 			break;
@@ -154,9 +150,9 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		case STATUS:
 			return;
 	}
-
+	
 	//Execute the created action
-	if (pAct != NULL)
+	if(pAct != NULL)
 	{
 		pAct->Execute();//Execute
 		delete pAct;	//Action is not needed any more ==> delete it
@@ -171,15 +167,15 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 
 
 //Add a statement to the list of statements
-void ApplicationManager::AddStatement(Statement* pStat)
+void ApplicationManager::AddStatement(Statement *pStat)
 {
-	if (StatCount < MaxCount)
+	if(StatCount < MaxCount)
 		StatList[StatCount++] = pStat;
-
+	
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
-Statement* ApplicationManager::GetStatement(Point P) const
+Statement *ApplicationManager::GetStatement(Point P) const
 {
 	//If this point P(x,y) belongs to a statement return a pointer to it.
 	//otherwise, return NULL
@@ -187,9 +183,9 @@ Statement* ApplicationManager::GetStatement(Point P) const
 
 	///Add your code here to search for a statement given a point P(x,y)	
 	///WITHOUT breaking class responsibilities
-	for (int i = 0; i < StatCount; i++)
+	for(int i=0; i<StatCount; i++)
 	{
-		if (StatList[i]->IsPointInside(P))
+		if(StatList[i]->IsPointInside(P))
 			return StatList[i];
 	}
 
@@ -197,17 +193,13 @@ Statement* ApplicationManager::GetStatement(Point P) const
 }
 ////////////////////////////////////////////////////////////////////////////////////
 //Returns the selected statement
-Statement* ApplicationManager::GetSelectedStatement() const
-{
-	return pSelectedStat;
-}
+Statement *ApplicationManager::GetSelectedStatement() const
+{	return pSelectedStat;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Set the statement selected by the user
-void ApplicationManager::SetSelectedStatement(Statement* pStat)
-{
-	pSelectedStat = pStat;
-}
+void ApplicationManager::SetSelectedStatement(Statement *pStat)
+{	pSelectedStat = pStat;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
 void ApplicationManager::DeleteConnector(Connector* pConn)
@@ -341,10 +333,8 @@ void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
 ////////////////////////////////////////////////////////////////////////////////////
 
 //Returns the Clipboard
-Statement* ApplicationManager::GetClipboard() const
-{
-	return pClipboard;
-}
+Statement *ApplicationManager::GetClipboard() const
+{	return pClipboard;	}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //Set the Clipboard
@@ -404,11 +394,11 @@ void ApplicationManager::UpdateInterface() const
 	pOut->ClearDrawArea();
 
 	//Draw all statements
-	for (int i = 0; i < StatCount; i++)
+	for(int i=0; i<StatCount; i++)
 		StatList[i]->Draw(pOut);
-
+	
 	//Draw all connections
-	for (int i = 0; i < ConnCount; i++)
+	for(int i=0; i<ConnCount; i++)
 		ConnList[i]->Draw(pOut);
 
 }
@@ -491,14 +481,14 @@ bool ApplicationManager::ValidateAll(string& msg)
 			}
 		}
 		else if (stat->IsEnd()) {
-			if (inc <1 || Otc != 0) {
+			if (inc < 1 || Otc != 0) {
 				msg = " End statement can't have outgoing connectors or more than one incoming connector.";
 				return false;
 			}
 		}
 
 		else if (stat->Isconditional()) {
-			if (inc <1 || Otc != 2) {
+			if (inc < 1 || Otc != 2) {
 				msg = " Conditional statement must have one incoming and two outgoing connectors.";
 				return false;
 			}
@@ -592,343 +582,453 @@ bool ApplicationManager::ValidateAll(string& msg)
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-	//Check for the Variable Validation//
-	/*varinfo vars[MaxCount];
-	int varcount = 0;
-	for (int i = 0; i < 200; ++i) {
-		vars[i].name = "";
-		vars[i].declared = false;
-		vars[i].initialized = false;
-	}
-	for (int j = 0; j < StatCount; j++) {
-		Statement* stat = StatList[j];
-		if (!stat)
-		{
-			continue;
-		}
-		if (!stat->Validate(vars, varcount, msg)) {
-			return false;
-		}
-	}*/
-
 	msg = " Valid Flowchart";
 	return true;
 }
 
 
-	bool ApplicationManager::Run(string & msg)
+bool ApplicationManager::Run(string& msg)
+{
+	Input* pIn = GetInput();
+	Output* pOut = GetOutput();
+
+	if (!ValidateAll(msg))
 	{
-		Input* pIn = GetInput();
-		Output* pOut = GetOutput();
-
-		if (!ValidateAll(msg))
-		{
-			msg = "Error : Cannot Run the Flowchart. " + msg;
-			return false;
-		}
-
-		Statement::Resetrunvars();
-
-		Statement* cur = NULL;
-		for (int i = 0; i < StatCount; i++)
-		{
-			if (StatList[i] && StatList[i]->IsStart())
-			{
-				cur = StatList[i];
-				break;
-			}
-		}
-		if (cur == NULL)
-		{
-			msg = "Error no Start Statement .";
-			return false;
-		}
-
-		int count = 0;
-		const int Steps = 1000;
-		while (cur && !cur->IsEnd())
-		{
-			cur = cur->Simulate(pIn, pOut);
-			if (!cur) {
-				msg = "Missing connector or invalid next Statment";
-				return false;
-			}
-			count++;
-			if (count > Steps)
-			{
-				msg = "Error :No End Statement";
-				return false;
-			}
-		}
-		if (cur == NULL)
-		{
-			msg = "Error: FLowchart terminated without reaching End ";
-			return false;
-		}
-
-		return true;
+		msg = "Error : Cannot Run the Flowchart. " + msg;
+		return false;
 	}
 
-	bool ApplicationManager::Debug(string & msg, Statement * &cur)
+	Statement::Resetrunvars();
+
+	Statement* cur = NULL;
+	for (int i = 0; i < StatCount; i++)
 	{
-		if (!ValidateAll(msg))
+		if (StatList[i] && StatList[i]->IsStart())
 		{
-			msg = "Error : Cannot Debug the Flowchart. " + msg;
-			return false;
+			cur = StatList[i];
+			break;
 		}
-
-		Statement::Resetrunvars();
-		cur = NULL;
-		for (int i = 0; i < StatCount; i++)
-		{
-			if (StatList[i] && StatList[i]->IsStart())
-			{
-				cur = StatList[i];
-				break;
-			}
-		}
-		if (cur == NULL)
-		{
-			msg = "Error no Start Statement .";
-			return false;
-		}
-
-
-
-		return true;
+	}
+	if (cur == NULL)
+	{
+		msg = "Error no Start Statement .";
+		return false;
 	}
 
-	bool ApplicationManager::GenerateCode(ofstream & file, string & msg)
+	int count = 0;
+	const int Steps = 1000;
+	while (cur && !cur->IsEnd())
 	{
-		Statement* current = nullptr;
-		for (int i = 0; i < StatCount; i++)
-		{
-			if (StatList[i] && StatList[i]->IsStart())
-			{
-				current = StatList[i];
-				break; // we found it, stop
-			}
-		}
-		if (!current)
-		{
-			msg = "No START statement found.";
+		cur = cur->Simulate(pIn, pOut);
+		if (!cur) {
+			msg = "Missing connector or invalid next Statment";
 			return false;
 		}
-
-		while (true)
+		count++;
+		if (count > Steps)
 		{
-			if (current->IsEnd())
-			{
-				current->GenerateCode(file);
-				break;
-			}
+			msg = "Error :No End Statement";
+			return false;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error: FLowchart terminated without reaching End ";
+		return false;
+	}
+
+	return true;
+}
+
+bool ApplicationManager::Debug(string& msg, Statement*& cur)
+{
+	if (!ValidateAll(msg))
+	{
+		msg = "Error : Cannot Debug the Flowchart. " + msg;
+		return false;
+	}
+
+	Statement::Resetrunvars();
+	cur = NULL;
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			cur = StatList[i];
+			break;
+		}
+	}
+	if (cur == NULL)
+	{
+		msg = "Error no Start Statement .";
+		return false;
+	}
+
+
+
+	return true;
+}
+
+bool ApplicationManager::GenerateCode(ofstream& file, string& msg)
+{
+	Statement* current = nullptr;
+
+	for (int i = 0; i < StatCount; i++)
+	{
+		if (StatList[i] && StatList[i]->IsStart())
+		{
+			current = StatList[i];
+			break;
+		}
+	}
+
+	if (!current)
+	{
+		msg = "No START statement found.";
+		return false;
+	}
+
+	while (true)
+	{
+		if (current->IsEnd())
+		{
 			current->GenerateCode(file);
-			if (current->Isconditional())
+			break;
+		}
+
+		if (current->Isconditional())
+		{
+			Condition* TempCond = dynamic_cast<Condition*>(current);
+
+			Statement* trueStart = TempCond->GetTrueConn()->getDstStat();
+			Statement* falseStart = TempCond->GetFalseConn()->getDstStat();
+
+			bool trueIsEmpty = trueStart->IsEnd();
+			bool falseIsEmpty = falseStart->IsEnd();
+
+			int loopType = SetIsLoop(TempCond);      // CALL ONCE
+			
+			bool loopTrue = (loopType == 1);
+			bool loopFalse = (loopType == 2);
+
+			if (loopTrue)
 			{
-
-				Condition* TempCond = dynamic_cast<Condition*>(current);
-				Statement* trueStart = TempCond->GetTrueConn()->getDstStat();
-				Statement* falseStart = TempCond->GetFalseConn()->getDstStat();
-
-				bool trueIsEmpty = trueStart->IsEnd();
-				bool falseIsEmpty = falseStart->IsEnd();
-				Statement* condition_road = TempCond->GetTrueConn()->getDstStat();
+				// while (cond)
+				TempCond->GenerateLoopCode(file, true);
 				file << "{\n";
+
+				Statement* road = trueStart;
+				while (!road->IsEnd() && road != TempCond)
+				{
+					road->GenerateCode(file);   // BODY STATEMENTS
+					road = road->GetOutConnector()->getDstStat();
+				}
+
+				file << "}\n";
+
+				// after loop, continue from FALSE road
+				current = falseStart;
+				continue;
+			}
+			else if (loopFalse)
+			{
+				// while (!cond)
+				TempCond->GenerateLoopCode(file, false);
+				file << "{\n";
+
+				Statement* road = falseStart;
+				while (!road->IsEnd() && road != TempCond)
+				{
+					road->GenerateCode(file);
+					road = road->GetOutConnector()->getDstStat();
+				}
+
+				file << "}\n";
+
+				// after loop, continue from TRUE road
+				current = trueStart;
+				continue;
+			}
+			else
+			{
+				// NORMAL if/else
+				TempCond->GenerateCode(file);   // prints: if (condition)
+
+				Statement* condition_road = trueStart;
+				file << "{\n";
+
 				if (!trueIsEmpty)
 				{
-					// TRUE branch
 					while (!condition_road->IsEnd())
 					{
 						condition_road->GenerateCode(file);
 						condition_road = condition_road->GetOutConnector()->getDstStat();
 					}
 				}
+
 				file << "}\n";
-				// FALSE branch
+
 				if (!falseIsEmpty)
 				{
 					file << "else\n{\n";
-					condition_road = TempCond->GetFalseConn()->getDstStat();
+					condition_road = falseStart;
+
 					while (!condition_road->IsEnd())
 					{
 						condition_road->GenerateCode(file);
 						condition_road = condition_road->GetOutConnector()->getDstStat();
 					}
+
 					file << "}\n";
 				}
 
-				if ((condition_road->IsEnd()))
+				// your current design: branches end at End
+				if (condition_road->IsEnd())
 				{
 					condition_road->GenerateCode(file);
 					break;
 				}
 			}
-
-			current = (current->GetOutConnector())->getDstStat();
-
 		}
-		return true;
-	}
-
-	void ApplicationManager::SaveAll(ofstream & file)
-	{
-		file << StatCount << endl;
-		for (int i = 0; i < StatCount; i++) {
-			StatList[i]->Save(file);
-		}
-		file << ConnCount << endl;
-		for (int i = 0; i < ConnCount; i++) {
-			ConnList[i]->Save(file);
-		}
-	}
-
-	void ApplicationManager::LoadAll(ifstream& file)
-	{
-		for (int i = 0; i < StatCount; i++){
-			delete StatList[i];
-	}
-		StatCount = 0;
-		
-		for(int i=0;i<ConnCount;i++){
-			delete ConnList[i];
-		}	
-		ConnCount = 0;
-		int countStat = 0;
-		file >> countStat;
-		Statement* IDS[MaxCount];
-		for (int i = 0; i < MaxCount; i++)
+		else
 		{
-			IDS[i] = nullptr;
+			// normal statement
+			current->GenerateCode(file);
+			current = current->GetOutConnector()->getDstStat();
 		}
-		for (int i = 0; i < countStat; i++) {
-			string type;
-			file >> type;
-			string ignore = "";
-			Statement* pStat = nullptr;
-			if (type == "STRT") {
-				pStat = new Start(Point(0, 0));
-			}
-			else if (type == "ENDS") {
-				pStat = new End(Point(0, 0));
-			}
-			else if (type == "DCLR") {
-				pStat = new Declare(Point(0, 0), ignore);
-			}
-			else if (type == "VLAS") {
-				pStat = new ValueAssign(Point(0, 0), "", 0);
-			}
-			else if (type == "VRAS") {
-				pStat = new VariableAssign(Point(0, 0), "", "");
-			}
-			else if (type == "OPAS") {
-				pStat = new OpAssign(Point(0, 0), "", "", "", "");
-			}
-			else if (type == "COND") {
-				pStat = new Condition(Point(0, 0), "", "", "==");
-			}
-			else if (type == "READ") {
-				pStat = new Read(Point(0, 0), "");
-			}
-			else if (type == "WRTE") {
-				pStat = new Write(Point(0, 0), ignore);
-			}
-			if (pStat != nullptr) {
-				pStat->Load(file);
-				AddStatement(pStat);
-
-				int id = pStat->GetstatementID();
-				if (id >= 0 && id < MaxCount)
-				{
-					IDS[id] = pStat;
-				}
-			}
-
-		
-		}
-		int countconn = 0;
-		file >> countconn;
-		for (int i = 0; i < countconn; i++) {
-			int srcID, dstID,out=0;
-			file >> srcID >> dstID >> out;
-			Statement* src = nullptr;
-			Statement* dst = nullptr;
-			
-
-			if (srcID >= 0 && srcID < MaxCount)
-			{
-				src = IDS[srcID];
-			}
-
-			if (dstID >= 0 && dstID < MaxCount)
-			{
-				dst = IDS[dstID];
-			}
-			if (!src || !dst) {
-				continue;
-			}
-			Connector* C = new Connector(src, dst);
-			
-			
-			if (!src->Isconditional())
-			{
-				src->SetOutconnector(C);
-				C->setStartPoint(src->GetOutletPoint());
-				
-				//C->Load(file, srcID, dstID, out);
-
-			}
-			else{
-				Condition* cond = dynamic_cast<Condition*>(src);
-				if (!cond){
-					delete C;
-					continue;
-			    }
-				if (out == 1)
-				{
-					cond->SetTrueConn(C);
-					//C->Load(file, srcID, dstID, out);
-				}
-				else if(out == 2)
-				{
-					cond->SetFalseConn(C);
-				}
-				else {
-					delete C;
-					continue;
-				}
-				C->setStartPoint(src->GetOutletPoint());
-			}
-			
-				
-		
-			C->setEndPoint(dst->GetInletPoint());
-			AddConnector(C);
-		}
-		
 	}
+
+	return true;
+}
+
+// return values:
+// 0 -> not a loop
+// 1 -> loop on TRUE road
+// 2 -> loop on FALSE road
+int ApplicationManager::SetIsLoop(Condition* cond)
+{
+	// loop over all coming statements
+	// we have 2 possiblities
+	// first: cond statement outer connector goes to an end (return 0)
+	// second: it goes to the same id again (return 1 or 2)
+	cond->LoopOnTrue = false;
+	cond->LoopOnFalse = false;
+
+	if (!cond) return 0;
+
+	int targetID = cond->GetstatementID();
+
+	Connector* tConn = cond->GetTrueConn();
+	Connector* fConn = cond->GetFalseConn();
+
+	// if connectors missing → can't be a loop
+	if (!tConn || !fConn) return 0;
+
+	// check both roads
+	Statement* roads[2];
+	roads[0] = tConn->getDstStat();   // TRUE road start
+	roads[1] = fConn->getDstStat();   // FALSE road start
+
+	for (int r = 0; r < 2; r++)
+	{
+		Statement* current = roads[r];
+
+		// walk forward
+		while (current)
+		{
+			// came back to same condition → LOOP
+			if (current->GetstatementID() == targetID)
+			{
+				if (r == 0)
+				{
+					cond->LoopOnTrue = true;
+					return 1; // loop on TRUE
+				}
+				else
+				{
+					cond->LoopOnFalse = true;
+					return 2; // loop on FALSE
+				}
+			}
+
+			// reached End → this road is safe
+			if (current->IsEnd())
+				break;
+
+			// if we hit another condition, follow ONE path forward
+			// (simple detection only, no branching)
+			if (current->Isconditional())
+			{
+				Condition* c = dynamic_cast<Condition*>(current);
+				if (!c || !c->GetTrueConn())
+					break;
+
+				current = c->GetTrueConn()->getDstStat();
+			}
+			else
+			{
+				Connector* out = current->GetOutConnector();
+				if (!out)
+					break;
+
+				current = out->getDstStat();
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+
+
+
+void ApplicationManager::SaveAll(ofstream& file)
+{
+	file << StatCount << endl;
+	for (int i = 0; i < StatCount; i++) {
+		StatList[i]->Save(file);
+	}
+	file << ConnCount << endl;
+	for (int i = 0; i < ConnCount; i++) {
+		ConnList[i]->Save(file);
+	}
+}
+void ApplicationManager::LoadAll(ifstream& file)
+{
+	for (int i = 0; i < StatCount; i++){
+		delete StatList[i];
+}
+	StatCount = 0;
+	
+	for(int i=0;i<ConnCount;i++){
+		delete ConnList[i];
+	}	
+	ConnCount = 0;
+	int countStat = 0;
+	file >> countStat;
+	Statement* IDS[MaxCount];
+	for (int i = 0; i < MaxCount; i++)
+	{
+		IDS[i] = nullptr;
+	}
+	for (int i = 0; i < countStat; i++) {
+		string type;
+		file >> type;
+		string ignore = "";
+		Statement* pStat = nullptr;
+		if (type == "STRT") {
+			pStat = new Start(Point(0, 0));
+		}
+		else if (type == "ENDS") {
+			pStat = new End(Point(0, 0));
+		}
+		else if (type == "DCLR") {
+			pStat = new Declare(Point(0, 0), ignore);
+		}
+		else if (type == "VLAS") {
+			pStat = new ValueAssign(Point(0, 0), "", 0);
+		}
+		else if (type == "VRAS") {
+			pStat = new VariableAssign(Point(0, 0), "", "");
+		}
+		else if (type == "OPAS") {
+			pStat = new OpAssign(Point(0, 0), "", "", "", "");
+		}
+		else if (type == "COND") {
+			pStat = new Condition(Point(0, 0), "", "", "==");
+		}
+		else if (type == "READ") {
+			pStat = new Read(Point(0, 0), "");
+		}
+		else if (type == "WRTE") {
+			pStat = new Write(Point(0, 0), ignore);
+		}
+		if (pStat != nullptr) {
+			pStat->Load(file);
+			AddStatement(pStat);
+
+			int id = pStat->GetstatementID();
+			if (id >= 0 && id < MaxCount)
+			{
+				IDS[id] = pStat;
+			}
+		}
 
 	
-	////////////////////////////////////////////////////////////////////////////////////
-	//Return a pointer to the input
-	Input* ApplicationManager::GetInput() const
-	{
-		return pIn;
 	}
-	//Return a pointer to the output
-	Output* ApplicationManager::GetOutput() const
-	{
-		return pOut;
+	int countconn = 0;
+	file >> countconn;
+	for (int i = 0; i < countconn; i++) {
+		int srcID, dstID,out=0;
+		file >> srcID >> dstID >> out;
+		Statement* src = nullptr;
+		Statement* dst = nullptr;
+		
+
+		if (srcID >= 0 && srcID < MaxCount)
+		{
+			src = IDS[srcID];
+		}
+
+		if (dstID >= 0 && dstID < MaxCount)
+		{
+			dst = IDS[dstID];
+		}
+		if (!src || !dst) {
+			continue;
+		}
+		Connector* C = new Connector(src, dst);
+		
+		
+		if (!src->Isconditional())
+		{
+			src->SetOutconnector(C);
+			C->setStartPoint(src->GetOutletPoint());
+			
+			//C->Load(file, srcID, dstID, out);
+
+		}
+		else{
+			Condition* cond = dynamic_cast<Condition*>(src);
+			if (!cond){
+				delete C;
+				continue;
+		    }
+			if (out == 1)
+			{
+				cond->SetTrueConn(C);
+				//C->Load(file, srcID, dstID, out);
+			}
+			else if(out == 2)
+			{
+				cond->SetFalseConn(C);
+			}
+			else {
+				delete C;
+				continue;
+			}
+			C->setStartPoint(src->GetOutletPoint());
+		}
+		
+			
+	
+		C->setEndPoint(dst->GetInletPoint());
+		AddConnector(C);
 	}
-	////////////////////////////////////////////////////////////////////////////////////
+	
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+//Return a pointer to the input
+Input *ApplicationManager::GetInput() const
+{	return pIn; }
+//Return a pointer to the output
+Output *ApplicationManager::GetOutput() const
+{	return pOut; }
+////////////////////////////////////////////////////////////////////////////////////
 
 
 //Destructor
