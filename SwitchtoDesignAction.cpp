@@ -13,6 +13,7 @@ void SwitchtoDesignAction::ReadActionParameters() {
 }
 void SwitchtoDesignAction::Execute() {
 	Output* pOut = pManager->GetOutput();
+	pOut->ClearOutputBar();
 	UI.AppMode = DESIGN;
 	pOut->CreateDesignToolBar();
 	pOut->ClearStatusBar();

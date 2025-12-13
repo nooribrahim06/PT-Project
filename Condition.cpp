@@ -70,7 +70,31 @@ void Condition::Save(ofstream& OutFile)
 }
 void Condition::Load(ifstream& InFile)
 {
-	// to be implemented
+	int id, x, y;
+	string LHS, RHS, Comp;
+	InFile >> id >> x >> y >> RHS >> Comp >> LHS;
+	statementID = id;
+	Center.x = x;
+	Center.y = y;
+	this->RHS = RHS;
+	this->LHS = LHS;
+	if (Comp == "EQUL") CompOp = "==";
+	else if (Comp == "NEQL") CompOp = "!=";
+	else if (Comp == "GRT_") CompOp = ">";
+	else if (Comp == "SML_") CompOp = "<";
+	else if (Comp == "SMLE") CompOp = ">=";
+	else if (Comp == "GRTE") CompOp = "";
+	int W = UI.ASSGN_WDTH;
+	int H = UI.ASSGN_HI;
+	Inlet.x = Center.x;
+	Inlet.y = Center.y - H / 2;
+	TrueOutlet.x = Center.x + W / 2;
+	FalseOutlet.x = Center.x - W / 2;
+	TrueOutlet.y = Center.y;
+	FalseOutlet.y = Center.y;
+
+	UpdateStatementText();
+
 	return;
 }
 void Condition::Edit()

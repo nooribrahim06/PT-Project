@@ -288,6 +288,7 @@
     <ClCompile Include="GUI\Input.cpp" />
     <ClCompile Include="GUI\Output.cpp" />
     <ClCompile Include="HelperFn.cpp" />
+    <ClCompile Include="Load.cpp" />
     <ClCompile Include="OpAssign.cpp" />
     <ClCompile Include="Read.cpp" />
     <ClCompile Include="RunAction.cpp" />
@@ -350,6 +351,7 @@
     <ClInclude Include="GUI\Output.h" />
     <ClInclude Include="GUI\UI_Info.h" />
     <ClInclude Include="HelperFn.h" />
+    <ClInclude Include="Load.h" />
     <ClInclude Include="OpAssign.h" />
     <ClInclude Include="Read.h" />
     <ClInclude Include="RunAction.h" />

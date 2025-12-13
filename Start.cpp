@@ -30,6 +30,10 @@ void Start::Save(ofstream& OutFile)
 
 void Start::Load(ifstream& InFile)
 {
+	InFile >> statementID >> LeftCorner.x >> LeftCorner.y;
+	Outlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	UpdateStatementText();
 	return;
 }
 

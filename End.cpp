@@ -23,6 +23,10 @@ void End::Save(ofstream& OutFile)
 
 void End::Load(ifstream& InFile)
 {
+	InFile >> statementID >> Leftcorner.x >> Leftcorner.y;
+	Inlet.x = Leftcorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = Leftcorner.y;
+	UpdateStatementText();
 	return;
 }
 
