@@ -23,6 +23,8 @@ Condition::Condition(Point C, string L, string Op, string R)
 	FalseOutlet.y = Center.y;
 	pTrueOutConn = NULL;	//No connectors yet
 	pFalseOutConn = NULL;	//No connectors yet
+	LoopOnFalse = false; // normal condition by default 
+	LoopOnTrue = false; // normal condition by default 
 }
 void Condition::setLHS(const string& L)
 {
@@ -172,6 +174,16 @@ Statement* Condition::Simulate(Input* pIn, Output* pOut)
 void Condition::GenerateCode(ofstream& OutFile)
 {
 	OutFile << "if (" << Text << ")";
+}
+void Condition::GenerateLoopCode(ofstream& file, bool branch)
+{
+	if (branch) // while () {
+	{
+		file << "while (" << Text << ")" << " " << endl;
+	}
+	else {
+		file << "while (!(" << Text << "))" << " " << endl;
+	}
 }
 Point Condition::GetOutletPoint() const
 {

@@ -14,6 +14,8 @@ class Condition :
     Connector* pFalseOutConn; // false connector
 	Point Center;	//Center of the statement block
 	public:
+		bool LoopOnTrue;
+		bool LoopOnFalse;
 	Condition(Point Lcorner, string L="",string Op = "", string R = "");
 	void setLHS(const string& L);
 	void setRHS(const string& R);
@@ -30,6 +32,7 @@ class Condition :
 	void Edit(const string& LHS, const string& RHS, const string& CompOp);
 	Statement* Simulate(Input* pIn, Output* pOut) override;
 	void  GenerateCode(ofstream& OutFile) override;
+	void GenerateLoopCode(ofstream& file, bool branch);
 	Point GetOutletPoint() const override;
 	Point GetTrueOutlet() const;
 	Point GetFalseOutlet() const;
