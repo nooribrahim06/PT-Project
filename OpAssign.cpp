@@ -52,6 +52,18 @@ void OpAssign::Save(ofstream& OutFile)
 
 void OpAssign::Load(ifstream& InFile)
 {
+	string arthm;
+	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS1 >> arthm >> RHS2;
+	if (arthm == "PLS") op = "+";
+	else if (arthm == "MIN") op = "-";
+	else if (arthm == "MUL") op = "*";
+	else if (arthm == "DIV") op = "/";
+	
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	UpdateStatementText();
 	return;
 }
 

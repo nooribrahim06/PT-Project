@@ -124,6 +124,12 @@ void Connector::Save(ofstream& OutFile) {
 	OutFile << SrcStat->GetstatementID() << "   " << DstStat->GetstatementID() << "   " << out << endl;
 }
 
+void Connector::Load(ifstream& InFile, int& srcID, int& dstID, int& type)
+{
+	InFile >> srcID >> dstID >> type;
+	
+}
+
 Connector::~Connector()
 {
 	// IMPORTANT:

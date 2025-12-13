@@ -60,6 +60,9 @@ public:
 	void SetSelectedConn(Connector* pConn); //N
 
 
+	
+
+
 	// == Interface Management Functions ==
 	Input *GetInput() const;        //Return pointer to the input
 	Output *GetOutput() const;      //Return pointer to the output
@@ -68,11 +71,13 @@ public:
 	bool ValidateAll(string &msg ); // Validates the flowchart
 	bool Run(string& msg);
 	bool Debug(string& msg,Statement*&cur);
+	
+	
 	bool GenerateCode(ofstream& filename, string& msg);
 	int SetIsLoop(Condition* cond);
-	void GenerateLoopCode(ofstream& file, Condition* cond);
+	
 	void SaveAll(ofstream& file);
-
+	void LoadAll(ifstream& file);
 	
 
 };

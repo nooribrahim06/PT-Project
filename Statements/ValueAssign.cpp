@@ -77,6 +77,14 @@ Statement* ValueAssign::Simulate(Input* pIn, Output* pOut)
 
 void ValueAssign::Load(ifstream& InFile)
 {
+	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS;
+
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	UpdateStatementText();
 	return;
 }
 
@@ -143,6 +151,7 @@ bool ValueAssign::IsPointInside(Point P) const
 		return false;
 }
 
+
 void ValueAssign::Move(const Point& P)
 {
 	LeftCorner = P;
@@ -165,7 +174,6 @@ Statement* ValueAssign::Clone() const {
 	// 4) Return it as a Statement*
 	return c;
 }
-
 
 
 

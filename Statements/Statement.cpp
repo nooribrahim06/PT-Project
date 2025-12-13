@@ -112,11 +112,6 @@ void Statement::Move(const Point& P)
 	//Default implementation does nothing
 }
 
-//void Statement::Clone(Statement* s)
-//{
-//
-//}
-
 
 
 Statement::~Statement()

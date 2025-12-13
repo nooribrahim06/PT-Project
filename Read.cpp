@@ -40,6 +40,14 @@ void Read::Save(ofstream& OutFile)
 }
 void Read::Load(ifstream& InFile)
 {
+	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> varName;
+
+	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Inlet.y = LeftCorner.y;
+
+	Outlet.x = Inlet.x;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	UpdateStatementText();
 	// to be implemented
 	return;
 }
@@ -136,4 +144,3 @@ bool Read::Validate(varinfo vars[], int& varcount, string& msg)
 		C.x * (A.y - B.y)
 	);
 }
-

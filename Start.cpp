@@ -32,6 +32,10 @@ void Start::Save(ofstream& OutFile)
 
 void Start::Load(ifstream& InFile)
 {
+	InFile >> statementID >> LeftCorner.x >> LeftCorner.y;
+	Outlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
+	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	UpdateStatementText();
 	return;
 }
 
@@ -71,9 +75,9 @@ Point Start::GetInletPoint() const
 	// Start has no inlet point
 	return Point(-1, -1); // or some invalid point
 }
-
-Connector* Start::GetOutConnector() const
+ Connector* Start::GetOutConnector() const
 {
+	
 	return pOutConn;
 }
 

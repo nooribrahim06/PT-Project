@@ -37,6 +37,7 @@ protected:
 	int statementID;   //the ID of this statement
 	string Text;	//Statement text (e.g.  "X = 5" OR "salary > 3000" and so on)
 	bool Selected;	//true if the statement is selected on the folwchart
+
 	static const int Maxrunvars = 200;// max no. of run-time variables
 	virtual void UpdateStatementText() = 0;	//is called when any part of the stat. is edited	
 
@@ -51,7 +52,7 @@ public:
 	static string GetDebug_RunVars();
 	static void Resetrunvars();
 	static void SetVar(const string& name, double value);
-	static double GetVar(const string& name);
+	 static double GetVar(const string& name);
 
 	Statement();
 

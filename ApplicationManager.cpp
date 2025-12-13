@@ -1,4 +1,5 @@
-﻿#include "ApplicationManager.h"
+
+#include "ApplicationManager.h"
 #include "Actions\AddValueAssign.h"
 #include "AddStart.h"
 #include "AddEnd.h"
@@ -892,6 +893,130 @@ void ApplicationManager::SaveAll(ofstream& file)
 	for (int i = 0; i < ConnCount; i++) {
 		ConnList[i]->Save(file);
 	}
+}
+void ApplicationManager::LoadAll(ifstream& file)
+{
+	for (int i = 0; i < StatCount; i++){
+		delete StatList[i];
+}
+	StatCount = 0;
+	
+	for(int i=0;i<ConnCount;i++){
+		delete ConnList[i];
+	}	
+	ConnCount = 0;
+	int countStat = 0;
+	file >> countStat;
+	Statement* IDS[MaxCount];
+	for (int i = 0; i < MaxCount; i++)
+	{
+		IDS[i] = nullptr;
+	}
+	for (int i = 0; i < countStat; i++) {
+		string type;
+		file >> type;
+		string ignore = "";
+		Statement* pStat = nullptr;
+		if (type == "STRT") {
+			pStat = new Start(Point(0, 0));
+		}
+		else if (type == "ENDS") {
+			pStat = new End(Point(0, 0));
+		}
+		else if (type == "DCLR") {
+			pStat = new Declare(Point(0, 0), ignore);
+		}
+		else if (type == "VLAS") {
+			pStat = new ValueAssign(Point(0, 0), "", 0);
+		}
+		else if (type == "VRAS") {
+			pStat = new VariableAssign(Point(0, 0), "", "");
+		}
+		else if (type == "OPAS") {
+			pStat = new OpAssign(Point(0, 0), "", "", "", "");
+		}
+		else if (type == "COND") {
+			pStat = new Condition(Point(0, 0), "", "", "==");
+		}
+		else if (type == "READ") {
+			pStat = new Read(Point(0, 0), "");
+		}
+		else if (type == "WRTE") {
+			pStat = new Write(Point(0, 0), ignore);
+		}
+		if (pStat != nullptr) {
+			pStat->Load(file);
+			AddStatement(pStat);
+
+			int id = pStat->GetstatementID();
+			if (id >= 0 && id < MaxCount)
+			{
+				IDS[id] = pStat;
+			}
+		}
+
+	
+	}
+	int countconn = 0;
+	file >> countconn;
+	for (int i = 0; i < countconn; i++) {
+		int srcID, dstID,out=0;
+		file >> srcID >> dstID >> out;
+		Statement* src = nullptr;
+		Statement* dst = nullptr;
+		
+
+		if (srcID >= 0 && srcID < MaxCount)
+		{
+			src = IDS[srcID];
+		}
+
+		if (dstID >= 0 && dstID < MaxCount)
+		{
+			dst = IDS[dstID];
+		}
+		if (!src || !dst) {
+			continue;
+		}
+		Connector* C = new Connector(src, dst);
+		
+		
+		if (!src->Isconditional())
+		{
+			src->SetOutconnector(C);
+			C->setStartPoint(src->GetOutletPoint());
+			
+			//C->Load(file, srcID, dstID, out);
+
+		}
+		else{
+			Condition* cond = dynamic_cast<Condition*>(src);
+			if (!cond){
+				delete C;
+				continue;
+		    }
+			if (out == 1)
+			{
+				cond->SetTrueConn(C);
+				//C->Load(file, srcID, dstID, out);
+			}
+			else if(out == 2)
+			{
+				cond->SetFalseConn(C);
+			}
+			else {
+				delete C;
+				continue;
+			}
+			C->setStartPoint(src->GetOutletPoint());
+		}
+		
+			
+	
+		C->setEndPoint(dst->GetInletPoint());
+		AddConnector(C);
+	}
+	
 }
 
 

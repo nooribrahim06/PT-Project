@@ -1,4 +1,4 @@
-﻿#include "Select.h"
+#include "Select.h"
 #include "ApplicationManager.h"
 #include "GUI\input.h"
 #include "GUI\Output.h"
@@ -9,6 +9,23 @@ Select::Select(ApplicationManager* pAppManager) : Action(pAppManager)
 	pSelectedconn = NULL;
 	pSelectedstate = NULL;
 }
+//void Select::ReadActionParameters() {
+//	// Get Input / Output pointers
+//	Input* pIn = pManager->GetInput();
+//	Output* pOut = pManager->GetOutput();
+//	//Read the (Position) parameter
+//	pOut->PrintMessage("Select Statement: Click to a Statement or Connector");
+//	pIn->GetPointClicked(Click);
+//	while (!pManager->GetStatement(Click) || !pManager->GetConnector(Click))
+//	{
+//		pOut->PrintMessage("Invalid Selection , Try Again");
+//		pIn->GetPointClicked(Click);
+//	}
+//	if (pManager->GetStatement(Click))
+//		pSelectedstate = pManager->GetStatement(Click);
+//	if (pManager->GetConnector(Click))
+//		pSelectedconn = pManager->GetConnector(Click);
+//}
 void Select::ReadActionParameters()
 {
 	// Get Input / Output pointers
@@ -75,6 +92,8 @@ void Select::Execute()
 
             // Select this connector
             pSelectedconn->Setselected(true);
+			if (pManager->GetSelectedConn())
+				(pManager->GetSelectedConn())->Setselected(false);
             pManager->SetSelectedConn(pSelectedconn);
         }
     }
@@ -100,6 +119,8 @@ void Select::Execute()
 
             // Select this statement
             pSelectedstate->SetSelected(true);
+			if(pManager->GetSelectedStatement())
+				(pManager->GetSelectedStatement())->SetSelected(false);
             pManager->SetSelectedStatement(pSelectedstate);
         }
     }
