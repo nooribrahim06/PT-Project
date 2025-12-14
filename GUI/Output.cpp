@@ -4,23 +4,23 @@
 Output::Output()
 {
 	//Initialize user interface parameters
-	UI.width = 1200;
-	UI.height = 620;
+	UI.width = 1280;
+	UI.height = 720;
 	UI.wx = 15;
 	UI.wy = 15;
 
 	UI.AppMode = DESIGN;	//Design Mode is the default mode
-
+	
 	UI.StatusBarHeight = 50;
 	UI.ToolBarHeight = 50;
-	UI.MenuItemWidth = 50;
-	UI.DrawingAreaWidth = 0.75 * UI.width;
+	UI.MenuItemWidth = 56;
+	UI.DrawingAreaWidth = 0.8 * UI.width;
 
 	UI.DrawColor = BLUE;
 	UI.HighlightColor = RED;
 	UI.MsgColor = BLACK;
 
-	UI.ASSGN_WDTH = 150;
+	UI.ASSGN_WDTH = 110;
 	UI.ASSGN_HI = 50;
 
 	//Create the output window
@@ -52,10 +52,12 @@ window* Output::CreateWind(int wd, int h, int x, int y)
 	return new window(wd, h, x, y);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
+
 void Output::CreateStatusBar()
 {
 	pWind->DrawLine(0, UI.height - UI.StatusBarHeight, UI.width, UI.height - UI.StatusBarHeight);
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //TODO: Complete this function
 void Output::CreateDesignToolBar() //Draws the Design Menu
@@ -123,7 +125,7 @@ void Output::CreateDesignToolBar() //Draws the Design Menu
 void Output::ClearToolBar()
 {
 	// Clear the whole toolbar area (top strip of the window)
-	pWind->SetPen(BLACK, 2);
+	pWind->SetPen(BLACK, 0);
 	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(0, 0, UI.width, UI.ToolBarHeight);
 }
@@ -167,7 +169,7 @@ void Output::ClearOutputBar()
 {
 	//Create output bar by drawing a filled rectangle
 	pWind->SetPen(BLACK, 2);
-	pWind->SetBrush(LIGHTBLUE);
+	pWind->SetBrush(GRAY);
 	pWind->DrawRectangle(UI.DrawingAreaWidth, UI.ToolBarHeight, UI.width, UI.height - UI.StatusBarHeight);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
