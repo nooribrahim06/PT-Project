@@ -147,6 +147,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		
 		case STATUS:
+			UpdateInterface();
 			return;
 	}
 	
@@ -390,16 +391,27 @@ Connector* ApplicationManager::GetConnector(Point P) const
 //Draw all figures on the user interface
 void ApplicationManager::UpdateInterface() const
 {
+	// 1) redraw UI chrome (toolbar/status/output panel)
+	if (UI.AppMode == DESIGN)
+		pOut->CreateDesignToolBar();
+	else
+		pOut->CreateSimulationToolBar();
+
+	pOut->CreateStatusBar();
+
+	pOut->ClearOutputBar();
 	pOut->ClearDrawArea();
 
-	//Draw all statements
-	for(int i=0; i<StatCount; i++)
-		StatList[i]->Draw(pOut);
-	
-	//Draw all connections
-	for(int i=0; i<ConnCount; i++)
-		ConnList[i]->Draw(pOut);
+	// 2) draw all statements
+	for (int i = 0; i < StatCount; i++)
+		if (StatList[i]) StatList[i]->Draw(pOut);
 
+	// 3) draw all connections
+	for (int i = 0; i < ConnCount; i++)
+		if (ConnList[i]) ConnList[i]->Draw(pOut);
+
+	// 4) if you enable buffering, push it to screen
+	// pOut->GetWindow()->UpdateBuffer();  // only if you added GetWindow()
 }
 bool ApplicationManager::ValidateAll(string& msg)
 {

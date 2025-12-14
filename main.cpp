@@ -18,7 +18,7 @@ int main()
 		//Step IV - Update the interface
 		AppManager.UpdateInterface();	
 
-	} while (ActType != EXIT); //N: changed to EXIT1	
+	} while (ActType != EXIT ); //N: changed to EXIT1	
 	return 0;
 }
 
