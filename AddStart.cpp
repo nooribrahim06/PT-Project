@@ -17,7 +17,14 @@ void AddStart::ReadActionParameters()
 	//Read the (Position) parameter
 
 	pOut->PrintMessage("Start Statement: Click to add the statement");
-	pIn->GetPointClicked(Position);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
 	pOut->ClearStatusBar();
 }
 void AddStart::Execute()

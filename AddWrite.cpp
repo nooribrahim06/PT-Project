@@ -14,9 +14,29 @@ void AddWrite::ReadActionParameters()
 	Output* pOut = pManager->GetOutput();
 	//Read the (Position) parameter
 	pOut->PrintMessage("Write Statement: Click to add the statement");
-	pIn->GetPointClicked(Position);
-	pOut->PrintMessage("Write Statement: Enter variable name");
-	varName = pIn->GetVariable(pOut);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
+	do {
+		pOut->PrintMessage("Write Statement: Enter variable name, value, or a message");
+		varName = pIn->GetString(pOut);
+
+		if (varName.empty())
+			continue;
+
+		bool isQuoted = (varName.front() == '"' && varName.back() == '"');
+		bool isValue = IsValue(varName);
+		bool isVariable = IsVariable(varName);
+
+		if (isQuoted || isValue || isVariable)
+			break;
+
+	} while (true);
 	pOut->ClearStatusBar();
 }
 void AddWrite::Execute()

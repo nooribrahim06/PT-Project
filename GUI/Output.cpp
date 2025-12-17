@@ -15,7 +15,7 @@ Output::Output()
 	UI.ToolBarHeight = 50;
 	UI.MenuItemWidth = 56;
 	UI.DrawingAreaWidth = 0.8 * UI.width;
-
+	//UI.DrawingAreaHeight = UI.height - UI.ToolBarHeight - UI.StatusBarHeight;
 	UI.DrawColor = BLUE;
 	UI.HighlightColor = RED;
 	UI.MsgColor = BLACK;
@@ -42,6 +42,25 @@ Input* Output::CreateInput()
 	Input* pIn = new Input(pWind);
 	return pIn;
 }
+
+bool Output::IsInDrawingArea(Point p) const
+{
+	int left = p.x;
+	int top = p.y;
+	int right = p.x + UI.ASSGN_WDTH;
+	int bottom = p.y + UI.ASSGN_HI;
+
+	int drawLeft = 0;
+	int drawRight = UI.DrawingAreaWidth;
+	int drawTop = UI.ToolBarHeight;
+	int drawBottom = UI.height - UI.StatusBarHeight;
+
+	return (left >= drawLeft &&
+		top >= drawTop &&
+		right <= drawRight &&
+		bottom <= drawBottom);
+}
+
 
 //======================================================================================//
 //								Interface Functions										//
@@ -339,7 +358,8 @@ void Output::DrawCondStatement(Point center, int width, int height, string Text,
 		center.y                 // left vertex P3
 	};
 	pWind->DrawPolygon(X_points, Y_points, 4);
-
+	pWind->DrawString(center.x + (width / 2) + 5, center.y - 20, "True");
+	pWind->DrawString(center.x - (width / 2) - 45 , center.y - 20, "False");
 	pWind->SetPen(BLACK, 2);
 	pWind->DrawString(center.x - (width / 6), center.y - (height / 6), Text);
 }

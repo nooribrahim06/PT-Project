@@ -15,7 +15,14 @@ void AddRead::ReadActionParameters()
 	Output* pOut = pManager->GetOutput();
 	//Read the (Position) parameter
 	pOut->PrintMessage("Read Statement: Click to add the statement");
-	pIn->GetPointClicked(Position);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
 	pOut->PrintMessage("Read Statement: Enter variable name");
 	varName = pIn->GetVariable(pOut);
 	pOut->ClearStatusBar();

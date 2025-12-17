@@ -15,7 +15,14 @@ void AddCondition::ReadActionParameters()
 	Output* pOut = pManager->GetOutput();
 	//Read the (Position) parameter
 	pOut->PrintMessage("Condition Statement: Click to add the statement");
-	pIn->GetPointClicked(Position);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
 	pOut->PrintMessage("Condition Statement: Enter Left Hand Side (LHS)");
 	LHS = pIn->GetVariable(pOut);
 	pOut->PrintMessage("Condition Statement: Enter Comparison Operator");
