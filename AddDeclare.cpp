@@ -15,7 +15,14 @@ void AddDeclare::ReadActionParameters()
 	
 	//Read the (Position) parameter
 	pOut->PrintMessage("Declare Statement: Click to add the statement");
-	pIn->GetPointClicked(Position);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
 
 	// Read the variable name
 	pOut->PrintMessage("Declare Statement: Enter the variable name");

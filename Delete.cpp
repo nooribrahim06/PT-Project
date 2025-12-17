@@ -34,7 +34,7 @@ void Delete::Execute()
 	if (pConn)
 	{
 		// Delete the selected connector
-		delete pConn;
+		pManager->DeleteConnector(pConn);
 		pManager->SetSelectedConn(nullptr);
 		pOut->PrintMessage("Delete: Connector deleted.");
 	}

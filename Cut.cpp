@@ -39,6 +39,7 @@ void Cut::Execute()
 	//Put a Clone of the selected statement in the clipboard
 	Statement* clip = pCutStat->Clone();
 	clip->SetSelected(false);  // prevent “clipboard copy looks selected” bugs
+	clip->SetOutconnector(nullptr);
 	pManager->SetClipboard(clip);
 	// Set clipboard to the Cloned cut statement
 	pCutStat->SetSelected(false); //avoid highlighting issues

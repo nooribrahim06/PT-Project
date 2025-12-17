@@ -34,8 +34,8 @@ void Copy::Execute()
     Statement* cloned = sel->Clone();
 
     // 4) Store the clone in clipboard
+    cloned->SetOutconnector(nullptr);
     pManager->SetClipboard(cloned);
-
     // 5) Tell the user it worked
     pOut->PrintMessage("Statement copied to clipboard.");
 }

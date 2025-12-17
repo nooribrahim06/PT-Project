@@ -22,7 +22,14 @@ void AddValueAssign::ReadActionParameters()
 	//Read the (Position) parameter
 	pOut->PrintMessage("Value Assignment Statement: Click to add the statement");
 
-	pIn->GetPointClicked(Position);
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+			break;
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+	}
 	pOut->ClearStatusBar();		
 
 	//TODO: Ask the user in the status bar to enter the LHS and set the data member

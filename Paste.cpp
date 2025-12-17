@@ -28,7 +28,14 @@ void Paste::Execute()
     // 2) Ask user where to paste
     Point P;
     pOut->PrintMessage("Paste: Click where you want to paste the statement.");
-    pIn->GetPointClicked(P);
+    while (true)
+    {
+        pIn->GetPointClicked(P);
+        if (pOut->IsInDrawingArea(P))
+            break;
+
+        pOut->PrintMessage("Invalid location. Click INSIDE the drawing area.");
+    }
     pOut->ClearStatusBar();
 
     // 3) Clone clipboard snapshot
