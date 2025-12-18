@@ -28,6 +28,7 @@
 #include "SwitchToSim.h"
 #include "Save.h"
 #include "Load.h"
+#include "Exit.h"
 #include <fstream>
 
 //Constructor
@@ -147,7 +148,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			break;
 		case EXIT:
 			///create Exit Action here
-			
+			pAct = new Exit(this);
 			break;
 		
 		case STATUS:
@@ -1097,6 +1098,30 @@ void ApplicationManager::LoadAll(ifstream& file)
 		AddConnector(C);
 	}
 	
+}
+
+void ApplicationManager::ClearAll()
+{
+	// Delete all statements
+	for (int i = 0; i < StatCount; i++) {
+		delete StatList[i];
+		StatList[i] = nullptr;
+	}
+	StatCount = 0;
+
+	// Delete all connectors
+	for (int i = 0; i < ConnCount; i++) {
+		delete ConnList[i];
+		ConnList[i] = nullptr;
+	}
+	ConnCount = 0;
+
+	// Clear clipboard if needed
+	ClearClipboard();
+
+	// Reset selection pointers
+	pSelectedStat = nullptr;
+	pSelectedConn = nullptr;
 }
 
 

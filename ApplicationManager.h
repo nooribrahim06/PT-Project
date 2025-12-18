@@ -79,7 +79,7 @@ public:
 	void SaveAll(ofstream& file);
 	void LoadAll(ifstream& file);
 	
-
+	void ClearAll();
 };
 
 #endif
