@@ -7,11 +7,14 @@ class Output	//The application manager should have a pointer to this class
 {
 private:
 	window* pWind;	//Pointer to the Graphics Window
+
 public:
 	Output();
 
 	window* CreateWind(int, int, int, int);
 	Input* CreateInput(); //Creates a pointer to the Input object	
+
+	bool IsInDrawingArea(Point p) const;
 
 	void CreateStatusBar(); //Creates status bar
 

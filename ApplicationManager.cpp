@@ -27,6 +27,8 @@
 #include "SwitchtoDesignAction.h"
 #include "SwitchToSim.h"
 #include "Save.h"
+#include "Load.h"
+#include "Exit.h"
 #include <fstream>
 
 //Constructor
@@ -141,13 +143,16 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 			///create Select Action here
 			pAct = new Select(this);
 			break;
-		
+		case LOAD:
+			pAct = new Load(this);
+			break;
 		case EXIT:
 			///create Exit Action here
-			
+			pAct = new Exit(this);
 			break;
 		
 		case STATUS:
+			UpdateInterface();
 			return;
 	}
 	
@@ -257,80 +262,156 @@ void ApplicationManager::DeleteConnector(Connector* pConn)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+//void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
+//{
+//	if (!s) 
+//		return;
+//
+//	//deselect the statement
+//	s->SetSelected(false);
+//	if (pSelectedStat == s)
+//	{
+//		pSelectedStat = nullptr;
+//	}
+//
+//	/*if (pSelectedConn)
+//	{
+//		Statement* s1 = pSelectedConn->getSrcStat();
+//		Statement* d = pSelectedConn->getDstStat();
+//		if (s1 == s || d == s)
+//			pSelectedConn = nullptr;
+//	}*/
+//
+//	// delete all incoming connectors
+//    for (int i = 0; i < ConnCount; )
+//	{
+//		Connector* conn = ConnList[i];
+//		if (!conn)
+//		{
+//			i++;
+//			continue;
+//		}
+//
+//		Statement* src = conn->getSrcStat();
+//		Statement* dst = conn->getDstStat();
+//
+//		if (src == s || dst == s)
+//		{
+//			if (src ==s)
+//			{
+//				s->SetOutconnector(nullptr);
+//			}
+//			
+//			delete conn;
+//			// Shift connectors left
+//			for (int j = i; j < ConnCount - 1; j++)
+//			{
+//				ConnList[j] = ConnList[j + 1];
+//			}
+//			ConnList[--ConnCount] = nullptr;
+//			continue; //recheck same index after shift
+//		}
+//
+//		i++;
+//	}
+//
+//	// Then, delete the statement itself from StatList
+//
+//    for (int i = 0; i < StatCount; i++)
+//	{
+//		if (StatList[i] == s)
+//		{
+//			delete StatList[i];
+//			// Shift statements left
+//			for (int j = i; j < StatCount - 1; j++)
+//			{
+//				StatList[j] = StatList[j + 1];
+//			}
+//			StatList[--StatCount] = nullptr;
+//			break;
+//		}
+//	}
+//
+//	//clear selection if it was the deleted statement
+//	if (pSelectedStat == s) pSelectedStat = nullptr;
+//}
+////////////////////////////////////////////////////////////////////////////////////
 void ApplicationManager::DeleteStatementWithConnectors(Statement* s)
 {
-	if (!s) 
-		return;
+	if (!s) return;
 
-	//deselect the statement
-	s->SetSelected(false);;
-	if (pSelectedStat == s)
-	{
-		pSelectedStat = nullptr;
-	}
+	// Deselect statement
+	s->SetSelected(false);
+	if (pSelectedStat == s) pSelectedStat = nullptr;
 
-	if (pSelectedConn)
-	{
-		Statement* s = pSelectedConn->getSrcStat();
-		Statement* d = pSelectedConn->getDstStat();
-		if (s == s || d == s)
-			pSelectedConn = nullptr;
-	}
-
-	// delete all incoming connectors
-    for (int i = 0; i < ConnCount; )
+	// Delete all connectors attached to this statement (incoming OR outgoing)
+	for (int i = 0; i < ConnCount; )
 	{
 		Connector* conn = ConnList[i];
-		if (!conn)
-		{
-			i++;
-			continue;
-		}
+		if (!conn) { i++; continue; }
 
 		Statement* src = conn->getSrcStat();
 		Statement* dst = conn->getDstStat();
 
 		if (src == s || dst == s)
 		{
-			if (src ==s)
+			// If this connector is selected, clear selection BEFORE delete
+			if (pSelectedConn == conn)
+				pSelectedConn = nullptr;
+
+			// Detach from source statement to avoid dangling pointers
+			if (src)
 			{
-				s->SetOutconnector(nullptr);
+				if (src->Isconditional())
+				{
+					Condition* cond = dynamic_cast<Condition*>(src);
+					if (cond)
+					{
+						if (cond->GetTrueConn() == conn) cond->SetTrueConn(nullptr);
+						if (cond->GetFalseConn() == conn) cond->SetFalseConn(nullptr);
+					}
+				}
+				else
+				{
+					if (src->GetOutConnector() == conn)
+						src->SetOutconnector(nullptr);
+				}
 			}
-			
+
+			// Now delete connector and remove it from ConnList
 			delete conn;
-			// Shift connectors left
+
 			for (int j = i; j < ConnCount - 1; j++)
-			{
 				ConnList[j] = ConnList[j + 1];
-			}
-			ConnList[--ConnCount] = nullptr;
-			continue; //recheck same index after shift
+
+			ConnList[ConnCount - 1] = nullptr;
+			ConnCount--;
+
+			continue; // recheck same index after shift
 		}
 
 		i++;
 	}
 
-	// Then, delete the statement itself from StatList
-
-    for (int i = 0; i < StatCount; i++)
+	// Delete statement from StatList
+	for (int i = 0; i < StatCount; i++)
 	{
 		if (StatList[i] == s)
 		{
 			delete StatList[i];
-			// Shift statements left
+
 			for (int j = i; j < StatCount - 1; j++)
-			{
 				StatList[j] = StatList[j + 1];
-			}
-			StatList[--StatCount] = nullptr;
+
+			StatList[StatCount - 1] = nullptr;
+			StatCount--;
 			break;
 		}
 	}
 
-	//clear selection if it was the deleted statement
+	// (Already cleared earlier, but harmless)
 	if (pSelectedStat == s) pSelectedStat = nullptr;
 }
-////////////////////////////////////////////////////////////////////////////////////
 
 //Returns the Clipboard
 Statement *ApplicationManager::GetClipboard() const
@@ -394,14 +475,14 @@ void ApplicationManager::UpdateInterface() const
 	pOut->ClearDrawArea();
 
 	//Draw all statements
-	for(int i=0; i<StatCount; i++)
+	for (int i = 0; i < StatCount; i++)
 		StatList[i]->Draw(pOut);
-	
-	//Draw all connections
-	for(int i=0; i<ConnCount; i++)
-		ConnList[i]->Draw(pOut);
 
+	//Draw all connections
+	for (int i = 0; i < ConnCount; i++)
+		ConnList[i]->Draw(pOut);
 }
+
 bool ApplicationManager::ValidateAll(string& msg)
 {
 	Statement* startStat = nullptr;
@@ -898,7 +979,7 @@ void ApplicationManager::LoadAll(ifstream& file)
 {
 	for (int i = 0; i < StatCount; i++){
 		delete StatList[i];
-}
+	}
 	StatCount = 0;
 	
 	for(int i=0;i<ConnCount;i++){
@@ -1017,6 +1098,30 @@ void ApplicationManager::LoadAll(ifstream& file)
 		AddConnector(C);
 	}
 	
+}
+
+void ApplicationManager::ClearAll()
+{
+	// Delete all statements
+	for (int i = 0; i < StatCount; i++) {
+		delete StatList[i];
+		StatList[i] = nullptr;
+	}
+	StatCount = 0;
+
+	// Delete all connectors
+	for (int i = 0; i < ConnCount; i++) {
+		delete ConnList[i];
+		ConnList[i] = nullptr;
+	}
+	ConnCount = 0;
+
+	// Clear clipboard if needed
+	ClearClipboard();
+
+	// Reset selection pointers
+	pSelectedStat = nullptr;
+	pSelectedConn = nullptr;
 }
 
 

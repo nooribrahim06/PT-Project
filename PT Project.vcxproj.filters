@@ -238,6 +238,8 @@
     <ClCompile Include="Paste.cpp" />
     <ClCompile Include="Cut.cpp" />
     <ClCompile Include="Delete.cpp" />
+    <ClCompile Include="Load.cpp" />
+    <ClCompile Include="Exit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -412,6 +414,8 @@
     <ClInclude Include="Paste.h" />
     <ClInclude Include="Cut.h" />
     <ClInclude Include="Delete.h" />
+    <ClInclude Include="Load.h" />
+    <ClInclude Include="Exit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

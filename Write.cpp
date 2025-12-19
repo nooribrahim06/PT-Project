@@ -7,7 +7,7 @@ void Write::ResetOutputCount()
 {
 	OutputCount = 0;
 }
-Write::Write(Point Lcorner,string& variable)
+Write::Write(Point Lcorner, string& variable)
 {
 	var = variable;
 	LeftCorner = Lcorner;
@@ -17,6 +17,7 @@ Write::Write(Point Lcorner,string& variable)
 	Inlet.y = LeftCorner.y;
 	Outlet.x = Inlet.x;
 	Outlet.y = LeftCorner.y + UI.ASSGN_HI;
+	ismessage = IsStringLiteral(var);
 }
 void Write::Draw(Output* pOut) const {
 	pOut->DrawOutputStatement(LeftCorner, UI.ASSGN_WDTH, UI.ASSGN_HI, Text, Selected);
@@ -36,14 +37,15 @@ void Write::Load(ifstream& InFile)
 	UpdateStatementText();
 	return;
 }
-void Write::Edit( string& var)
+void Write::Edit(string& varedited)
 {
 	// to be implemented
-	this ->var = var;
+	var = varedited;
+	ismessage = IsStringLiteral(varedited);
 	UpdateStatementText();
 	return;
 }
-Statement* Write::Clone() const 
+Statement* Write::Clone() const
 {
 	// Clone the Write statement
 	Write* pNewWrite = new Write(*this);
@@ -59,19 +61,27 @@ void Write::Move(const Point& P)
 }
 Statement* Write::Simulate(Input* pIn, Output* pOut)
 {
-	
 	double value = 0;
+	string msg;
 	OpType t = ValueOrVariable(var);
-	if (t == VALUE_OP) {
+	if (ismessage) {
+		msg = var.substr(1, var.size() - 2); // remove quotes
+		
+	}
+	else if (t == VALUE_OP) {
 		value = stod(var);
 	}
-	else if (t==VARIABLE_OP){
-		value=  Statement::GetVar(var);
+	else if (t == VARIABLE_OP) {
+		value = Statement::GetVar(var);
 	}
-	string msg = var + " = " + to_string(value);
-		pOut->PrintOnOutputBar(msg,OutputCount);
-		OutputCount++;
-		Connector* pOutConn = GetOutConnector();
+	if (t != INVALID_OP)
+	{
+		msg = var + " = " + to_string(value);
+	}
+	pOut->PrintOnOutputBar(msg, OutputCount);
+	OutputCount++;
+	Connector* pOutConn = GetOutConnector();
+
 
 	if (pOutConn != NULL)
 	{
@@ -114,7 +124,7 @@ bool Write::IsPointInside(Point P) const
 {
 	Point A = LeftCorner;
 	Point B(LeftCorner.x + UI.ASSGN_WDTH, LeftCorner.y);
-	Point C(LeftCorner.x +  UI.ASSGN_WDTH /2, LeftCorner.y + UI.ASSGN_HI);
+	Point C(LeftCorner.x + UI.ASSGN_WDTH / 2, LeftCorner.y + UI.ASSGN_HI);
 	Point D(LeftCorner.x - UI.ASSGN_WDTH / 2, LeftCorner.y + UI.ASSGN_HI);
 
 	double Area2 = TriArea2(A, B, C) + TriArea2(A, C, D);
@@ -128,6 +138,8 @@ bool Write::IsPointInside(Point P) const
 
 bool Write::Validate(varinfo vars[], int& varcount, string& msg)
 {
+	if (ismessage)
+		return true;
 	if (var.empty()) {
 		msg = "Write statment doesn't have an expresson";
 		return false;
@@ -145,11 +157,11 @@ bool Write::Validate(varinfo vars[], int& varcount, string& msg)
 			return false;
 		}
 	}
-	else if (T == INVALID_OP)
+	/*else if (T == INVALID_OP)
 	{
 		msg = "Write statement has invalid expression '" + var + "' ";
 		return false;
-	}
+	}*/
 	return true;
 }
 void Write::UpdateStatementText()
@@ -164,4 +176,17 @@ double Write::TriArea2(Point A, Point B, Point C)
 		B.x * (C.y - A.y) +
 		C.x * (A.y - B.y)
 	);
+}
+bool Write::IsStringLiteral(const string& s)
+{
+	if (s.size() < 2) return false;
+
+	// allow "..." or '...'
+	char first = s.front();
+	char last = s.back();
+
+	if ((first == '"' && last == '"') || (first == '\'' && last == '\''))
+		return true;
+
+	return false;
 }

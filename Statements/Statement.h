@@ -6,12 +6,6 @@
 //class Output;
 #include "..\GUI\Output.h"
 
- /*extern string* VarNames;
- extern double *VarValues;
- extern  bool* VarIntial;
- extern int varCount  ;*/
-
-
 struct varinfo {
 	string name;
 	bool declared;
@@ -26,9 +20,7 @@ struct varinfo {
 	 }
 	 return -1;
  }
- /*double GetVar(const string& name);
- void SetVar(const string& name, double value);*/
-
+ 
 //Base class for all Statements
 class Statement
 {
@@ -98,8 +90,5 @@ public:
 };
 #endif
 
-// Remove the invalid line at the end of the file
-// Replace:
-// #endif extern int VarIntial[200]
-// With just:
+
 

@@ -190,14 +190,22 @@ void Edit::Execute()
     {
         string newExpr;
 
-        // Depending on your design: allow var or value
-        do
-        {
-            pOut->PrintMessage("Edit: Enter the new value/variable to write.");
+        do {
+            pOut->PrintMessage("Edit: Enter a variable name, a numeric value, or a message in quotes \"...\".");
             newExpr = pIn->GetString(pOut);
-        } while (!IsVariable(newExpr) && !IsValue(newExpr));
-        // if you support string literals, change this check to match your AddWrite logic
 
+            if (newExpr.empty())
+                continue;
+
+            bool isQuoted = (newExpr.front() == '"' && newExpr.back() == '"');
+            bool isValue = IsValue(newExpr);
+            bool isVariable = IsVariable(newExpr);
+
+            // accept any valid input
+            if (isQuoted || isValue || isVariable)
+                break;
+
+        } while (true);
         pWrite->Edit(newExpr);
     }
 

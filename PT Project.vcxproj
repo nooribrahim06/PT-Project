@@ -288,6 +288,7 @@
     <ClCompile Include="Delete.cpp" />
     <ClCompile Include="Edit.cpp" />
     <ClCompile Include="End.cpp" />
+    <ClCompile Include="Exit.cpp" />
     <ClCompile Include="GenerateCodeAction.cpp" />
     <ClCompile Include="GUI\Input.cpp" />
     <ClCompile Include="GUI\Output.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="Delete.h" />
     <ClInclude Include="Edit.h" />
     <ClInclude Include="End.h" />
+    <ClInclude Include="Exit.h" />
     <ClInclude Include="GenerateCodeAction.h" />
     <ClInclude Include="GUI\Input.h" />
     <ClInclude Include="GUI\Output.h" />

@@ -11,6 +11,7 @@ class Write :
     Point LeftCorner;	//left corenr of the statement block.
 	static int OutputCount; // count of output statements
 	virtual void UpdateStatementText();
+    bool ismessage;
     public:
      static void ResetOutputCount();
     Write(Point Lcorner,string& variable);
@@ -29,4 +30,5 @@ class Write :
 	void  GenerateCode(ofstream& OutFile) override;
     bool Validate(varinfo vars[], int& varcount, string& msg) override;
     static double TriArea2(Point A, Point B, Point C);
+    static bool IsStringLiteral(const string& s);
 };
