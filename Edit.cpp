@@ -8,7 +8,6 @@
 #include "Write.h"
 #include "VariableAssign.h"
 #include "Declare.h"
-
 #include "Connector.h"
 #include "GUI/Input.h"
 #include "GUI/Output.h"
@@ -122,13 +121,6 @@ void Edit::Execute()
             newRHS1 = pIn->GetString(pOut);
         } while (!IsVariable(newRHS1) && !IsValue(newRHS1));
 
-        // RHS2: variable or value
-        do
-        {
-            pOut->PrintMessage("Edit: Enter the second right-hand side operand (var or value).");
-            newRHS2 = pIn->GetString(pOut);
-        } while (!IsVariable(newRHS2) && !IsValue(newRHS2));
-
         // Operator: +, -, * or /
         do
         {
@@ -136,6 +128,12 @@ void Edit::Execute()
             newOp = pIn->GetString(pOut);
         } while (!(newOp == "+" || newOp == "-" || newOp == "*" || newOp == "/"));
 
+        // RHS2: variable or value
+        do
+        {
+            pOut->PrintMessage("Edit: Enter the second right-hand side operand (var or value).");
+            newRHS2 = pIn->GetString(pOut);
+        } while (!IsVariable(newRHS2) && !IsValue(newRHS2));
         pOpAssign->Edit(newLHS, newRHS1, newRHS2, newOp);
     }
 
@@ -153,19 +151,18 @@ void Edit::Execute()
             newLHS = pIn->GetString(pOut);
         } while (!IsVariable(newLHS) && !IsValue(newLHS));
 
-        // RHS: variable or value
-        do
-        {
-            pOut->PrintMessage("Edit: Enter the new right-hand side (var or value).");
-            newRHS = pIn->GetString(pOut);
-        } while (!IsVariable(newRHS) && !IsValue(newRHS));
-
         // Comparator: use your helper
         do
         {
             pOut->PrintMessage("Edit: Enter the comparison operator (==, !=, <, <=, >, >=).");
             newOp = pIn->GetString(pOut);
         } while (!IsValidComparator(newOp));
+        // RHS: variable or value
+        do
+        {
+            pOut->PrintMessage("Edit: Enter the new right-hand side (var or value).");
+            newRHS = pIn->GetString(pOut);
+        } while (!IsVariable(newRHS) && !IsValue(newRHS));
 
         pCond->Edit(newLHS, newRHS, newOp);
     }
