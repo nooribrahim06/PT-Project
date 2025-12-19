@@ -38,6 +38,7 @@ private:
 	static string R_names[Maxrunvars];
 	static double R_values[Maxrunvars];
 	static int R_count;
+	
 
 
 public:
@@ -45,6 +46,7 @@ public:
 	static void Resetrunvars();
 	static void SetVar(const string& name, double value);
 	 static double GetVar(const string& name);
+	 
 
 	Statement();
 

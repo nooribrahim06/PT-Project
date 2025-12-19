@@ -3,6 +3,7 @@
 #include <cmath>   // for std::abs
 #include <iostream>
 #include <fstream>
+#include"condition.h"
 using namespace std;
 
 Connector::Connector(Statement* Src, Statement* Dst)	
@@ -116,10 +117,14 @@ void Connector::Save(ofstream& OutFile) {
 	int out = 0;
 	if (SrcStat->Isconditional())
 	{
-		if (this == SrcStat->GetOutConnector())
-			out = 1;
-		else
-			out = 2;
+		Condition* cond = dynamic_cast<Condition*>(SrcStat);
+		if (cond)
+		{
+			if (this == cond->GetTrueConn())
+				out = 1;
+			else if (this == cond->GetFalseConn())
+				out = 2;
+		}
 	}
 	OutFile << SrcStat->GetstatementID() << "   " << DstStat->GetstatementID() << "   " << out << endl;
 }

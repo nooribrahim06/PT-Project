@@ -40,8 +40,9 @@ void Read::Save(ofstream& OutFile)
 }
 void Read::Load(ifstream& InFile)
 {
-	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> varName;
-
+	int id;
+	InFile >> id >> LeftCorner.x >> LeftCorner.y >> varName;
+	statementID = id;
 	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 

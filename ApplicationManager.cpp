@@ -979,11 +979,13 @@ void ApplicationManager::LoadAll(ifstream& file)
 {
 	for (int i = 0; i < StatCount; i++){
 		delete StatList[i];
+		StatList[i] = nullptr;
 	}
 	StatCount = 0;
 	
 	for(int i=0;i<ConnCount;i++){
 		delete ConnList[i];
+		ConnList[i] = nullptr;
 	}	
 	ConnCount = 0;
 	int countStat = 0;
@@ -1067,7 +1069,7 @@ void ApplicationManager::LoadAll(ifstream& file)
 			src->SetOutconnector(C);
 			C->setStartPoint(src->GetOutletPoint());
 			
-			//C->Load(file, srcID, dstID, out);
+			
 
 		}
 		else{
@@ -1078,23 +1080,27 @@ void ApplicationManager::LoadAll(ifstream& file)
 		    }
 			if (out == 1)
 			{
+
 				cond->SetTrueConn(C);
-				//C->Load(file, srcID, dstID, out);
+				C->setStartPoint(cond->GetTrueOutlet());
+			
 			}
 			else if(out == 2)
 			{
 				cond->SetFalseConn(C);
+				C->setStartPoint(cond->GetFalseOutlet());
 			}
 			else {
 				delete C;
 				continue;
 			}
-			C->setStartPoint(src->GetOutletPoint());
+			
 		}
 		
 			
 	
 		C->setEndPoint(dst->GetInletPoint());
+
 		AddConnector(C);
 	}
 	
