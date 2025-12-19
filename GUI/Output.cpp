@@ -50,8 +50,8 @@ bool Output::IsInDrawingArea(Point p) const
 	int right = p.x + UI.ASSGN_WDTH;
 	int bottom = p.y + UI.ASSGN_HI;
 
-	int drawLeft = 0;
-	int drawRight = UI.DrawingAreaWidth;
+	int drawLeft = 55;
+	int drawRight = UI.DrawingAreaWidth + 30;
 	int drawTop = UI.ToolBarHeight;
 	int drawBottom = UI.height - UI.StatusBarHeight;
 
