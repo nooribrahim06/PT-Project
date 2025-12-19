@@ -2,6 +2,9 @@
 #include "ApplicationManager.h"
 #include "Statements\Statement.h"
 
+
+
+
 DebugRunAction::DebugRunAction(ApplicationManager* pAppManager):Action(pAppManager)
 {
 }
@@ -20,13 +23,15 @@ void DebugRunAction::Execute() {
 		pOut->PrintMessage(msg);
 		return;
 	}
-	int count = 0;
+	int count =5;
 	const int Steps = 1000;
 	while (cur && !cur->IsEnd())
 
 	{
+
 		Statement* Next = cur;
-		cur = cur->Simulate(pIn, pOut);
+		
+		cur = cur->Simulate(pIn, pOut); 
 		if (!cur) {
 			msg = "Missing connector or invalid next Statment";
 			return;
@@ -39,16 +44,18 @@ void DebugRunAction::Execute() {
 		}
 
 		string debugInfo = Statement::GetDebug_RunVars();
-
-		string outmsg = "Debug Info:  " + debugInfo + "\n Click to continue";
+		
+		string outmsg = "Debug Info:  " + debugInfo + "\n Click to continue"; 
 		pOut->PrintMessage(outmsg);
+		
+		pOut->PrintOnOutputBar(debugInfo, count);
 		Next->SetSelected(true);
 		pManager->UpdateInterface();
 		Point Click;
 		pIn->GetPointClicked(Click);
 		Next->SetSelected(false);
-
 	}
+	
 	if (cur == NULL)
 	{
 		msg = "Error: FLowchart terminated without reaching End ";
@@ -57,6 +64,7 @@ void DebugRunAction::Execute() {
 
 	string out = Statement::GetDebug_RunVars();
 	pOut->PrintMessage("Program Ended Successfully. \n Variables: " + out);
+
 }
 	
 

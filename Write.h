@@ -9,10 +9,11 @@ class Write :
     Point Inlet; //A point where connections enters this statement 
     Point Outlet;	//A point a connection leaves this statement
     Point LeftCorner;	//left corenr of the statement block.
-	static int OutputCount; // count of output statements
+  
 	virtual void UpdateStatementText();
     bool ismessage;
     public:
+        static int OutputCount; // count of output statements
      static void ResetOutputCount();
     Write(Point Lcorner,string& variable);
     virtual void Draw(Output* pOut) const;
