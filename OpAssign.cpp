@@ -53,7 +53,9 @@ void OpAssign::Save(ofstream& OutFile)
 void OpAssign::Load(ifstream& InFile)
 {
 	string arthm;
-	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS1 >> arthm >> RHS2;
+	int id;
+	InFile >> id >> LeftCorner.x >> LeftCorner.y >> LHS >> RHS1 >> arthm >> RHS2;
+	statementID = id;
 	if (arthm == "PLS") op = "+";
 	else if (arthm == "MIN") op = "-";
 	else if (arthm == "MUL") op = "*";

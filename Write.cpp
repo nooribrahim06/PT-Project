@@ -29,7 +29,9 @@ void Write::Save(ofstream& OutFile)
 }
 void Write::Load(ifstream& InFile)
 {
-	InFile >> statementID >> LeftCorner.x >> LeftCorner.y >> var;
+	int id;
+	InFile >> id >> LeftCorner.x >> LeftCorner.y >> var;
+	statementID = id;
 	Inlet.x = LeftCorner.x + UI.ASSGN_WDTH / 2;
 	Inlet.y = LeftCorner.y;
 	Outlet.x = Inlet.x;
