@@ -92,8 +92,8 @@ void Condition::Load(ifstream& InFile)
 	else if (Comp == "NEQL") CompOp = "!=";
 	else if (Comp == "GRT_") CompOp = ">";
 	else if (Comp == "SML_") CompOp = "<";
-	else if (Comp == "SMLE") CompOp = ">=";
-	else if (Comp == "GRTE") CompOp = "";
+	else if (Comp == "SMLE") CompOp = "<=";
+	else if (Comp == "GRTE") CompOp = ">=";
 	int W = UI.ASSGN_WDTH;
 	int H = UI.ASSGN_HI;
 	Inlet.x = Center.x;
@@ -211,8 +211,9 @@ void Condition::GenerateLoopCode(ofstream& file, bool branch)
 }
 Point Condition::GetOutletPoint() const
 {
-	// to be implemented 
-	return (-1, -1); // or FalseOutlet based on context
+	// to be implemented //	return (-1, -1); 
+
+	return TrueOutlet;// or FalseOutlet based on context
 }
 Point Condition::GetTrueOutlet() const
 {
