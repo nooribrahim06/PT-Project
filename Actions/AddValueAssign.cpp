@@ -1,0 +1,78 @@
+#include "AddValueAssign.h"
+
+
+
+#include "..\ApplicationManager.h"
+
+#include "..\GUI\input.h"
+#include "..\GUI\Output.h"
+
+#include <sstream>
+using namespace std;
+
+//constructor: set the ApplicationManager pointer inside this action
+AddValueAssign::AddValueAssign(ApplicationManager *pAppManager):Action(pAppManager)
+{}
+
+void AddValueAssign::ReadActionParameters()
+{
+	Input *pIn = pManager->GetInput();
+	Output *pOut = pManager->GetOutput();
+	
+	//Read the (Position) parameter
+	pOut->PrintMessage("Value Assignment Statement: Click to add the statement");
+
+	while (true)
+	{
+		pIn->GetPointClicked(Position);
+		if (pOut->IsInDrawingArea(Position))
+		{
+			Point P1, P2, P3, P4;
+			P1.x = Position.x - UI.ASSGN_WDTH / 2;
+			P1.y = Position.y;
+			P2.x = Position.x + UI.ASSGN_WDTH / 2;
+			P2.y = Position.y;
+			P3.x = Position.x + UI.ASSGN_WDTH / 2;
+			P3.y = Position.y + UI.ASSGN_HI;
+			P4.x = Position.x - UI.ASSGN_WDTH / 2;
+			P4.y = Position.y + UI.ASSGN_HI;
+			if (pManager->GetStatement(P1) == NULL && pManager->GetStatement(P2) == NULL && pManager->GetStatement(P3) == NULL && pManager->GetStatement(P4) == NULL)
+				break;
+		}
+
+		pOut->PrintMessage("Invalid location. Click INSIDE the drawing area and avoid overlapping");
+	}
+
+	pOut->ClearStatusBar();		
+
+	//TODO: Ask the user in the status bar to enter the LHS and set the data member
+	pOut->PrintMessage("Value Assignment Statement: Add the variable to be assigned");
+	LHS = pIn->GetVariable(pOut);
+	pOut->ClearStatusBar();
+	//TODO: Ask the user in the status bar to enter the RHS and set the data member
+	pOut->PrintMessage("Value Assignment Statement: Add the double value");
+	RHS = pIn->GetValue(pOut);
+	pOut->ClearStatusBar();
+	//Note: You should validate the LHS to be variable name and RHS to be a value
+	//      Call the appropriate functions for this.
+}
+
+void AddValueAssign::Execute()
+{
+	ReadActionParameters();
+		
+	
+	//Calculating left corner of assignement statement block
+	Point Corner;
+	Corner.x = Position.x - UI.ASSGN_WDTH/2;
+	Corner.y = Position.y ;
+	
+	ValueAssign *pAssign = new ValueAssign(Corner, "", 0);
+	//TODO: should set the LHS and RHS of pAssign statement
+	//      with the data members set and validated before in ReadActionParameters()
+	pAssign->setLHS(LHS);
+	pAssign->setRHS(RHS);
+	//Add the created assignment statement to the list of statements in the application manager
+	pManager->AddStatement(pAssign); // Adds the created statement to application manger's statement list
+}
+
