@@ -19,20 +19,16 @@ This project follows the CMPG102 Programming Techniques course specification.
 
 ## 3. Screenshots / Demo
 
-![Design Mode](images/screenshots/design-mode.png)
-> Screenshot showing the design toolbar and a sample flowchart placed on the drawing area.
 
-![Adding Statements](images/screenshots/add-statements.png)
-> Screenshot showing a statement being added (e.g., Declare or Assignment) with rendered text.
+![Flowchart Execution](images/screenshots/flowchart1_withdebug.png)
+> Flowchart drawn in the application and executed in simulation mode, with variable tracking and final output displayed.
 
-![Connecting Blocks](images/screenshots/connectors.png)
-> Screenshot showing connectors between statements, including a conditional with YES/NO branches.
+![Equivalent C++ Code](images/screenshots/cpp-code.png.png)
+> C++ source code that represents the same logic as the designed flowchart (variable declaration, condition, assignment, and output).
 
-![Simulation Output](images/screenshots/simulation-output.png)
-> Screenshot showing simulation mode with output printed from `Write` statements.
+![Flowchart Save File](images/screenshots/flowchart-file.png.png)
+> Text-based flowchart save file showing statements, their IDs, positions, and connector relationships used for loading and simulation.
 
-![Validation Error](images/screenshots/validation-error.png)
-> Screenshot showing a validation error message (e.g., missing End statement or invalid connectors).
 
 ## 4. Features
 
